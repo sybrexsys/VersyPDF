@@ -1,3 +1,9 @@
+/*********************************************************************
+
+This file is part of the VersyPDF project.
+Copyright (C) 2005 - 2016 Sybrex Systems Ltd. All rights reserved.
+Authors: Vadzim Shakun , et al.
+
 VersyPDF is free software: you can redistribute it and/or modify it 
 under the terms of the GNU Affero General Public License as published 
 by the Free Software Foundation, either version 3 of the License, or 
@@ -24,3 +30,21 @@ as an ASP, serving PDFs on the fly in a commerce web application,
 or shipping VersyPDF with a closed source product.
 
 For more information, please contact Sybrex Systems at http://www.sybrex.com
+
+----------------------------------------------------------------------
+VSFTSystem.c
+*********************************************************************/
+
+#include "VSFreeType.h"
+#include "ft2build.h"
+#include "ftconfig.h"
+
+#include FT_INTERNAL_DEBUG_H
+#include FT_SYSTEM_H
+#include FT_ERRORS_H
+#include FT_TYPES_H
+#include FT_INTERNAL_OBJECTS_H
+
+#include "VSTypes.h"
+#include "VSLibI.h"
+

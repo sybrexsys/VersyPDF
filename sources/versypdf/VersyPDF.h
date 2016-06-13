@@ -1,3 +1,9 @@
+/*********************************************************************
+
+This file is part of the VersyPDF project.
+Copyright (C) 2005 - 2016 Sybrex Systems Ltd. All rights reserved.
+Authors: Vadzim Shakun , et al.
+
 VersyPDF is free software: you can redistribute it and/or modify it 
 under the terms of the GNU Affero General Public License as published 
 by the Free Software Foundation, either version 3 of the License, or 
@@ -24,3 +30,39 @@ as an ASP, serving PDFs on the fly in a commerce web application,
 or shipping VersyPDF with a closed source product.
 
 For more information, please contact Sybrex Systems at http://www.sybrex.com
+
+----------------------------------------------------------------------
+VersyPDF.h
+*********************************************************************/
+
+#ifndef VersyPDF_H
+#define VersyPDF_H /* Base Type Module */
+
+#ifndef __GNUC__ /* suppress gcc warning */
+#pragma once
+#endif /* __GNUC__ */
+#include "VSConfig.h"
+#include "VSPlatform.h"
+#include "VSTypes.h"
+#include "VSAcroFormA.h"
+#include "VSAcroInfoA.h"
+#include "VSActionA.h"
+#include "VSAnnotA.h"
+#include "VSBaseA.h"
+#include "VSCanvasA.h"
+#include "VSCosA.h"
+#include "VSDocA.h"
+#include "VSError.h"
+#include "VSExcept.h"
+#include "VSFontA.h"
+#include "VSGStateA.h"
+#include "VSImageA.h"
+#include "VSLibA.h"
+#include "VSOutlineA.h"
+#include "VSPageA.h"
+#include "VSPagesA.h"
+#include "VSThreadA.h"
+
+
+
+#endif /* #ifndef VersyPDF_H */

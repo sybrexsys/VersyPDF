@@ -1,3 +1,9 @@
+/*********************************************************************
+
+This file is part of the VersyPDF project.
+Copyright (C) 2005 - 2016 Sybrex Systems Ltd. All rights reserved.
+Authors: Vadzim Shakun , et al.
+
 VersyPDF is free software: you can redistribute it and/or modify it 
 under the terms of the GNU Affero General Public License as published 
 by the Free Software Foundation, either version 3 of the License, or 
@@ -24,3 +30,69 @@ as an ASP, serving PDFs on the fly in a commerce web application,
 or shipping VersyPDF with a closed source product.
 
 For more information, please contact Sybrex Systems at http://www.sybrex.com
+
+----------------------------------------------------------------------
+VSConfig.h
+*********************************************************************/
+
+#ifndef VSConfig_H
+#define VSConfig_H  /*  */
+
+#ifdef  __cplusplus
+extern "C"{
+#endif
+
+
+
+/* #define CANVASDBG      */       /* Defining debugging*/
+/* #define LOGDBG         */       /* Defining logging*/
+
+
+
+
+#define COSOBJISPOINTER 
+
+
+
+#ifdef CANVASDBG
+#	define CDebugCode( code ) { code }          /* Defining long debugging*/
+#else
+#	define CDebugCode( code )                   /* Defining short debugging*/
+#endif
+
+#ifdef CANVASDBG
+#	define CDebugHeader( code ) code            /* Defining long head debugging*/    
+#else
+#	define CDebugHeader( code )                 /* Defining short debugging*/
+#endif
+
+#ifdef LOGDBG
+#	define LOGCode( code ) { code }             /* Defining long logging */
+#else
+#	define LOGCode( code )                      /* Defining short logging */ 
+#endif
+
+
+
+
+/* #define NOT_USE_TIFF */
+
+
+/* #define NOT_USE_FREETYPE */
+
+
+/* #define NOT_USE_PNG */
+
+
+/* #define NOT_USE_EMF */
+
+
+/* #define NOT_USE_SIGN */
+
+
+#ifdef  __cplusplus
+}
+#endif
+
+#endif /* #ifndef VSConfig_H */
+
