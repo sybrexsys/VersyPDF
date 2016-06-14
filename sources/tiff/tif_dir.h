@@ -1,4 +1,4 @@
-/* $Id: tif_dir.h,v 1.54 2011-02-18 20:53:05 fwarmerdam Exp $ */
+/* $Header: /cvsroot/osrs/libtiff/libtiff/tif_dir.h,v 1.3 2001/03/02 04:59:52 warmerda Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -30,279 +30,241 @@
  * ``Library-private'' Directory-related Definitions.
  */
 
-typedef struct {
-	const TIFFField *info;
-	int             count;
-	void           *value;
-} TIFFTagValue;
-
-/*
- * TIFF Image File Directories are comprised of a table of field
- * descriptors of the form shown below.  The table is sorted in
- * ascending order by tag.  The values associated with each entry are
- * disjoint and may appear anywhere in the file (so long as they are
- * placed on a word boundary).
- *
- * If the value is 4 bytes or less, in ClassicTIFF, or 8 bytes or less in
- * BigTIFF, then it is placed in the offset field to save space. If so,
- * it is left-justified in the offset field.
- */
-typedef struct {
-	uint16 tdir_tag;        /* see below */
-	uint16 tdir_type;       /* data type; see below */
-	uint64 tdir_count;      /* number of items; length in spec */
-	union {
-		uint16 toff_short;
-		uint32 toff_long;
-		uint64 toff_long8;
-	} tdir_offset;		/* either offset or the data itself if fits */
-} TIFFDirEntry;
-
 /*
  * Internal format of a TIFF directory entry.
  */
-typedef struct {
-#define FIELD_SETLONGS 4
+typedef	struct {
+#define	FIELD_SETLONGS	3
 	/* bit vector of fields that are set */
-	unsigned long td_fieldsset[FIELD_SETLONGS];
+	u_long	td_fieldsset[FIELD_SETLONGS];
 
-	uint32  td_imagewidth, td_imagelength, td_imagedepth;
-	uint32  td_tilewidth, td_tilelength, td_tiledepth;
-	uint32  td_subfiletype;
-	uint16  td_bitspersample;
-	uint16  td_sampleformat;
-	uint16  td_compression;
-	uint16  td_photometric;
-	uint16  td_threshholding;
-	uint16  td_fillorder;
-	uint16  td_orientation;
-	uint16  td_samplesperpixel;
-	uint32  td_rowsperstrip;
-	uint16  td_minsamplevalue, td_maxsamplevalue;
-	double* td_sminsamplevalue;
-	double* td_smaxsamplevalue;
-	float   td_xresolution, td_yresolution;
-	uint16  td_resolutionunit;
-	uint16  td_planarconfig;
-	float   td_xposition, td_yposition;
-	uint16  td_pagenumber[2];
-	uint16* td_colormap[3];
-	uint16  td_halftonehints[2];
-	uint16  td_extrasamples;
-	uint16* td_sampleinfo;
-	/* even though the name is misleading, td_stripsperimage is the number
-	 * of striles (=strips or tiles) per plane, and td_nstrips the total
-	 * number of striles */
-	uint32  td_stripsperimage;  
-	uint32  td_nstrips;              /* size of offset & bytecount arrays */
-	uint64* td_stripoffset;
-	uint64* td_stripbytecount;
-	int     td_stripbytecountsorted; /* is the bytecount array sorted ascending? */
-#if defined(DEFER_STRILE_LOAD)
-        TIFFDirEntry td_stripoffset_entry;    /* for deferred loading */
-        TIFFDirEntry td_stripbytecount_entry; /* for deferred loading */
+	uint32	td_imagewidth, td_imagelength, td_imagedepth;
+	uint32	td_tilewidth, td_tilelength, td_tiledepth;
+	uint32	td_subfiletype;
+	uint16	td_bitspersample;
+	uint16	td_sampleformat;
+	uint16	td_compression;
+	uint16	td_photometric;
+	uint16	td_threshholding;
+	uint16	td_fillorder;
+	uint16	td_orientation;
+	uint16	td_samplesperpixel;
+	uint32	td_rowsperstrip;
+	uint16	td_minsamplevalue, td_maxsamplevalue;
+	double	td_sminsamplevalue, td_smaxsamplevalue;
+	float	td_xresolution, td_yresolution;
+	uint16	td_resolutionunit;
+	uint16	td_planarconfig;
+	float	td_xposition, td_yposition;
+	uint16	td_pagenumber[2];
+	uint16*	td_colormap[3];
+	uint16	td_halftonehints[2];
+	uint16	td_extrasamples;
+	uint16*	td_sampleinfo;
+	double	td_stonits;
+	char*	td_documentname;
+	char*	td_artist;
+	char*	td_datetime;
+	char*	td_hostcomputer;
+	char*	td_imagedescription;
+	char*	td_make;
+	char*	td_model;
+	char*	td_software;
+        char*   td_copyright;
+	char*	td_pagename;
+	tstrip_t td_stripsperimage;
+	tstrip_t td_nstrips;		/* size of offset & bytecount arrays */
+	uint32*	td_stripoffset;
+	uint32*	td_stripbytecount;
+#if SUBIFD_SUPPORT
+	uint16	td_nsubifd;
+	uint32*	td_subifd;
 #endif
-	uint16  td_nsubifd;
-	uint64* td_subifd;
-	/* YCbCr parameters */
-	uint16  td_ycbcrsubsampling[2];
-	uint16  td_ycbcrpositioning;
-	/* Colorimetry parameters */
-	uint16* td_transferfunction[3];
+#ifdef YCBCR_SUPPORT
+	float*	td_ycbcrcoeffs;
+	uint16	td_ycbcrsubsampling[2];
+	uint16	td_ycbcrpositioning;
+#endif
+#ifdef COLORIMETRY_SUPPORT
+	float*	td_whitepoint;
+	float*	td_primarychromas;
 	float*	td_refblackwhite;
-	/* CMYK parameters */
-	int     td_inknameslen;
-	char*   td_inknames;
-
-	int     td_customValueCount;
-        TIFFTagValue *td_customValues;
+	uint16*	td_transferfunction[3];
+#endif
+#ifdef CMYK_SUPPORT
+	uint16	td_inkset;
+	uint16	td_ninks;
+	uint16	td_dotrange[2];
+	int	td_inknameslen;
+	char*	td_inknames;
+	char*	td_targetprinter;
+#endif
+#ifdef ICC_SUPPORT
+	uint32	td_profileLength;
+	void	*td_profileData;
+#endif
+#ifdef PHOTOSHOP_SUPPORT
+	uint32	td_photoshopLength;
+	void	*td_photoshopData;
+#endif
+#ifdef IPTC_SUPPORT
+	uint32	td_richtiffiptcLength;
+	void	*td_richtiffiptcData;
+#endif
+        /* Begin Pixar Tag values. */
+        uint32	td_imagefullwidth, td_imagefulllength;
+ 	char*	td_textureformat;
+ 	char*	td_wrapmodes;
+ 	float	td_fovcot;
+ 	float*	td_matrixWorldToScreen;
+ 	float*	td_matrixWorldToCamera;
+ 	/* End Pixar Tag Values. */
 } TIFFDirectory;
 
 /*
- * Field flags used to indicate fields that have been set in a directory, and
- * to reference fields when manipulating a directory.
+ * Field flags used to indicate fields that have
+ * been set in a directory, and to reference fields
+ * when manipulating a directory.
  */
 
 /*
- * FIELD_IGNORE is used to signify tags that are to be processed but otherwise
- * ignored.  This permits antiquated tags to be quietly read and discarded.
- * Note that a bit *is* allocated for ignored tags; this is understood by the
- * directory reading logic which uses this fact to avoid special-case handling
- */
-#define FIELD_IGNORE                   0
+ * FIELD_IGNORE is used to signify tags that are to
+ * be processed but otherwise ignored.  This permits
+ * antiquated tags to be quietly read and discarded.
+ * Note that a bit *is* allocated for ignored tags;
+ * this is understood by the directory reading logic
+ * which uses this fact to avoid special-case handling
+ */ 
+#define	FIELD_IGNORE			0
 
 /* multi-item fields */
-#define FIELD_IMAGEDIMENSIONS          1
-#define FIELD_TILEDIMENSIONS           2
-#define FIELD_RESOLUTION               3
-#define FIELD_POSITION                 4
+#define	FIELD_IMAGEDIMENSIONS		1
+#define FIELD_TILEDIMENSIONS		2
+#define	FIELD_RESOLUTION		3
+#define	FIELD_POSITION			4
 
 /* single-item fields */
-#define FIELD_SUBFILETYPE              5
-#define FIELD_BITSPERSAMPLE            6
-#define FIELD_COMPRESSION              7
-#define FIELD_PHOTOMETRIC              8
-#define FIELD_THRESHHOLDING            9
-#define FIELD_FILLORDER                10
-#define FIELD_ORIENTATION              15
-#define FIELD_SAMPLESPERPIXEL          16
-#define FIELD_ROWSPERSTRIP             17
-#define FIELD_MINSAMPLEVALUE           18
-#define FIELD_MAXSAMPLEVALUE           19
-#define FIELD_PLANARCONFIG             20
-#define FIELD_RESOLUTIONUNIT           22
-#define FIELD_PAGENUMBER               23
-#define FIELD_STRIPBYTECOUNTS          24
-#define FIELD_STRIPOFFSETS             25
-#define FIELD_COLORMAP                 26
-#define FIELD_EXTRASAMPLES             31
-#define FIELD_SAMPLEFORMAT             32
-#define FIELD_SMINSAMPLEVALUE          33
-#define FIELD_SMAXSAMPLEVALUE          34
-#define FIELD_IMAGEDEPTH               35
-#define FIELD_TILEDEPTH                36
-#define FIELD_HALFTONEHINTS            37
-#define FIELD_YCBCRSUBSAMPLING         39
-#define FIELD_YCBCRPOSITIONING         40
-#define	FIELD_REFBLACKWHITE            41
-#define FIELD_TRANSFERFUNCTION         44
-#define FIELD_INKNAMES                 46
-#define FIELD_SUBIFD                   49
-/*      FIELD_CUSTOM (see tiffio.h)    65 */
+#define	FIELD_SUBFILETYPE		5
+#define	FIELD_BITSPERSAMPLE		6
+#define	FIELD_COMPRESSION		7
+#define	FIELD_PHOTOMETRIC		8
+#define	FIELD_THRESHHOLDING		9
+#define	FIELD_FILLORDER			10
+#define	FIELD_DOCUMENTNAME		11
+#define	FIELD_IMAGEDESCRIPTION		12
+#define	FIELD_MAKE			13
+#define	FIELD_MODEL			14
+#define	FIELD_ORIENTATION		15
+#define	FIELD_SAMPLESPERPIXEL		16
+#define	FIELD_ROWSPERSTRIP		17
+#define	FIELD_MINSAMPLEVALUE		18
+#define	FIELD_MAXSAMPLEVALUE		19
+#define	FIELD_PLANARCONFIG		20
+#define	FIELD_PAGENAME			21
+#define	FIELD_RESOLUTIONUNIT		22
+#define	FIELD_PAGENUMBER		23
+#define	FIELD_STRIPBYTECOUNTS		24
+#define	FIELD_STRIPOFFSETS		25
+#define	FIELD_COLORMAP			26
+#define FIELD_ARTIST			27
+#define FIELD_DATETIME			28
+#define FIELD_HOSTCOMPUTER		29
+#define FIELD_SOFTWARE			30
+#define	FIELD_EXTRASAMPLES		31
+#define FIELD_SAMPLEFORMAT		32
+#define	FIELD_SMINSAMPLEVALUE		33
+#define	FIELD_SMAXSAMPLEVALUE		34
+#define FIELD_IMAGEDEPTH		35
+#define FIELD_TILEDEPTH			36
+#define	FIELD_HALFTONEHINTS		37
+#define FIELD_YCBCRCOEFFICIENTS		38
+#define FIELD_YCBCRSUBSAMPLING		39
+#define FIELD_YCBCRPOSITIONING		40
+#define	FIELD_REFBLACKWHITE		41
+#define	FIELD_WHITEPOINT		42
+#define	FIELD_PRIMARYCHROMAS		43
+#define	FIELD_TRANSFERFUNCTION		44
+#define	FIELD_INKSET			45
+#define	FIELD_INKNAMES			46
+#define	FIELD_DOTRANGE			47
+#define	FIELD_TARGETPRINTER		48
+#define	FIELD_SUBIFD			49
+#define	FIELD_NUMBEROFINKS		50
+#define FIELD_ICCPROFILE		51
+#define FIELD_PHOTOSHOP			52
+#define FIELD_RICHTIFFIPTC		53
+#define FIELD_STONITS			54
+/* Begin PIXAR */
+#define	FIELD_IMAGEFULLWIDTH		55
+#define	FIELD_IMAGEFULLLENGTH		56
+#define FIELD_TEXTUREFORMAT		57
+#define FIELD_WRAPMODES			58
+#define FIELD_FOVCOT			59
+#define FIELD_MATRIX_WORLDTOSCREEN	60
+#define FIELD_MATRIX_WORLDTOCAMERA	61
+#define FIELD_COPYRIGHT			62
 /* end of support for well-known tags; codec-private tags follow */
-#define FIELD_CODEC                    66  /* base of codec-private tags */
-
-
+#define	FIELD_CODEC			63	/* base of codec-private tags */
 /*
- * Pseudo-tags don't normally need field bits since they are not written to an
- * output file (by definition). The library also has express logic to always
- * query a codec for a pseudo-tag so allocating a field bit for one is a
- * waste.   If codec wants to promote the notion of a pseudo-tag being ``set''
- * or ``unset'' then it can do using internal state flags without polluting
- * the field bit space defined for real tags.
+ * Pseudo-tags don't normally need field bits since they
+ * are not written to an output file (by definition).
+ * The library also has express logic to always query a
+ * codec for a pseudo-tag so allocating a field bit for
+ * one is a waste.   If codec wants to promote the notion
+ * of a pseudo-tag being ``set'' or ``unset'' then it can
+ * do using internal state flags without polluting the
+ * field bit space defined for real tags.
  */
-#define FIELD_PSEUDO			0
+#define	FIELD_PSEUDO			0
 
-#define FIELD_LAST			(32*FIELD_SETLONGS-1)
+#define	FIELD_LAST			(32*FIELD_SETLONGS-1)
 
-#define BITn(n)				(((unsigned long)1L)<<((n)&0x1f))
-#define BITFIELDn(tif, n)		((tif)->tif_dir.td_fieldsset[(n)/32])
-#define TIFFFieldSet(tif, field)	(BITFIELDn(tif, field) & BITn(field))
+#define	TIFFExtractData(tif, type, v) \
+    ((uint32) ((tif)->tif_header.tiff_magic == TIFF_BIGENDIAN ? \
+        ((v) >> (tif)->tif_typeshift[type]) & (tif)->tif_typemask[type] : \
+	(v) & (tif)->tif_typemask[type]))
+#define	TIFFInsertData(tif, type, v) \
+    ((uint32) ((tif)->tif_header.tiff_magic == TIFF_BIGENDIAN ? \
+        ((v) & (tif)->tif_typemask[type]) << (tif)->tif_typeshift[type] : \
+	(v) & (tif)->tif_typemask[type]))
+
+typedef	struct {
+	ttag_t	field_tag;		/* field's tag */
+	short	field_readcount;	/* read count/TIFF_VARIABLE/TIFF_SPP */
+	short	field_writecount;	/* write count/TIFF_VARIABLE */
+	TIFFDataType field_type;	/* type of associated data */
+	u_short	field_bit;		/* bit in fieldsset bit vector */
+	u_char	field_oktochange;	/* if true, can change while writing */
+	u_char	field_passcount;	/* if true, pass dir count on set */
+	char	*field_name;		/* ASCII name */
+} TIFFFieldInfo;
+
+#define	TIFF_ANY	TIFF_NOTYPE	/* for field descriptor searching */
+#define	TIFF_VARIABLE	-1		/* marker for variable length tags */
+#define	TIFF_SPP	-2		/* marker for SamplesPerPixel tags */
+#define	TIFF_VARIABLE2	-3		/* marker for uint32 var-length tags */
+
+extern	const int tiffDataWidth[];	/* table of tag datatype widths */
+
+#define BITn(n)				(((u_long)1L)<<((n)&0x1f)) 
+#define BITFIELDn(tif, n)		((tif)->tif_dir.td_fieldsset[(n)/32]) 
+#define TIFFFieldSet(tif, field)	(BITFIELDn(tif, field) & BITn(field)) 
 #define TIFFSetFieldBit(tif, field)	(BITFIELDn(tif, field) |= BITn(field))
 #define TIFFClrFieldBit(tif, field)	(BITFIELDn(tif, field) &= ~BITn(field))
 
-#define FieldSet(fields, f)		(fields[(f)/32] & BITn(f))
-#define ResetFieldBit(fields, f)	(fields[(f)/32] &= ~BITn(f))
-
-typedef enum {
-	TIFF_SETGET_UNDEFINED = 0,
-	TIFF_SETGET_ASCII = 1,
-	TIFF_SETGET_UINT8 = 2,
-	TIFF_SETGET_SINT8 = 3,
-	TIFF_SETGET_UINT16 = 4,
-	TIFF_SETGET_SINT16 = 5,
-	TIFF_SETGET_UINT32 = 6,
-	TIFF_SETGET_SINT32 = 7,
-	TIFF_SETGET_UINT64 = 8,
-	TIFF_SETGET_SINT64 = 9,
-	TIFF_SETGET_FLOAT = 10,
-	TIFF_SETGET_DOUBLE = 11,
-	TIFF_SETGET_IFD8 = 12,
-	TIFF_SETGET_INT = 13,
-	TIFF_SETGET_UINT16_PAIR = 14,
-	TIFF_SETGET_C0_ASCII = 15,
-	TIFF_SETGET_C0_UINT8 = 16,
-	TIFF_SETGET_C0_SINT8 = 17,
-	TIFF_SETGET_C0_UINT16 = 18,
-	TIFF_SETGET_C0_SINT16 = 19,
-	TIFF_SETGET_C0_UINT32 = 20,
-	TIFF_SETGET_C0_SINT32 = 21,
-	TIFF_SETGET_C0_UINT64 = 22,
-	TIFF_SETGET_C0_SINT64 = 23,
-	TIFF_SETGET_C0_FLOAT = 24,
-	TIFF_SETGET_C0_DOUBLE = 25,
-	TIFF_SETGET_C0_IFD8 = 26,
-	TIFF_SETGET_C16_ASCII = 27,
-	TIFF_SETGET_C16_UINT8 = 28,
-	TIFF_SETGET_C16_SINT8 = 29,
-	TIFF_SETGET_C16_UINT16 = 30,
-	TIFF_SETGET_C16_SINT16 = 31,
-	TIFF_SETGET_C16_UINT32 = 32,
-	TIFF_SETGET_C16_SINT32 = 33,
-	TIFF_SETGET_C16_UINT64 = 34,
-	TIFF_SETGET_C16_SINT64 = 35,
-	TIFF_SETGET_C16_FLOAT = 36,
-	TIFF_SETGET_C16_DOUBLE = 37,
-	TIFF_SETGET_C16_IFD8 = 38,
-	TIFF_SETGET_C32_ASCII = 39,
-	TIFF_SETGET_C32_UINT8 = 40,
-	TIFF_SETGET_C32_SINT8 = 41,
-	TIFF_SETGET_C32_UINT16 = 42,
-	TIFF_SETGET_C32_SINT16 = 43,
-	TIFF_SETGET_C32_UINT32 = 44,
-	TIFF_SETGET_C32_SINT32 = 45,
-	TIFF_SETGET_C32_UINT64 = 46,
-	TIFF_SETGET_C32_SINT64 = 47,
-	TIFF_SETGET_C32_FLOAT = 48,
-	TIFF_SETGET_C32_DOUBLE = 49,
-	TIFF_SETGET_C32_IFD8 = 50,
-	TIFF_SETGET_OTHER = 51
-} TIFFSetGetFieldType;
+#define	FieldSet(fields, f)		(fields[(f)/32] & BITn(f))
+#define	ResetFieldBit(fields, f)	(fields[(f)/32] &= ~BITn(f))
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
-
-extern const TIFFFieldArray* _TIFFGetFields(void);
-extern const TIFFFieldArray* _TIFFGetExifFields(void);
-extern void _TIFFSetupFields(TIFF* tif, const TIFFFieldArray* infoarray);
-extern void _TIFFPrintFieldInfo(TIFF*, FILE*);
-
-extern int _TIFFFillStriles(TIFF*);        
-
-typedef enum {
-	tfiatImage,
-	tfiatExif,
-	tfiatOther
-} TIFFFieldArrayType;
-
-struct _TIFFFieldArray {
-	TIFFFieldArrayType type;    /* array type, will be used to determine if IFD is image and such */
-	uint32 allocated_size;      /* 0 if array is constant, other if modified by future definition extension support */
-	uint32 count;               /* number of elements in fields array */
-	TIFFField* fields;          /* actual field info */
-};
-
-struct _TIFFField {
-	uint32 field_tag;                       /* field's tag */
-	short field_readcount;                  /* read count/TIFF_VARIABLE/TIFF_SPP */
-	short field_writecount;                 /* write count/TIFF_VARIABLE */
-	TIFFDataType field_type;                /* type of associated data */
-	uint32 reserved;                        /* reserved for future extension */
-	TIFFSetGetFieldType set_field_type;     /* type to be passed to TIFFSetField */
-	TIFFSetGetFieldType get_field_type;     /* type to be passed to TIFFGetField */
-	unsigned short field_bit;               /* bit in fieldsset bit vector */
-	unsigned char field_oktochange;         /* if true, can change while writing */
-	unsigned char field_passcount;          /* if true, pass dir count on set */
-	char* field_name;                       /* ASCII name */
-	TIFFFieldArray* field_subfields;        /* if field points to child ifds, child ifd field definition array */
-};
-
-extern int _TIFFMergeFields(TIFF*, const TIFFField[], uint32);
-extern const TIFFField* _TIFFFindOrRegisterField(TIFF *, uint32, TIFFDataType);
-extern  TIFFField* _TIFFCreateAnonField(TIFF *, uint32, TIFFDataType);
-
+extern	void _TIFFSetupFieldInfo(TIFF*);
+extern	void _TIFFMergeFieldInfo(TIFF*, const TIFFFieldInfo[], int);
+extern	void _TIFFPrintFieldInfo(TIFF*, FILE*);
+extern	const TIFFFieldInfo* _TIFFFindFieldInfo(TIFF*, ttag_t, TIFFDataType);
+extern	const TIFFFieldInfo* _TIFFFieldWithTag(TIFF*, ttag_t);
+extern	TIFFDataType _TIFFSampleToTagType(TIFF*);
 #if defined(__cplusplus)
 }
 #endif
 #endif /* _TIFFDIR_ */
-
-/* vim: set ts=8 sts=8 sw=8 noet: */
-
-/*
- * Local Variables:
- * mode: c
- * c-basic-offset: 8
- * fill-column: 78
- * End:
- */

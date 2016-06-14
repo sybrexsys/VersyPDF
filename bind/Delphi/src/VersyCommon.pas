@@ -70,6 +70,7 @@ function __ltowupper ( c: integer ):integer; cdecl; external 'MSVCRT.DLL' name '
 
 // Math functions
 function _fabs ( x: Double ): Double; cdecl; external 'MSVCRT.DLL' name 'fabs';
+function _tan ( x: Double ): Double; cdecl; external 'MSVCRT.DLL' name 'tan';
 function _log10 ( x: Double ): Double; cdecl; external 'MSVCRT.DLL' name 'log10';
 function _sin ( x: Double ): Double; cdecl; external 'MSVCRT.DLL' name 'sin';
 function _cos ( x: Double ): Double; cdecl; external 'MSVCRT.DLL' name 'cos';

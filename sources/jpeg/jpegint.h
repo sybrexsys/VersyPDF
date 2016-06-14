@@ -295,43 +295,6 @@ struct jpeg_color_quantizer {
 #endif
 
 
-/* Short forms of external names for systems with brain-damaged linkers. */
-
-
-
-#define jinit_compress_master           VersyPDF_jinit_compress_master
-#define jinit_c_master_control          VersyPDF_jinit_c_master_control
-#define jinit_c_main_controller         VersyPDF_jinit_c_main_controller
-#define jinit_c_prep_controller         VersyPDF_jinit_c_prep_controller
-#define jinit_c_coef_controller         VersyPDF_jinit_c_coef_controller
-#define jinit_color_converter           VersyPDF_jinit_color_converter
-#define jinit_downsampler               VersyPDF_jinit_downsampler
-#define jinit_forward_dct               VersyPDF_jinit_forward_dct
-#define jinit_huff_encoder              VersyPDF_jinit_huff_encoder
-#define jinit_phuff_encoder             VersyPDF_jinit_phuff_encoder
-#define jinit_marker_writer             VersyPDF_jinit_marker_writer
-#define jinit_master_decompress         VersyPDF_jinit_master_decompress
-#define jinit_d_main_controller         VersyPDF_jinit_d_main_controller
-#define jinit_d_coef_controller         VersyPDF_jinit_d_coef_controller
-#define jinit_d_post_controller         VersyPDF_jinit_d_post_controller
-#define jinit_input_controller          VersyPDF_jinit_input_controller
-#define jinit_marker_reader             VersyPDF_jinit_marker_reader
-#define jinit_huff_decoder              VersyPDF_jinit_huff_decoder
-#define jinit_phuff_decoder             VersyPDF_jinit_phuff_decoder
-#define jinit_inverse_dct               VersyPDF_jinit_inverse_dct
-#define jinit_upsampler                 VersyPDF_jinit_upsampler
-#define jinit_color_deconverter         VersyPDF_jinit_color_deconverter
-#define jinit_1pass_quantizer           VersyPDF_jinit_1pass_quantizer
-#define jinit_2pass_quantizer           VersyPDF_jinit_2pass_quantizer
-#define jinit_merged_upsampler          VersyPDF_jinit_merged_upsampler
-#define jinit_memory_mgr                VersyPDF_jinit_memory_mgr
-#define jdiv_round_up                   VersyPDF_jdiv_round_up
-#define jround_up                       VersyPDF_jround_up
-#define jcopy_sample_rows               VersyPDF_jcopy_sample_rows
-#define jcopy_block_row                 VersyPDF_jcopy_block_row
-#define jzero_far                       VersyPDF_jzero_far
-#define jpeg_zigzag_order               VersyPDF_jpeg_zigzag_order
-#define jpeg_natural_order              VersyPDF_jpeg_natural_order
 
 
 

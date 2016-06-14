@@ -16,9 +16,6 @@
 extern "C"{
 #endif
 
-#define jpeg_make_d_derived_tbl         VersyPDF_jpeg_make_d_derived_tbl
-#define jpeg_fill_bit_buffer            VersyPDF_jpeg_fill_bit_buffer
-#define jpeg_huff_decode                VersyPDF_jpeg_huff_decode
 
 
 /* Derived data constructed for each Huffman table */

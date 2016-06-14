@@ -12,28 +12,28 @@ uses VersyCommon, VersyZLib, Windows;
 
 
 // PNG
-{$l obj\versypdf\VSpng.obj}
-{$l obj\versypdf\VSExcept.obj}
-{$l obj\versypdf\VSBaseA.obj}
-{$l obj\versypdf\VSMisc.obj}
-{$l obj\versypdf\VSBaseA.obj}
-{$l obj\versypdf\VSLibA.obj}
-{$l obj\png\pngpread.obj }
-{$l obj\png\pngread.obj  }
-{$l obj\png\pngget.obj   }
-{$l obj\png\pngrio.obj   }
-{$l obj\png\pngvcrd.obj  }
-{$l obj\png\pngwio.obj   }
-{$l obj\png\pngwrite.obj }
-{$l obj\png\pngwtran.obj }
-{$l obj\png\png.obj}
-{$l obj\png\pngwutil.obj }
-{$l obj\png\pngrutil.obj }
-{$l obj\png\pngrtran.obj }
-{$l obj\png\pngtrans.obj }
-{$l obj\png\pngset.obj   }
-{$l obj\png\pngmem.obj   }
-{$l obj\png\pngerror.obj}
+{$l ..\obj\VSpng.obj}
+{$l ..\obj\VSExcept.obj}
+{$l ..\obj\VSBaseA.obj}
+{$l ..\obj\VSMisc.obj}
+{$l ..\obj\VSBaseA.obj}
+{$l ..\obj\VSLibA.obj}
+{$l ..\obj\pngpread.obj }
+{$l ..\obj\pngread.obj  }
+{$l ..\obj\pngget.obj   }
+{$l ..\obj\pngrio.obj   }
+{$l ..\obj\pngvcrd.obj  }
+{$l ..\obj\pngwio.obj   }
+{$l ..\obj\pngwrite.obj }
+{$l ..\obj\pngwtran.obj }
+{$l ..\obj\png.obj}
+{$l ..\obj\pngwutil.obj }
+{$l ..\obj\pngrutil.obj }
+{$l ..\obj\pngrtran.obj }
+{$l ..\obj\pngtrans.obj }
+{$l ..\obj\pngset.obj   }
+{$l ..\obj\pngmem.obj   }
+{$l ..\obj\pngerror.obj}
 end.
 
 

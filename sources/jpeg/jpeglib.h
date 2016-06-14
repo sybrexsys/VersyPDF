@@ -10,8 +10,13 @@
  * and perhaps jerror.h if they want to know the exact error codes.
  */
 
+
+
 #ifndef JPEGLIB_H
 #define JPEGLIB_H
+
+#include "versypdfjpeg.h"
+
 
 #ifdef __cplusplus
 extern "C"{
@@ -847,55 +852,6 @@ typedef JMETHOD(boolean, jpeg_marker_parser_method, (j_decompress_ptr cinfo, j_s
  */
 
 
-#define jpeg_std_error                                  VersyPDF_jpeg_std_error
-#define jpeg_CreateCompress                             VersyPDF_jpeg_CreateCompress
-#define jpeg_CreateDecompress                           VersyPDF_jpeg_CreateDecompress
-#define jpeg_destroy_compress                           VersyPDF_jpeg_destroy_compress
-#define jpeg_destroy_decompress                         VersyPDF_jpeg_destroy_decompress
-#define jpeg_stdio_dest                                 VersyPDF_jpeg_stdio_dest
-#define jpeg_stdio_src                                  VersyPDF_jpeg_stdio_src
-#define jpeg_set_defaults                               VersyPDF_jpeg_set_defaults
-#define jpeg_set_colorspace                             VersyPDF_jpeg_set_colorspace
-#define jpeg_default_colorspace                         VersyPDF_jpeg_default_colorspace
-#define jpeg_set_quality                                VersyPDF_jpeg_set_quality
-#define jpeg_set_linear_quality                         VersyPDF_jpeg_set_linear_quality
-#define jpeg_add_quant_table                            VersyPDF_jpeg_add_quant_table
-#define jpeg_quality_scaling                            VersyPDF_jpeg_quality_scaling
-#define jpeg_simple_progression                         VersyPDF_jpeg_simple_progression
-#define jpeg_suppress_tables                            VersyPDF_jpeg_suppress_tables
-#define jpeg_alloc_quant_table                          VersyPDF_jpeg_alloc_quant_table
-#define jpeg_alloc_huff_table                           VersyPDF_jpeg_alloc_huff_table
-#define jpeg_start_compress                             VersyPDF_jpeg_start_compress
-#define jpeg_write_scanlines                            VersyPDF_jpeg_write_scanlines
-#define jpeg_finish_compress                            VersyPDF_jpeg_finish_compress
-#define jpeg_write_raw_data                             VersyPDF_jpeg_write_raw_data
-#define jpeg_write_marker                               VersyPDF_jpeg_write_marker
-#define jpeg_write_m_header                             VersyPDF_jpeg_write_m_header
-#define jpeg_write_m_byte                               VersyPDF_jpeg_write_m_byte
-#define jpeg_write_tables                               VersyPDF_jpeg_write_tables
-#define jpeg_read_header                                VersyPDF_jpeg_read_header
-#define jpeg_start_decompress                           VersyPDF_jpeg_start_decompress
-#define jpeg_read_scanlines                             VersyPDF_jpeg_read_scanlines
-#define jpeg_finish_decompress                          VersyPDF_jpeg_finish_decompress
-#define jpeg_read_raw_data                              VersyPDF_jpeg_read_raw_data
-#define jpeg_has_multiple_scans                         VersyPDF_jpeg_has_multiple_scans
-#define jpeg_start_output                               VersyPDF_jpeg_start_output
-#define jpeg_finish_output                              VersyPDF_jpeg_finish_output
-#define jpeg_input_complete                             VersyPDF_jpeg_input_complete
-#define jpeg_new_colormap                               VersyPDF_jpeg_new_colormap
-#define jpeg_consume_input                              VersyPDF_jpeg_consume_input
-#define jpeg_calc_output_dimensions                     VersyPDF_jpeg_calc_output_dimensions
-#define jpeg_save_markers                               VersyPDF_jpeg_save_markers
-#define jpeg_set_marker_processor                       VersyPDF_jpeg_set_marker_processor
-#define jpeg_read_coefficients                          VersyPDF_jpeg_read_coefficients
-#define jpeg_write_coefficients                         VersyPDF_jpeg_write_coefficients
-#define jpeg_copy_critical_parameters                   VersyPDF_jpeg_copy_critical_parameters
-#define jpeg_abort_compress                             VersyPDF_jpeg_abort_compress
-#define jpeg_abort_decompress                           VersyPDF_jpeg_abort_decompress
-#define jpeg_abort                                      VersyPDF_jpeg_abort
-#define jpeg_destroy                                    VersyPDF_jpeg_destroy
-#define jpeg_resync_to_restart                          VersyPDF_jpeg_resync_to_restart
-#define jpeg_reset_huff_decode							VersyPDF_jpeg_reset_huff_decode
 
 
 /* Default error-management setup */

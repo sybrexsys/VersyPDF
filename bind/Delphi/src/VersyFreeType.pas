@@ -11,66 +11,66 @@ implementation
 uses VersyCommon;
 
 // FreeType objects
-{$l obj\versypdf\VSType1.obj}
+{$l obj\VSType1.obj}
 
 
 
-{$l obj\versypdf\VSBaseA.obj}
-{$l obj\versypdf\VSMisc.obj}
-{$l obj\versypdf\VSBaseA.obj}
-{$l obj\versypdf\VSExcept.obj}
-{$l obj\versypdf\VSLibA.obj}
+{$l obj\VSBaseA.obj}
+{$l obj\VSMisc.obj}
+{$l obj\VSBaseA.obj}
+{$l obj\VSExcept.obj}
+{$l obj\VSLibA.obj}
 
-{$l obj\freetype\vsftsystem.obj }
-{$l obj\freetype\ftinit.obj }
-{$l obj\freetype\t1afm.obj    }
-{$l obj\freetype\t1driver.obj }
-{$l obj\freetype\t1objs.obj   }
-{$l obj\freetype\cidriver.obj }
-{$l obj\freetype\psmodule.obj }
-{$l obj\freetype\pshmod.obj   }
-{$l obj\freetype\pshrec.obj   }
-{$l obj\freetype\psauxmod.obj   }
-{$l obj\freetype\t1cmap.obj   }
-{$l obj\freetype\t1gload.obj  }
-{$l obj\freetype\t1load.obj   }
-{$l obj\freetype\t1parse.obj  }
-{$l obj\freetype\t1decode.obj }
-{$l obj\freetype\psobjs.obj   }
-{$l obj\freetype\pshalgo.obj  }
-{$l obj\freetype\pshglob.obj  }
-{$l obj\freetype\cidobjs.obj }
-{$l obj\freetype\cidgload.obj }
-{$l obj\freetype\psauxmod.obj   }
-{$l obj\freetype\cidload.obj }
-{$l obj\freetype\cidparse.obj }
-{$l obj\freetype\ftobjs.obj }
-{$l obj\freetype\ftapi.obj }
-{$l obj\freetype\ftbbox.obj }
-{$l obj\freetype\ftbdf.obj }
-{$l obj\freetype\ftinit.obj }
-{$l obj\freetype\ftlzw.obj }
-{$l obj\freetype\ftmm.obj }
-{$l obj\freetype\ftotval.obj }
-{$l obj\freetype\ftpfr.obj }
-{$l obj\freetype\ftrfork.obj }
-{$l obj\freetype\ftstroke.obj }
-{$l obj\freetype\ftsynth.obj }
-{$l obj\freetype\ftglyph.obj }
-{$l obj\freetype\ftbitmap.obj }
-{$l obj\freetype\ftdbgmem.obj }
-{$l obj\freetype\ftdebug.obj }
-{$l obj\freetype\ftoutln.obj }
-{$l obj\freetype\ftobjs.obj }
-{$l obj\freetype\ftgloadr.obj }
-{$l obj\freetype\ftsystem.obj }
-{$l obj\freetype\ftcalc.obj }
-{$l obj\freetype\fttrigon.obj }
-{$l obj\freetype\fttype1.obj  }
-{$l obj\freetype\t1gload.obj  }
-{$l obj\freetype\t1load.obj   }
-{$l obj\freetype\ftstream.obj }
-{$l obj\freetype\ftutil.obj   }
+{$l obj\vsftsystem.obj }
+{$l obj\ftinit.obj }
+{$l obj\t1afm.obj    }
+{$l obj\t1driver.obj }
+{$l obj\t1objs.obj   }
+{$l obj\cidriver.obj }
+{$l obj\psmodule.obj }
+{$l obj\pshmod.obj   }
+{$l obj\pshrec.obj   }
+{$l obj\psauxmod.obj   }
+{$l obj\t1cmap.obj   }
+{$l obj\t1gload.obj  }
+{$l obj\t1load.obj   }
+{$l obj\t1parse.obj  }
+{$l obj\t1decode.obj }
+{$l obj\psobjs.obj   }
+{$l obj\pshalgo.obj  }
+{$l obj\pshglob.obj  }
+{$l obj\cidobjs.obj }
+{$l obj\cidgload.obj }
+{$l obj\psauxmod.obj   }
+{$l obj\cidload.obj }
+{$l obj\cidparse.obj }
+{$l obj\ftobjs.obj }
+{$l obj\ftapi.obj }
+{$l obj\ftbbox.obj }
+{$l obj\ftbdf.obj }
+{$l obj\ftinit.obj }
+{$l obj\ftlzw.obj }
+{$l obj\ftmm.obj }
+{$l obj\ftotval.obj }
+{$l obj\ftpfr.obj }
+{$l obj\ftrfork.obj }
+{$l obj\ftstroke.obj }
+{$l obj\ftsynth.obj }
+{$l obj\ftglyph.obj }
+{$l obj\ftbitmap.obj }
+{$l obj\ftdbgmem.obj }
+{$l obj\ftdebug.obj }
+{$l obj\ftoutln.obj }
+{$l obj\ftobjs.obj }
+{$l obj\ftgloadr.obj }
+{$l obj\ftsystem.obj }
+{$l obj\ftcalc.obj }
+{$l obj\fttrigon.obj }
+{$l obj\fttype1.obj  }
+{$l obj\t1gload.obj  }
+{$l obj\t1load.obj   }
+{$l obj\ftstream.obj }
+{$l obj\ftutil.obj   }
 
 end.
 

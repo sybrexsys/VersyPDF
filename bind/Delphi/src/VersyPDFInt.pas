@@ -475,7 +475,6 @@ function PDFPageAppendAnnotationStampWithDrawBoxM ( Doc: PDFDocHandle; Page: Car
 	ContentLength: Cardinal; Name: Integer; Resolution:Cardinal; PBX: PPointer ): PDFAnnotationHandle;register; external;
 
 
-
 // Action functions
 procedure PDFActionSetNext( Action: PDFActionHandle ; Next: PDFActionHandle );register; external;
 function PDFActionNewGoToDestination(Doc: PDFDocHandle; Destination: PDFDestinationHandle ):PDFActionHandle;register; external;
@@ -541,52 +540,52 @@ procedure PDFDocSaveUnPackedUnLinearized( Doc:Pointer; Strm:Pointer);cdecl;exter
 
 
 
-{$l obj\versypdf\VSSaveL.obj}
-{$l obj\versypdf\VSSaveUL.obj}
-{$l obj\versypdf\VSOutlineA.obj}
-{$l obj\versypdf\VSPages.obj}
+{$l obj\VSSaveL.obj}
+{$l obj\VSSaveUL.obj}
+{$l obj\VSOutlineA.obj}
+{$l obj\VSPages.obj}
 
-{$l obj\versypdf\VSDocA.obj}
-{$l obj\versypdf\VSThreadA.obj}
-{$l obj\versypdf\VSAcroFormA.obj}
-{$l obj\versypdf\VSAcroObjects.obj}
-{$l obj\versypdf\VSAcroInfoA.obj}
-{$l obj\versypdf\VSAcroDraw.obj}
-{$l obj\versypdf\VSAnnotA.obj}
-{$l obj\versypdf\VSActionA.obj}
-{$l obj\versypdf\VSNameTree.obj}
-{$l obj\versypdf\VSGStateA.obj}
-{$l obj\versypdf\VSPageA.obj}
-{$l obj\versypdf\VSSignA.obj}
-{$l obj\versypdf\VSkPKCS12.obj}
-{$l obj\versypdf\VSkPKCS7.obj}
-{$l obj\versypdf\VSkX509.obj}
-{$l obj\versypdf\VSkRSA.obj}
-{$l obj\versypdf\VSkASN.obj}
-{$l obj\versypdf\VSEmf.obj}
-{$l obj\versypdf\VSCanvasA.obj}
-{$l obj\versypdf\VSFontA.obj}
-{$l obj\versypdf\VSTtf.obj}
-{$l obj\versypdf\VSImageA.obj}
-{$l obj\versypdf\VSJbig2.obj}
-{$l obj\versypdf\VSCCITT.obj}
-{$l obj\versypdf\VSBMP.obj}
-//{$l obj\versypdf\sources\VStiff.obj}
+{$l obj\VSDocA.obj}
+{$l obj\VSThreadA.obj}
+{$l obj\VSAcroFormA.obj}
+{$l obj\VSAcroObjects.obj}
+{$l obj\VSAcroInfoA.obj}
+{$l obj\VSAcroDraw.obj}
+{$l obj\VSAnnotA.obj}
+{$l obj\VSActionA.obj}
+{$l obj\VSNameTree.obj}
+{$l obj\VSGStateA.obj}
+{$l obj\VSPageA.obj}
+{$l obj\VSSignA.obj}
+{$l obj\VSkPKCS12.obj}
+{$l obj\VSkPKCS7.obj}
+{$l obj\VSkX509.obj}
+{$l obj\VSkRSA.obj}
+{$l obj\VSkASN.obj}
+{$l obj\VSEmf.obj}
+{$l obj\VSCanvasA.obj}
+{$l obj\VSFontA.obj}
+{$l obj\VSTtf.obj}
+{$l obj\VSImageA.obj}
+{$l obj\VSJbig2.obj}
+{$l obj\VSCCITT.obj}
+{$l obj\VSBMP.obj}
+//{$l obj\sources\VStiff.obj}
 
-{$l obj\versypdf\VSXRef.obj}
-{$l obj\versypdf\VSParse.obj}
-{$l obj\versypdf\VSCosA.obj}
-{$l obj\versypdf\VSCosDocA.obj}
-{$l obj\versypdf\VSFilter.obj}
+{$l obj\VSXRef.obj}
+{$l obj\VSParse.obj}
+{$l obj\VSCosA.obj}
+{$l obj\VSCosDocA.obj}
+{$l obj\VSFilter.obj}
 
-{$l obj\versypdf\VSBaseA.obj}
-{$l obj\versypdf\VSMisc.obj}
-{$l obj\versypdf\VSCrypt.obj}
+{$l obj\VSBaseA.obj}
+{$l obj\VSMisc.obj}
+{$l obj\VSCrypt.obj}
+{$l obj\VSPattern.obj}
 
-
-{$l obj\versypdf\VSExcept.obj}
-{$l obj\versypdf\VSLibA.obj}
-{$l obj\versypdf\VSAes.obj}
+{$l obj\VSExcept.obj}
+{$l obj\VSLibA.obj}
+{$l obj\VSAes.obj}
 
 
 

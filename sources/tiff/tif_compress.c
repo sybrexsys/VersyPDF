@@ -1,4 +1,4 @@
-/* $Id: tif_compress.c,v 1.22 2010-03-10 18:56:48 bfriesen Exp $ */
+/* $Header: /cvsroot/osrs/libtiff/libtiff/tif_compress.c,v 1.4 1999/12/21 17:03:03 mwelles Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -32,82 +32,80 @@
 #include "tiffiop.h"
 
 static int
-TIFFNoEncode(TIFF* tif, const char* method)
+TIFFNoEncode(TIFF* tif, char* method)
 {
 	const TIFFCodec* c = TIFFFindCODEC(tif->tif_dir.td_compression);
 
-	if (c) {
-		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%s %s encoding is not implemented",
-			     c->name, method);
-	} else {
-		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			"Compression scheme %u %s encoding is not implemented",
-			     tif->tif_dir.td_compression, method);
+	if (c) { 
+	  if (! strncmp(c->name, "LZW", 3) ){ 
+	    TIFFError(tif->tif_name, 
+		      "%s %s encoding is no longer implemented due to Unisys patent enforcement", 
+		      c->name, method); 
+	  } else { 
+	    TIFFError(tif->tif_name, "%s %s encoding is not implemented",
+		      c->name, method);
+	  }
+	}
+	else { 
+		TIFFError(tif->tif_name,
+			  "Compression scheme %u %s encoding is not implemented",
+		    tif->tif_dir.td_compression, method);
 	}
 	return (-1);
 }
 
 int
-_TIFFNoRowEncode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoRowEncode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoEncode(tif, "scanline"));
 }
 
 int
-_TIFFNoStripEncode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoStripEncode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoEncode(tif, "strip"));
 }
 
 int
-_TIFFNoTileEncode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoTileEncode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoEncode(tif, "tile"));
 }
 
 static int
-TIFFNoDecode(TIFF* tif, const char* method)
+TIFFNoDecode(TIFF* tif, char* method)
 {
 	const TIFFCodec* c = TIFFFindCODEC(tif->tif_dir.td_compression);
 
 	if (c)
-		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%s %s decoding is not implemented",
-			     c->name, method);
+		TIFFError(tif->tif_name, "%s %s decoding is not implemented",
+		    c->name, method);
 	else
-		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "Compression scheme %u %s decoding is not implemented",
-			     tif->tif_dir.td_compression, method);
+		TIFFError(tif->tif_name,
+		    "Compression scheme %u %s decoding is not implemented",
+		    tif->tif_dir.td_compression, method);
 	return (-1);
 }
 
 int
-_TIFFNoFixupTags(TIFF* tif)
-{
-	(void) tif;
-	return (1);
-}
-
-int
-_TIFFNoRowDecode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoRowDecode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoDecode(tif, "scanline"));
 }
 
 int
-_TIFFNoStripDecode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoStripDecode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoDecode(tif, "strip"));
 }
 
 int
-_TIFFNoTileDecode(TIFF* tif, uint8* pp, tmsize_t cc, uint16 s)
+_TIFFNoTileDecode(TIFF* tif, tidata_t pp, tsize_t cc, tsample_t s)
 {
 	(void) pp; (void) cc; (void) s;
 	return (TIFFNoDecode(tif, "tile"));
@@ -117,13 +115,13 @@ int
 _TIFFNoSeek(TIFF* tif, uint32 off)
 {
 	(void) off;
-	TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-		     "Compression algorithm does not support random access");
+	TIFFError(tif->tif_name,
+	    "Compression algorithm does not support random access");
 	return (0);
 }
 
 int
-_TIFFNoPreCode(TIFF* tif, uint16 s)
+_TIFFNoPreCode(TIFF* tif, tsample_t s)
 {
 	(void) tif; (void) s;
 	return (1);
@@ -135,26 +133,23 @@ static void _TIFFvoid(TIFF* tif) { (void) tif; }
 void
 _TIFFSetDefaultCompressionState(TIFF* tif)
 {
-	tif->tif_fixuptags = _TIFFNoFixupTags; 
-	tif->tif_decodestatus = TRUE;
 	tif->tif_setupdecode = _TIFFtrue;
 	tif->tif_predecode = _TIFFNoPreCode;
-	tif->tif_decoderow = _TIFFNoRowDecode;  
+	tif->tif_decoderow = _TIFFNoRowDecode;
 	tif->tif_decodestrip = _TIFFNoStripDecode;
-	tif->tif_decodetile = _TIFFNoTileDecode;  
-	tif->tif_encodestatus = TRUE;
+	tif->tif_decodetile = _TIFFNoTileDecode;
 	tif->tif_setupencode = _TIFFtrue;
 	tif->tif_preencode = _TIFFNoPreCode;
 	tif->tif_postencode = _TIFFtrue;
 	tif->tif_encoderow = _TIFFNoRowEncode;
-	tif->tif_encodestrip = _TIFFNoStripEncode;  
-	tif->tif_encodetile = _TIFFNoTileEncode;  
+	tif->tif_encodestrip = _TIFFNoStripEncode;
+	tif->tif_encodetile = _TIFFNoTileEncode;
 	tif->tif_close = _TIFFvoid;
 	tif->tif_seek = _TIFFNoSeek;
 	tif->tif_cleanup = _TIFFvoid;
 	tif->tif_defstripsize = _TIFFDefaultStripSize;
 	tif->tif_deftilesize = _TIFFDefaultTileSize;
-	tif->tif_flags &= ~(TIFF_NOBITREV|TIFF_NOREADRAW);
+	tif->tif_flags &= ~TIFF_NOBITREV;
 }
 
 int
@@ -178,10 +173,10 @@ TIFFSetCompressionScheme(TIFF* tif, int scheme)
  * by this library.
  */
 typedef struct _codec {
-	struct _codec* next;
-	TIFFCodec* info;
+	struct _codec*	next;
+	TIFFCodec*	info;
 } codec_t;
-static codec_t* registeredCODECS = NULL;
+static	codec_t* registeredCODECS = NULL;
 
 const TIFFCodec*
 TIFFFindCODEC(uint16 scheme)
@@ -199,30 +194,28 @@ TIFFFindCODEC(uint16 scheme)
 }
 
 TIFFCodec*
-TIFFRegisterCODEC(uint16 scheme, const char* name, TIFFInitMethod init)
+TIFFRegisterCODEC(TIFF* tif, uint16 scheme, const char* name, TIFFInitMethod init)
 {
 	codec_t* cd = (codec_t*)
-	    _TIFFmalloc((tmsize_t)(sizeof (codec_t) + sizeof (TIFFCodec) + strlen(name)+1));
+	    _TIFFmalloc( ( tsize_t) (sizeof (codec_t) + sizeof (TIFFCodec) + strlen(name)+1) );
 
 	if (cd != NULL) {
-		cd->info = (TIFFCodec*) ((uint8*) cd + sizeof (codec_t));
+		cd->info = (TIFFCodec*) ((tidata_t) cd + sizeof (codec_t));
 		cd->info->name = (char*)
-		    ((uint8*) cd->info + sizeof (TIFFCodec));
+		    ((tidata_t) cd->info + sizeof (TIFFCodec));
 		strcpy(cd->info->name, name);
 		cd->info->scheme = scheme;
 		cd->info->init = init;
 		cd->next = registeredCODECS;
 		registeredCODECS = cd;
-	} else {
-		TIFFErrorExt(0, "TIFFRegisterCODEC",
+	} else
+		TIFFError("TIFFRegisterCODEC",
 		    "No space to register compression scheme %s", name);
-		return NULL;
-	}
 	return (cd->info);
 }
 
 void
-TIFFUnRegisterCODEC(TIFFCodec* c)
+TIFFUnRegisterCODEC(TIFF * tif, TIFFCodec* c)
 {
 	codec_t* cd;
 	codec_t** pcd;
@@ -233,72 +226,6 @@ TIFFUnRegisterCODEC(TIFFCodec* c)
 			_TIFFfree(cd);
 			return;
 		}
-	TIFFErrorExt(0, "TIFFUnRegisterCODEC",
+	TIFFError("TIFFUnRegisterCODEC",
 	    "Cannot remove compression scheme %s; not registered", c->name);
 }
-
-/************************************************************************/
-/*                       TIFFGetConfisuredCODECs()                      */
-/************************************************************************/
-
-/**
- * Get list of configured codecs, both built-in and registered by user.
- * Caller is responsible to free this structure.
- * 
- * @return returns array of TIFFCodec records (the last record should be NULL)
- * or NULL if function failed.
- */
-
-TIFFCodec*
-TIFFGetConfiguredCODECs()
-{
-	int i = 1;
-	codec_t *cd;
-	const TIFFCodec* c;
-	TIFFCodec* codecs = NULL;
-	TIFFCodec* new_codecs;
-
-	for (cd = registeredCODECS; cd; cd = cd->next) {
-		new_codecs = (TIFFCodec *)
-			_TIFFrealloc(codecs, i * sizeof(TIFFCodec));
-		if (!new_codecs) {
-			_TIFFfree (codecs);
-			return NULL;
-		}
-		codecs = new_codecs;
-		_TIFFmemcpy(codecs + i - 1, cd, sizeof(TIFFCodec));
-		i++;
-	}
-	for (c = _TIFFBuiltinCODECS; c->name; c++) {
-		if (TIFFIsCODECConfigured(c->scheme)) {
-			new_codecs = (TIFFCodec *)
-				_TIFFrealloc(codecs, i * sizeof(TIFFCodec));
-			if (!new_codecs) {
-				_TIFFfree (codecs);
-				return NULL;
-			}
-			codecs = new_codecs;
-			_TIFFmemcpy(codecs + i - 1, (const void*)c, sizeof(TIFFCodec));
-			i++;
-		}
-	}
-
-	new_codecs = (TIFFCodec *) _TIFFrealloc(codecs, i * sizeof(TIFFCodec));
-	if (!new_codecs) {
-		_TIFFfree (codecs);
-		return NULL;
-	}
-	codecs = new_codecs;
-	_TIFFmemset(codecs + i - 1, 0, sizeof(TIFFCodec));
-
-	return codecs;
-}
-
-/* vim: set ts=8 sts=8 sw=8 noet: */
-/*
- * Local Variables:
- * mode: c
- * c-basic-offset: 8
- * fill-column: 78
- * End:
- */

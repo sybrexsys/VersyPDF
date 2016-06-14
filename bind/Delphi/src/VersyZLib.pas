@@ -19,18 +19,18 @@ implementation
 
 uses VersyCommon;
 
-{$l obj\flate\crc32.obj}
-{$l obj\flate\deflate.obj}
-{$l obj\flate\inflate.obj}
-{$l obj\flate\inftrees.obj}
-{$l obj\flate\trees.obj}
-{$l obj\flate\adler32.obj}
-{$l obj\flate\infblock.obj}
-{$l obj\flate\inftrees.obj}
-{$l obj\flate\infcodes.obj}
-{$l obj\flate\infutil.obj}
-{$l obj\flate\inffast.obj}
-{$l obj\flate\zutil.obj}
+{$l obj\crc32.obj}
+{$l obj\deflate.obj}
+{$l obj\inflate.obj}
+{$l obj\inftrees.obj}
+{$l obj\trees.obj}
+{$l obj\adler32.obj}
+{$l obj\infblock.obj}
+{$l obj\inftrees.obj}
+{$l obj\infcodes.obj}
+{$l obj\infutil.obj}
+{$l obj\inffast.obj}
+{$l obj\zutil.obj}
 
 
 end.

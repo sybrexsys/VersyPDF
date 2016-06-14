@@ -41,7 +41,6 @@
  * want to refer to it directly.
  */
 
-#define jpeg_std_message_table	VersyPDF_jpeg_std_message_table
 
 #define JMESSAGE(code,string)	string ,
 

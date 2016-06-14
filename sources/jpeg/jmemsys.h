@@ -24,14 +24,6 @@ extern "C"{
 
 /* Short forms of external names for systems with brain-damaged linkers. */
 
-#define jpeg_get_small            VersyPDF_jpeg_get_small
-#define jpeg_free_small           VersyPDF_jjpeg_free_small
-#define jpeg_get_large            VersyPDF_jjpeg_get_large
-#define jpeg_free_large           VersyPDF_jjpeg_free_large
-#define jpeg_mem_available        VersyPDF_jjpeg_mem_available
-#define jpeg_open_backing_store   VersyPDF_jjpeg_open_backing_store
-#define jpeg_mem_init             VersyPDF_jjpeg_mem_init
-#define jpeg_mem_term             VersyPDF_jjpeg_mem_term
 
 /*
  * These two functions are used to allocate and release small chunks of

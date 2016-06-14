@@ -36,8 +36,6 @@ typedef struct {
 
 /* Short forms of external names for systems with brain-damaged linkers. */
 
-#define jpeg_make_c_derived_tbl VersyPDF_jpeg_make_c_derived_tbl
-#define jpeg_gen_optimal_table  VersyPDF_jpeg_gen_optimal_table
 
 
 /* Expand a Huffman table definition into the derived format */

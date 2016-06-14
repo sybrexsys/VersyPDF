@@ -1,4 +1,4 @@
-/* $Id: tif_next.c,v 1.16 2014-12-29 12:09:11 erouault Exp $ */
+/* $Header: /cvsroot/osrs/libtiff/libtiff/tif_next.c,v 1.2 1999/11/27 21:43:28 warmerda Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -34,7 +34,7 @@
 
 #define SETPIXEL(op, v) {			\
 	switch (npixels++ & 3) {		\
-	case 0:	op[0]  = (unsigned char) ((v) << 6); break;	\
+	case 0:	op[0]  = (v) << 6; break;	\
 	case 1:	op[0] |= (v) << 4; break;	\
 	case 2:	op[0] |= (v) << 2; break;	\
 	case 3:	*op++ |= (v);	   break;	\
@@ -46,13 +46,13 @@
 #define WHITE   	((1<<2)-1)
 
 static int
-NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
+NeXTDecode(TIFF* tif, tidata_t buf, tsize_t occ, tsample_t s)
 {
-	static const char module[] = "NeXTDecode";
-	unsigned char *bp, *op;
-	tmsize_t cc;
-	uint8* row;
-	tmsize_t scanline, n;
+	register u_char *bp, *op;
+	register tsize_t cc;
+	register int n;
+	tidata_t row;
+	tsize_t scanline;
 
 	(void) s;
 	/*
@@ -60,18 +60,13 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 	 * white (we assume a PhotometricInterpretation
 	 * of ``min-is-black'').
 	 */
-	for (op = (unsigned char*) buf, cc = occ; cc-- > 0;)
+	for (op = buf, cc = occ; cc-- > 0;)
 		*op++ = 0xff;
 
-	bp = (unsigned char *)tif->tif_rawcp;
+	bp = (u_char *)tif->tif_rawcp;
 	cc = tif->tif_rawcc;
 	scanline = tif->tif_scanlinesize;
-	if (occ % scanline)
-	{
-		TIFFErrorExt(tif->tif_clientdata, module, "Fractional scanlines cannot be read");
-		return (0);
-	}
-	for (row = buf; cc > 0 && occ > 0; occ -= scanline, row += scanline) {
+	for (row = buf; (long)occ > 0; occ -= scanline, row += scanline) {
 		n = *bp++, cc--;
 		switch (n) {
 		case LITERALROW:
@@ -85,16 +80,14 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 			cc -= scanline;
 			break;
 		case LITERALSPAN: {
-			tmsize_t off;
+			int off;
 			/*
-			 * The scanline has a literal span that begins at some
-			 * offset.
+			 * The scanline has a literal span
+			 * that begins at some offset.
 			 */
-			if( cc < 4 )
-				goto bad;
 			off = (bp[0] * 256) + bp[1];
 			n = (bp[2] * 256) + bp[3];
-			if (cc < 4+n || off+n > scanline)
+			if (cc < 4+n)
 				goto bad;
 			_TIFFmemcpy(row+off, bp+4, n);
 			bp += 4+n;
@@ -102,29 +95,23 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 			break;
 		}
 		default: {
-			uint32 npixels = 0, grey;
-			uint32 imagewidth = tif->tif_dir.td_imagewidth;
-            if( isTiled(tif) )
-                imagewidth = tif->tif_dir.td_tilewidth;
+			register int npixels = 0, grey;
+			u_long imagewidth = tif->tif_dir.td_imagewidth;
 
 			/*
-			 * The scanline is composed of a sequence of constant
-			 * color ``runs''.  We shift into ``run mode'' and
-			 * interpret bytes as codes of the form
-			 * <color><npixels> until we've filled the scanline.
+			 * The scanline is composed of a sequence
+			 * of constant color ``runs''.  We shift
+			 * into ``run mode'' and interpret bytes
+			 * as codes of the form <color><npixels>
+			 * until we've filled the scanline.
 			 */
 			op = row;
 			for (;;) {
-				grey = (uint32)((n>>6) & 0x3);
+				grey = (n>>6) & 0x3;
 				n &= 0x3f;
-				/*
-				 * Ensure the run does not exceed the scanline
-				 * bounds, potentially resulting in a security
-				 * issue.
-				 */
-				while (n-- > 0 && npixels < imagewidth)
+				while (n-- > 0)
 					SETPIXEL(op, grey);
-				if (npixels >= imagewidth)
+				if (npixels >= (int) imagewidth)
 					break;
 				if (cc == 0)
 					goto bad;
@@ -134,48 +121,22 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 		}
 		}
 	}
-	tif->tif_rawcp = (uint8*) bp;
+	tif->tif_rawcp = (tidata_t) bp;
 	tif->tif_rawcc = cc;
 	return (1);
 bad:
-	TIFFErrorExt(tif->tif_clientdata, module, "Not enough data for scanline %ld",
+	TIFFError(tif->tif_name, "NeXTDecode: Not enough data for scanline %ld",
 	    (long) tif->tif_row);
 	return (0);
 }
 
-static int
-NeXTPreDecode(TIFF* tif, uint16 s)
-{
-	static const char module[] = "NeXTPreDecode";
-	TIFFDirectory *td = &tif->tif_dir;
-	(void)s;
-
-	if( td->td_bitspersample != 2 )
-	{
-		TIFFErrorExt(tif->tif_clientdata, module, "Unsupported BitsPerSample = %d",
-					 td->td_bitspersample);
-		return (0);
-	}
-	return (1);
-}
-	
 int
 TIFFInitNeXT(TIFF* tif, int scheme)
 {
 	(void) scheme;
-	tif->tif_predecode = NeXTPreDecode;  
-	tif->tif_decoderow = NeXTDecode;  
-	tif->tif_decodestrip = NeXTDecode;  
+	tif->tif_decoderow = NeXTDecode;
+	tif->tif_decodestrip = NeXTDecode;
 	tif->tif_decodetile = NeXTDecode;
 	return (1);
 }
 #endif /* NEXT_SUPPORT */
-
-/* vim: set ts=8 sts=8 sw=8 noet: */
-/*
- * Local Variables:
- * mode: c
- * c-basic-offset: 8
- * fill-column: 78
- * End:
- */

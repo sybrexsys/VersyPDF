@@ -3260,7 +3260,7 @@ void PDFEMFCreateDIBPatternBrush(PPDFEmf Parser, PEMRCREATEDIBPATTERNBRUSHPT Dat
 		DeleteDC ( DC );
 		DeleteObject ( B );
 	}PDFFINALLYEND ( _LIB );
-
+	
 	Size = Data->cbBits + Data->cbBmi;
 	BMI = (BITMAPINFO*)mmalloc(_LIB,Size);
 	memcpy(BMI, P, Size);
