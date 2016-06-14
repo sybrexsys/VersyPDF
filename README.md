@@ -50,6 +50,11 @@ These unique qualities are the reason VersyPDF, and the solutions and services b
 <ul>
   <li><a href="http://www.sybrex.com/">http://www.sybrex.com/</a></li>
 </ul>
+  <strong>Vadzim Shakun</strong></p>
+<ul>
+  <li><a href="mailto:vadim.shakun@gmail.com">vadim.shakun@gmail.com</a></li>
+</ul>
+
 
 <h2>Copyright and License:</strong></h2> 
 <p>© 2005-2016 Sybrex Systems, All Rights Reserved.</p>
