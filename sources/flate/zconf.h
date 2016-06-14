@@ -1,235 +1,101 @@
 /* zconf.h -- configuration of the zlib compression library
- * Copyright (C) 1995-2013 Jean-loup Gailly.
- * For conditions of distribution and use, see copyright notice in zlib.h
+ * Copyright (C) 1995-2002 Jean-loup Gailly.
+ * For conditions of distribution and use, see copyright notice in zlib.h 
  */
 
 /* @(#) $Id$ */
 
-#ifndef ZCONF_H
-#define ZCONF_H
+#ifndef _ZCONF_H
+#define _ZCONF_H
 
 /*
  * If you *really* need a unique prefix for all types and library functions,
  * compile with -DZ_PREFIX. The "standard" zlib should be compiled without it.
- * Even better than compiling with -DZ_PREFIX would be to use configure to set
- * this permanently in zconf.h using "./configure --zprefix".
  */
-#ifdef Z_PREFIX     /* may be set to #if 1 by ./configure */
-#  define Z_PREFIX_SET
 
-/* all linked symbols */
-#  define _dist_code            versy_z__dist_code
-#  define _length_code          versy_z__length_code
-#  define _tr_align             versy_z__tr_align
-#  define _tr_flush_bits        versy_z__tr_flush_bits
-#  define _tr_flush_block       versy_z__tr_flush_block
-#  define _tr_init              versy_z__tr_init
-#  define _tr_stored_block      versy_z__tr_stored_block
-#  define _tr_tally             versy_z__tr_tally
-#  define adler32               versy_z_adler32
-#  define adler32_combine       versy_z_adler32_combine
-#  define adler32_combine64     versy_z_adler32_combine64
-#  ifndef Z_SOLO
-#    define compress              versy_z_compress
-#    define compress2             versy_z_compress2
-#    define compressBound         versy_z_compressBound
-#  endif
-#  define crc32                 versy_z_crc32
-#  define crc32_combine         versy_z_crc32_combine
-#  define crc32_combine64       versy_z_crc32_combine64
-#  define deflate               versy_z_deflate
-#  define deflateBound          versy_z_deflateBound
-#  define deflateCopy           versy_z_deflateCopy
-#  define deflateEnd            versy_z_deflateEnd
-#  define deflateInit2_         versy_z_deflateInit2_
-#  define deflateInit_          versy_z_deflateInit_
-#  define deflateParams         versy_z_deflateParams
-#  define deflatePending        versy_z_deflatePending
-#  define deflatePrime          versy_z_deflatePrime
-#  define deflateReset          versy_z_deflateReset
-#  define deflateResetKeep      versy_z_deflateResetKeep
-#  define deflateSetDictionary  versy_z_deflateSetDictionary
-#  define deflateSetHeader      versy_z_deflateSetHeader
-#  define deflateTune           versy_z_deflateTune
-#  define deflate_copyright     versy_z_deflate_copyright
-#  define get_crc_table         versy_z_get_crc_table
+#define deflateInit_  versy_z_deflateInit_
+#define deflate       versy_z_deflate
+#define deflateEnd    versy_z_deflateEnd
+#define inflateInit_  versy_z_inflateInit_
+#define inflate       versy_z_inflate
+#define inflateEnd    versy_z_inflateEnd
+#define deflateInit2_ versy_z_deflateInit2_
+#define deflateSetDictionary versy_z_deflateSetDictionary
+#define deflateCopy   versy_z_deflateCopy
+#define deflateReset  versy_z_deflateReset
+#define deflateParams versy_z_deflateParams
+#define inflateInit2_ versy_z_inflateInit2_
+#define inflateSetDictionary versy_z_inflateSetDictionary
+#define inflateSync   versy_z_inflateSync
+#define inflateSyncPoint versy_z_inflateSyncPoint
+#define inflateReset  versy_z_inflateReset
+#define compress      versy_z_compress
+#define compress2     versy_z_compress2
+#define uncompress    versy_z_uncompress
+#define adler32       versy_z_adler32
+#define crc32         versy_z_crc32
+#define get_crc_table versy_z_get_crc_table
 
-#  ifndef Z_SOLO
-#    define gz_error              versy_z_gz_error
-#    define gz_intmax             versy_z_gz_intmax
-#    define gz_strwinerror        versy_z_gz_strwinerror
-#    define gzbuffer              versy_z_gzbuffer
-#    define gzclearerr            versy_z_gzclearerr
-#    define gzclose               versy_z_gzclose
-#    define gzclose_r             versy_z_gzclose_r
-#    define gzclose_w             versy_z_gzclose_w
-#    define gzdirect              versy_z_gzdirect
-#    define gzdopen               versy_z_gzdopen
-#    define gzeof                 versy_z_gzeof
-#    define gzerror               versy_z_gzerror
-#    define gzflush               versy_z_gzflush
-#    define gzgetc                versy_z_gzgetc
-#    define gzgetc_               versy_z_gzgetc_
-#    define gzgets                versy_z_gzgets
-#    define gzoffset              versy_z_gzoffset
-#    define gzoffset64            versy_z_gzoffset64
-#    define gzopen                versy_z_gzopen
-#    define gzopen64              versy_z_gzopen64
-#    ifdef _WIN32
-#      define gzopen_w              versy_z_gzopen_w
-#    endif
-#    define gzprintf              versy_z_gzprintf
-#    define gzvprintf             versy_z_gzvprintf
-#    define gzputc                versy_z_gzputc
-#    define gzputs                versy_z_gzputs
-#    define gzread                versy_z_gzread
-#    define gzrewind              versy_z_gzrewind
-#    define gzseek                versy_z_gzseek
-#    define gzseek64              versy_z_gzseek64
-#    define gzsetparams           versy_z_gzsetparams
-#    define gztell                versy_z_gztell
-#    define gztell64              versy_z_gztell64
-#    define gzungetc              versy_z_gzungetc
-#    define gzwrite               versy_z_gzwrite
-#  endif
-#  define inflate               versy_z_inflate
-#  define inflateBack           versy_z_inflateBack
-#  define inflateBackEnd        versy_z_inflateBackEnd
-#  define inflateBackInit_      versy_z_inflateBackInit_
-#  define inflateCopy           versy_z_inflateCopy
-#  define inflateEnd            versy_z_inflateEnd
-#  define inflateGetHeader      versy_z_inflateGetHeader
-#  define inflateInit2_         versy_z_inflateInit2_
-#  define inflateInit_          versy_z_inflateInit_
-#  define inflateMark           versy_z_inflateMark
-#  define inflatePrime          versy_z_inflatePrime
-#  define inflateReset          versy_z_inflateReset
-#  define inflateReset2         versy_z_inflateReset2
-#  define inflateSetDictionary  versy_z_inflateSetDictionary
-#  define inflateGetDictionary  versy_z_inflateGetDictionary
-#  define inflateSync           versy_z_inflateSync
-#  define inflateSyncPoint      versy_z_inflateSyncPoint
-#  define inflateUndermine      versy_z_inflateUndermine
-#  define inflateResetKeep      versy_z_inflateResetKeep
-#  define inflate_copyright     versy_z_inflate_copyright
-#  define inflate_fast          versy_z_inflate_fast
-#  define inflate_table         versy_z_inflate_table
-#  ifndef Z_SOLO
-#    define uncompress            versy_z_uncompress
-#  endif
-#  define zError                versy_z_zError
-#  ifndef Z_SOLO
-#    define zcalloc               versy_z_zcalloc
-#    define zcfree                versy_z_zcfree
-#  endif
-#  define zlibCompileFlags      versy_z_zlibCompileFlags
-#  define zlibVersion           versy_z_zlibVersion
-
-/* all zlib typedefs in zlib.h and zconf.h */
-#  define Byte                  versy_z_Byte
-#  define Bytef                 versy_z_Bytef
-#  define alloc_func            versy_z_alloc_func
-#  define charf                 versy_z_charf
-#  define free_func             versy_z_free_func
-#  ifndef Z_SOLO
-#    define gzFile                versy_z_gzFile
-#  endif
-#  define gz_header             versy_z_gz_header
-#  define gz_headerp            versy_z_gz_headerp
-#  define in_func               versy_z_in_func
-#  define intf                  versy_z_intf
-#  define out_func              versy_z_out_func
-#  define uInt                  versy_z_uInt
-#  define uIntf                 versy_z_uIntf
-#  define uLong                 versy_z_uLong
-#  define uLongf                versy_z_uLongf
-#  define voidp                 versy_z_voidp
-#  define voidpc                versy_z_voidpc
-#  define voidpf                versy_z_voidpf
+#define Byte          versy_z_Byte
+#define uInt          versy_z_uInt
+#define uLong         versy_z_uLong
+#define Bytef         versy_z_Bytef
+#define charf         versy_z_charf
+#define intf          versy_z_intf
+#define uIntf         versy_z_uIntf
+#define uLongf        versy_z_uLongf
+#define voidpf        versy_z_voidpf
+#define voidp         versy_z_voidp
 
 
-/* all zlib structs in zlib.h and zconf.h */
-#  define gz_header_s           z_gz_header_s
-#  define internal_state        z_internal_state
-
+#if (defined(_WIN32) || defined(__WIN32__)) && !defined(WIN32)
+#  define WIN32
 #endif
-
+#if defined(__GNUC__) || defined(WIN32) || defined(__386__) || defined(i386)
+#  ifndef __32BIT__
+#    define __32BIT__
+#  endif
+#endif
 #if defined(__MSDOS__) && !defined(MSDOS)
 #  define MSDOS
-#endif
-#if (defined(OS_2) || defined(__OS2__)) && !defined(OS2)
-#  define OS2
-#endif
-#if defined(_WINDOWS) && !defined(WINDOWS)
-#  define WINDOWS
-#endif
-#if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
-#  ifndef WIN32
-#    define WIN32
-#  endif
-#endif
-#if (defined(MSDOS) || defined(OS2) || defined(WINDOWS)) && !defined(WIN32)
-#  if !defined(__GNUC__) && !defined(__FLAT__) && !defined(__386__)
-#    ifndef SYS16BIT
-#      define SYS16BIT
-#    endif
-#  endif
 #endif
 
 /*
  * Compile with -DMAXSEG_64K if the alloc function cannot allocate more
  * than 64k bytes at a time (needed on systems with 16-bit int).
  */
-#ifdef SYS16BIT
+#if defined(MSDOS) && !defined(__32BIT__)
 #  define MAXSEG_64K
 #endif
 #ifdef MSDOS
 #  define UNALIGNED_OK
 #endif
 
-#ifdef __STDC_VERSION__
+#if (defined(MSDOS) || defined(_WINDOWS) || defined(WIN32))  && !defined(STDC)
+#  define STDC
+#endif
+#if defined(__STDC__) || defined(__cplusplus) || defined(__OS2__)
 #  ifndef STDC
 #    define STDC
 #  endif
-#  if __STDC_VERSION__ >= 199901L
-#    ifndef STDC99
-#      define STDC99
-#    endif
-#  endif
-#endif
-#if !defined(STDC) && (defined(__STDC__) || defined(__cplusplus))
-#  define STDC
-#endif
-#if !defined(STDC) && (defined(__GNUC__) || defined(__BORLANDC__))
-#  define STDC
-#endif
-#if !defined(STDC) && (defined(MSDOS) || defined(WINDOWS) || defined(WIN32))
-#  define STDC
-#endif
-#if !defined(STDC) && (defined(OS2) || defined(__HOS_AIX__))
-#  define STDC
-#endif
-
-#if defined(__OS400__) && !defined(STDC)    /* iSeries (formerly AS/400). */
-#  define STDC
 #endif
 
 #ifndef STDC
 #  ifndef const /* cannot use !defined(STDC) && !defined(const) on Mac */
-#    define const       /* note: need a more gentle solution here */
+#    define const
 #  endif
 #endif
 
-#if defined(ZLIB_CONST) && !defined(z_const)
-#  define z_const const
-#else
-#  define z_const
-#endif
-
 /* Some Mac compilers merge all .h files incorrectly: */
-#if defined(__MWERKS__)||defined(applec)||defined(THINK_C)||defined(__SC__)
+#if defined(__MWERKS__) || defined(applec) ||defined(THINK_C) ||defined(__SC__)
 #  define NO_DUMMY_DECL
 #endif
+
+/* Old Borland C incorrectly complains about missing returns: */
+#if defined(__BORLANDC__) && (__BORLANDC__ < 0x500)
+#  define NEED_DUMMY_RETURN
+#endif
+
 
 /* Maximum value for memLevel in deflateInit2 */
 #ifndef MAX_MEM_LEVEL
@@ -272,103 +138,81 @@
 #  endif
 #endif
 
-#ifndef Z_ARG /* function prototypes for stdarg */
-#  if defined(STDC) || defined(Z_HAVE_STDARG_H)
-#    define Z_ARG(args)  args
-#  else
-#    define Z_ARG(args)  ()
-#  endif
-#endif
-
 /* The following definitions for FAR are needed only for MSDOS mixed
  * model programming (small or medium model with some far allocations).
  * This was tested only with MSC; for other MSDOS compilers you may have
  * to define NO_MEMCPY in zutil.h.  If you don't need the mixed model,
  * just define FAR to be empty.
  */
-#ifdef SYS16BIT
-#  if defined(M_I86SM) || defined(M_I86MM)
-     /* MSC small or medium model */
-#    define SMALL_MEDIUM
-#    ifdef _MSC_VER
-#      define FAR _far
-#    else
-#      define FAR far
-#    endif
+#if (defined(M_I86SM) || defined(M_I86MM)) && !defined(__32BIT__)
+   /* MSC small or medium model */
+#  define SMALL_MEDIUM
+#  ifdef _MSC_VER
+#    define FAR _far
+#  else
+#    define FAR far
 #  endif
-#  if (defined(__SMALL__) || defined(__MEDIUM__))
-     /* Turbo C small or medium model */
+#endif
+#if defined(__BORLANDC__) && (defined(__SMALL__) || defined(__MEDIUM__))
+#  ifndef __32BIT__
 #    define SMALL_MEDIUM
-#    ifdef __BORLANDC__
-#      define FAR _far
-#    else
-#      define FAR far
-#    endif
+#    define FAR _far
 #  endif
 #endif
 
-#if defined(WINDOWS) || defined(WIN32)
-   /* If building or using zlib as a DLL, define ZLIB_DLL.
-    * This is not mandatory, but it offers a little performance increase.
-    */
-#  ifdef ZLIB_DLL
-#    if defined(WIN32) && (!defined(__BORLANDC__) || (__BORLANDC__ >= 0x500))
-#      ifdef ZLIB_INTERNAL
-#        define ZEXTERN extern __declspec(dllexport)
-#      else
-#        define ZEXTERN extern __declspec(dllimport)
-#      endif
-#    endif
-#  endif  /* ZLIB_DLL */
-   /* If building or using zlib with the WINAPI/WINAPIV calling convention,
-    * define ZLIB_WINAPI.
-    * Caution: the standard ZLIB1.DLL is NOT compiled using ZLIB_WINAPI.
-    */
-#  ifdef ZLIB_WINAPI
+/* Compile with -DZLIB_DLL for Windows DLL support */
+#if defined(ZLIB_DLL)
+#  if defined(_WINDOWS) || defined(WINDOWS)
 #    ifdef FAR
 #      undef FAR
 #    endif
 #    include <windows.h>
-     /* No need for _export, use ZLIB.DEF instead. */
-     /* For complete Windows compatibility, use WINAPI, not __stdcall. */
-#    define ZEXPORT WINAPI
+#    define ZEXPORT  WINAPI
 #    ifdef WIN32
-#      define ZEXPORTVA WINAPIV
+#      define ZEXPORTVA  WINAPIV
 #    else
-#      define ZEXPORTVA FAR CDECL
+#      define ZEXPORTVA  FAR _cdecl _export
+#    endif
+#  endif
+#  if defined (__BORLANDC__)
+#    if (__BORLANDC__ >= 0x0500) && defined (WIN32)
+#      include <windows.h>
+#      define ZEXPORT __declspec(dllexport) WINAPI
+#      define ZEXPORTRVA __declspec(dllexport) WINAPIV
+#    else
+#      if defined (_Windows) && defined (__DLL__)
+#        define ZEXPORT _export
+#        define ZEXPORTVA _export
+#      endif
 #    endif
 #  endif
 #endif
 
 #if defined (__BEOS__)
-#  ifdef ZLIB_DLL
-#    ifdef ZLIB_INTERNAL
-#      define ZEXPORT   __declspec(dllexport)
-#      define ZEXPORTVA __declspec(dllexport)
-#    else
-#      define ZEXPORT   __declspec(dllimport)
-#      define ZEXPORTVA __declspec(dllimport)
-#    endif
+#  if defined (ZLIB_DLL)
+#    define ZEXTERN extern __declspec(dllexport)
+#  else
+#    define ZEXTERN extern __declspec(dllimport)
 #  endif
 #endif
 
-#ifndef ZEXTERN
-#  define ZEXTERN extern
-#endif
 #ifndef ZEXPORT
 #  define ZEXPORT
 #endif
 #ifndef ZEXPORTVA
 #  define ZEXPORTVA
 #endif
+#ifndef ZEXTERN
+#  define ZEXTERN extern
+#endif
 
 #ifndef FAR
-#  define FAR
+#   define FAR
 #endif
 
-#if !defined(__MACTYPES__)
+/*#if !defined(MACOS) && !defined(TARGET_OS_MAC)*/
 typedef unsigned char  Byte;  /* 8 bits */
-#endif
+/*6#endif*/
 typedef unsigned int   uInt;  /* 16 bits or more */
 typedef unsigned long  uLong; /* 32 bits or more */
 
@@ -384,130 +228,54 @@ typedef uInt  FAR uIntf;
 typedef uLong FAR uLongf;
 
 #ifdef STDC
-   typedef void const *voidpc;
-   typedef void FAR   *voidpf;
-   typedef void       *voidp;
+   typedef void FAR *voidpf;
+   typedef void     *voidp;
 #else
-   typedef Byte const *voidpc;
-   typedef Byte FAR   *voidpf;
-   typedef Byte       *voidp;
+   typedef Byte FAR *voidpf;
+   typedef Byte     *voidp;
 #endif
 
-#if !defined(Z_U4) && !defined(Z_SOLO) && defined(STDC)
-#  include <limits.h>
-#  if (UINT_MAX == 0xffffffffUL)
-#    define Z_U4 unsigned
-#  elif (ULONG_MAX == 0xffffffffUL)
-#    define Z_U4 unsigned long
-#  elif (USHRT_MAX == 0xffffffffUL)
-#    define Z_U4 unsigned short
-#  endif
+#ifndef __MACOS__
+#ifdef HAVE_UNISTD_H
+#  include <sys/types.h> /* for off_t */
+#  include <unistd.h>    /* for SEEK_* and off_t */
+#  define z_off_t  off_t
 #endif
-
-#ifdef Z_U4
-   typedef Z_U4 z_crc_t;
-#else
-   typedef unsigned long z_crc_t;
 #endif
-
-#ifdef HAVE_UNISTD_H    /* may be set to #if 1 by ./configure */
-#  define Z_HAVE_UNISTD_H
-#endif
-
-#ifdef HAVE_STDARG_H    /* may be set to #if 1 by ./configure */
-#  define Z_HAVE_STDARG_H
-#endif
-
-#ifdef STDC
-#  ifndef Z_SOLO
-#    include <sys/types.h>      /* for off_t */
-#  endif
-#endif
-
-#if defined(STDC) || defined(Z_HAVE_STDARG_H)
-#  ifndef Z_SOLO
-#    include <stdarg.h>         /* for va_list */
-#  endif
-#endif
-
-#ifdef _WIN32
-#  ifndef Z_SOLO
-#    include <stddef.h>         /* for wchar_t */
-#  endif
-#endif
-
-/* a little trick to accommodate both "#define _LARGEFILE64_SOURCE" and
- * "#define _LARGEFILE64_SOURCE 1" as requesting 64-bit operations, (even
- * though the former does not conform to the LFS document), but considering
- * both "#undef _LARGEFILE64_SOURCE" and "#define _LARGEFILE64_SOURCE 0" as
- * equivalently requesting no 64-bit operations
- */
-#if defined(_LARGEFILE64_SOURCE) && -_LARGEFILE64_SOURCE - -1 == 1
-#  undef _LARGEFILE64_SOURCE
-#endif
-
-#if defined(__WATCOMC__) && !defined(Z_HAVE_UNISTD_H)
-#  define Z_HAVE_UNISTD_H
-#endif
-#ifndef Z_SOLO
-#  if defined(Z_HAVE_UNISTD_H) || defined(_LARGEFILE64_SOURCE)
-#    include <unistd.h>         /* for SEEK_*, off_t, and _LFS64_LARGEFILE */
-#    ifdef VMS
-#      include <unixio.h>       /* for off_t */
-#    endif
-#    ifndef z_off_t
-#      define z_off_t off_t
-#    endif
-#  endif
-#endif
-
-#if defined(_LFS64_LARGEFILE) && _LFS64_LARGEFILE-0
-#  define Z_LFS64
-#endif
-
-#if defined(_LARGEFILE64_SOURCE) && defined(Z_LFS64)
-#  define Z_LARGE64
-#endif
-
-#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS-0 == 64 && defined(Z_LFS64)
-#  define Z_WANT64
-#endif
-
-#if !defined(SEEK_SET) && !defined(Z_SOLO)
+#ifndef SEEK_SET
 #  define SEEK_SET        0       /* Seek from beginning of file.  */
 #  define SEEK_CUR        1       /* Seek from current position.  */
 #  define SEEK_END        2       /* Set file pointer to EOF plus "offset" */
 #endif
-
 #ifndef z_off_t
-#  define z_off_t long
-#endif
-
-#if !defined(_WIN32) && defined(Z_LARGE64)
-#  define z_off64_t off64_t
-#else
-#  if defined(_WIN32) && !defined(__GNUC__) && !defined(Z_SOLO)
-#    define z_off64_t __int64
-#  else
-#    define z_off64_t z_off_t
-#  endif
+#  define  z_off_t long
 #endif
 
 /* MVS linker does not support external names larger than 8 bytes */
 #if defined(__MVS__)
-  #pragma map(deflateInit_,"DEIN")
-  #pragma map(deflateInit2_,"DEIN2")
-  #pragma map(deflateEnd,"DEEND")
-  #pragma map(deflateBound,"DEBND")
-  #pragma map(inflateInit_,"ININ")
-  #pragma map(inflateInit2_,"ININ2")
-  #pragma map(inflateEnd,"INEND")
-  #pragma map(inflateSync,"INSY")
-  #pragma map(inflateSetDictionary,"INSEDI")
-  #pragma map(compressBound,"CMBND")
-  #pragma map(inflate_table,"INTABL")
-  #pragma map(inflate_fast,"INFA")
-  #pragma map(inflate_copyright,"INCOPY")
+#   pragma map(deflateInit_,"DEIN")
+#   pragma map(deflateInit2_,"DEIN2")
+#   pragma map(deflateEnd,"DEEND")
+#   pragma map(inflateInit_,"ININ")
+#   pragma map(inflateInit2_,"ININ2")
+#   pragma map(inflateEnd,"INEND")
+#   pragma map(inflateSync,"INSY")
+#   pragma map(inflateSetDictionary,"INSEDI")
+#   pragma map(inflate_blocks,"INBL")
+#   pragma map(inflate_blocks_new,"INBLNE")
+#   pragma map(inflate_blocks_free,"INBLFR")
+#   pragma map(inflate_blocks_reset,"INBLRE")
+#   pragma map(inflate_codes_free,"INCOFR")
+#   pragma map(inflate_codes,"INCO")
+#   pragma map(inflate_fast,"INFA")
+#   pragma map(inflate_flush,"INFLU")
+#   pragma map(inflate_mask,"INMA")
+#   pragma map(inflate_set_dictionary,"INSEDI2")
+#   pragma map(inflate_copyright,"INCOPY")
+#   pragma map(inflate_trees_bits,"INTRBI")
+#   pragma map(inflate_trees_dynamic,"INTRDY")
+#   pragma map(inflate_trees_fixed,"INTRFI")
+#   pragma map(inflate_trees_free,"INTRFR")
 #endif
 
-#endif /* ZCONF_H */
+#endif /* _ZCONF_H */

@@ -1,6 +1,6 @@
 /* deflate.h -- internal compression state
- * Copyright (C) 1995-2012 Jean-loup Gailly
- * For conditions of distribution and use, see copyright notice in zlib.h
+ * Copyright (C) 1995-2002 Jean-loup Gailly
+ * For conditions of distribution and use, see copyright notice in zlib.h 
  */
 
 /* WARNING: this file should *not* be used by applications. It is
@@ -10,18 +10,10 @@
 
 /* @(#) $Id$ */
 
-#ifndef DEFLATE_H
-#define DEFLATE_H
+#ifndef _DEFLATE_H
+#define _DEFLATE_H
 
 #include "zutil.h"
-
-/* define NO_GZIP when compiling if you want to disable gzip header and
-   trailer creation by deflate().  NO_GZIP would be used to avoid linking in
-   the crc code when it is not needed.  For shared libraries, gzip encoding
-   should be left enabled. */
-#ifndef NO_GZIP
-#  define GZIP
-#endif
 
 /* ===========================================================================
  * Internal compression state.
@@ -48,14 +40,7 @@
 #define MAX_BITS 15
 /* All codes must not exceed MAX_BITS bits */
 
-#define Buf_size 16
-/* size of bit buffer in bi_buf */
-
 #define INIT_STATE    42
-#define EXTRA_STATE   69
-#define NAME_STATE    73
-#define COMMENT_STATE 91
-#define HCRC_STATE   103
 #define BUSY_STATE   113
 #define FINISH_STATE 666
 /* Stream status */
@@ -100,11 +85,10 @@ typedef struct internal_state {
     Bytef *pending_buf;  /* output still pending */
     ulg   pending_buf_size; /* size of pending_buf */
     Bytef *pending_out;  /* next pending byte to output to the stream */
-    uInt   pending;      /* nb of bytes in the pending buffer */
-    int   wrap;          /* bit 0 true for zlib, bit 1 true for gzip */
-    gz_headerp  gzhead;  /* gzip header information to write */
-    uInt   gzindex;      /* where in extra, name, or comment */
-    Byte  method;        /* can only be DEFLATED */
+    int   pending;       /* nb of bytes in the pending buffer */
+    int   noheader;      /* suppress zlib header and adler32 */
+    Byte  data_type;     /* UNKNOWN, BINARY or ASCII */
+    Byte  method;        /* STORED (for zip only) or DEFLATED */
     int   last_flush;    /* value of flush param for previous deflate call */
 
                 /* used by deflate.c: */
@@ -191,7 +175,7 @@ typedef struct internal_state {
     int nice_match; /* Stop searching when current match exceeds this */
 
                 /* used by trees.c: */
-    /* Didn't use ct_data typedef below to suppress compiler warning */
+    /* Didn't use ct_data typedef below to supress compiler warning */
     struct ct_data_s dyn_ltree[HEAP_SIZE];   /* literal and length tree */
     struct ct_data_s dyn_dtree[2*D_CODES+1]; /* distance tree */
     struct ct_data_s bl_tree[2*BL_CODES+1];  /* Huffman tree for bit lengths */
@@ -247,7 +231,7 @@ typedef struct internal_state {
     ulg opt_len;        /* bit length of current block with optimal trees */
     ulg static_len;     /* bit length of current block with static trees */
     uInt matches;       /* number of string matches in current block */
-    uInt insert;        /* bytes at end of window left to insert */
+    int last_eob_len;   /* bit length of EOB code for last block */
 
 #ifdef DEBUG
     ulg compressed_len; /* total bit length of compressed file mod 2^32 */
@@ -261,13 +245,6 @@ typedef struct internal_state {
     int bi_valid;
     /* Number of valid bits in bi_buf.  All bits above the last valid bit
      * are always zero.
-     */
-
-    ulg high_water;
-    /* High water mark offset in window for initialized bytes -- bytes above
-     * this are set to zero in order to avoid memory check warnings when
-     * longest match routines access bytes past the input.  This is then
-     * updated to the new high water mark.
      */
 
 } FAR deflate_state;
@@ -288,19 +265,14 @@ typedef struct internal_state {
  * distances are limited to MAX_DIST instead of WSIZE.
  */
 
-#define WIN_INIT MAX_MATCH
-/* Number of bytes after end of data in window to initialize in order to avoid
-   memory checker errors from longest match routines */
-
         /* in trees.c */
-void ZLIB_INTERNAL _tr_init OF((deflate_state *s));
-int ZLIB_INTERNAL _tr_tally OF((deflate_state *s, unsigned dist, unsigned lc));
-void ZLIB_INTERNAL _tr_flush_block OF((deflate_state *s, charf *buf,
-                        ulg stored_len, int last));
-void ZLIB_INTERNAL _tr_flush_bits OF((deflate_state *s));
-void ZLIB_INTERNAL _tr_align OF((deflate_state *s));
-void ZLIB_INTERNAL _tr_stored_block OF((deflate_state *s, charf *buf,
-                        ulg stored_len, int last));
+void _tr_init         OF((deflate_state *s));
+int  _tr_tally        OF((deflate_state *s, unsigned dist, unsigned lc));
+void _tr_flush_block  OF((deflate_state *s, charf *buf, ulg stored_len,
+			  int eof));
+void _tr_align        OF((deflate_state *s));
+void _tr_stored_block OF((deflate_state *s, charf *buf, ulg stored_len,
+                          int eof));
 
 #define d_code(dist) \
    ((dist) < 256 ? _dist_code[dist] : _dist_code[256+((dist)>>7)])
@@ -313,11 +285,11 @@ void ZLIB_INTERNAL _tr_stored_block OF((deflate_state *s, charf *buf,
 /* Inline versions of _tr_tally for speed: */
 
 #if defined(GEN_TREES_H) || !defined(STDC)
-  extern uch ZLIB_INTERNAL _length_code[];
-  extern uch ZLIB_INTERNAL _dist_code[];
+  extern uch _length_code[];
+  extern uch _dist_code[];
 #else
-  extern const uch ZLIB_INTERNAL _length_code[];
-  extern const uch ZLIB_INTERNAL _dist_code[];
+  extern const uch _length_code[];
+  extern const uch _dist_code[];
 #endif
 
 # define _tr_tally_lit(s, c, flush) \
@@ -340,7 +312,7 @@ void ZLIB_INTERNAL _tr_stored_block OF((deflate_state *s, charf *buf,
 #else
 # define _tr_tally_lit(s, c, flush) flush = _tr_tally(s, 0, c)
 # define _tr_tally_dist(s, distance, length, flush) \
-              flush = _tr_tally(s, distance, length)
+              flush = _tr_tally(s, distance, length) 
 #endif
 
-#endif /* DEFLATE_H */
+#endif

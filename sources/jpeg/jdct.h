@@ -85,15 +85,15 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
 /* Short forms of external names for systems with brain-damaged linkers. */
 
 
-#define jpeg_fdct_islow           versyjpeg_fdct_islow
-#define jpeg_fdct_ifast           versyjpeg_fdct_ifast
-#define jpeg_fdct_float           versyjpeg_fdct_float
-#define jpeg_idct_islow           versyjpeg_idct_islow
-#define jpeg_idct_ifast           versyjpeg_idct_ifast
-#define jpeg_idct_float           versyjpeg_idct_float
-#define jpeg_idct_4x4             versyjpeg_idct_4x4
-#define jpeg_idct_2x2             versyjpeg_idct_2x2
-#define jpeg_idct_1x1             versyjpeg_idct_1x1
+#define jpeg_fdct_islow           VersyPDF_jpeg_fdct_islow
+#define jpeg_fdct_ifast           VersyPDF_jpeg_fdct_ifast
+#define jpeg_fdct_float           VersyPDF_jpeg_fdct_float
+#define jpeg_idct_islow           VersyPDF_jpeg_idct_islow
+#define jpeg_idct_ifast           VersyPDF_jpeg_idct_ifast
+#define jpeg_idct_float           VersyPDF_jpeg_idct_float
+#define jpeg_idct_4x4             VersyPDF_jpeg_idct_4x4
+#define jpeg_idct_2x2             VersyPDF_jpeg_idct_2x2
+#define jpeg_idct_1x1             VersyPDF_jpeg_idct_1x1
 
 
 /* Extern declarations for the forward and inverse DCT routines. */
