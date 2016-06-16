@@ -1,7 +1,7 @@
 unit VersyPDFInt;
 {$i vspas.Inc}
 interface
-uses Windows, ShellAPI, VersyPDFTypes, VersyJpeg;
+uses {$ifdef USENAMESPACE}WinAPI.Windows,WinAPI.ShellAPI{$else}Windows,ShellAPI{$endif}, VersyPDFTypes, VersyJpeg;
 
 
 const
@@ -96,7 +96,7 @@ type
 
 
 // Exception functions
-function VSGetErrorStr ( ErrorCode:Cardinal; Buffer:PChar ):Integer; register; external;
+function VSGetErrorStr ( ErrorCode:Cardinal; Buffer:PAnsiChar ):Integer; register; external;
 procedure PPCallException ( Lib: PDFLibHandle; ErrorCode: Cardinal);register; external;
 
 type
@@ -106,21 +106,21 @@ type
   FreeFunc = procedure ( Buffer : Pointer);cdecl;
 
 // Library functions
-function InitPDFLibrary(UserName, Password: PChar): PDFLibHandle; register; external;
-function InitPDFLibraryWithParams ( LicenseName, LicenseKey: PChar;
+function InitPDFLibrary(UserName, Password: PAnsiChar): PDFLibHandle; register; external;
+function InitPDFLibraryWithParams ( LicenseName, LicenseKey: PAnsiChar;
          MallocProc:MallocFunc; ReallocProc: ReallocFunc;FreeProc:FreeFunc;
          Error: ErrorFunc; Opaque: Pointer ):PDFLibHandle; register; external;
 procedure DonePDFLibrary(Lib: Pointer); register; external;
-function ULStringToAtom ( Lib:PDFLibHandle; Str: PChar ):Cardinal;register; external;
-function ULAtomToString ( Lib: PDFLibHandle; Atom:Cardinal):PChar;register; external;
-function ULExistsAtomForString ( Lib: PDFLibHandle; Str: PChar ):Boolean;register; external;
+function ULStringToAtom ( Lib:PDFLibHandle; Str: PAnsiChar ):Cardinal;register; external;
+function ULAtomToString ( Lib: PDFLibHandle; Atom:Cardinal):PAnsiChar;register; external;
+function ULExistsAtomForString ( Lib: PDFLibHandle; Str: PAnsiChar ):Boolean;register; external;
 
 
 
 // Stream functions
 //function ULStreamMemNew( Lib: PDFLibHandle; Size: Cardinal ): PDFStreamHandle; register; external;
 //function ULStreamMemReadOnlyNew( Lib:PDFLibHandle; Buffer: Pointer; Size: Cardinal ): PDFStreamHandle; register; external;
-//function ULStreamFileNew( Lib: PDFLibHandle; FileName: PChar; OpenMode: Integer ): PDFStreamHandle; register; external;
+//function ULStreamFileNew( Lib: PDFLibHandle; FileName: PAnsiChar; OpenMode: Integer ): PDFStreamHandle; register; external;
 function ULStreamCustomNew ( Lib, AReadBuffer, AWriteBuffer, AGetPosition,
                     ASetPosition,AGetSize, AGetChar, ALookChar, AStream:Pointer ):PDFStreamHandle; register;external;
 procedure ULStreamClose( Stream : PDFStreamHandle); register; external;
@@ -136,7 +136,7 @@ function ULStreamCopyToStream( FromStrm, ToStrm: PDFStreamHandle):ppUns32;  regi
 function PDFImageCreate ( Lib: PDFLibHandle; Width, Height:Cardinal;
     Depth:Integer; Device: Integer ):PDFImageHandle; register; external;
 function PDFImageLoadFromStream ( Lib: PDFLibHandle; AStream: PDFStreamHandle; Index: Cardinal ):PDFImageHandle; register; external;
-function PDFImageLoadFromFile ( Lib: PDFLibHandle; FileName : PChar; Index:Cardinal  ):PDFImageHandle; register; external;
+function PDFImageLoadFromFile ( Lib: PDFLibHandle; FileName : PAnsiChar; Index:Cardinal  ):PDFImageHandle; register; external;
 function PDFImageLoadFromBuffer ( Lib: PDFLibHandle; Buffer:Pointer; Size: Cardinal; Index: Cardinal ):PDFImageHandle;  register; external;
 function PDFImageLoadFromHandle ( Lib: PDFLibHandle;Handle:HBITMAP ):PDFImageHandle;register; external;
 procedure PDFImageFree ( Image : PDFImageHandle  );  register; external;
@@ -146,10 +146,10 @@ function PDFImageGetWidth ( Image: PDFImageHandle ):Cardinal;  register; externa
 function PDFImageGetHeight ( Image: PDFImageHandle ):Cardinal; register; external;
 function PDFImageGetScanLine ( Image: PDFImageHandle; ScanLineIndex: Cardinal ):Pointer; register; external;
 
-function PDFImageGetTIFFCountFromFile ( Lib:PDFLibHandle;FileName: PChar ):Cardinal;  register; external;
+function PDFImageGetTIFFCountFromFile ( Lib:PDFLibHandle;FileName: PAnsiChar ):Cardinal;  register; external;
 function PDFImageGetTIFFCountFromBuffer ( Lib:PDFLibHandle; Buffer:Pointer; Size: Cardinal ):Cardinal; register; external;
 function PDFImageAppendToDoc ( Image: PDFImageHandle; Doc:PDFDocHandle; CompressionType:Integer ):Cardinal; register; external;
-function PDFImageAppendToDocFromFile ( Doc: PDFDocHandle; FileName: PChar; Index:Cardinal; CompressionType:Integer):Cardinal; register; external;
+function PDFImageAppendToDocFromFile ( Doc: PDFDocHandle; FileName: PAnsiChar; Index:Cardinal; CompressionType:Integer):Cardinal; register; external;
 function PDFImageAppendToDocFromBuffer ( Doc: PDFDocHandle; Buffer: Pointer; BufferSize,
     Index: Cardinal; CompressionType:Integer ):Cardinal; register; external;
 function PDFImageAppendToDocFromStream ( Doc: PDFDocHandle; AStream: PDFStreamHandle;
@@ -198,9 +198,9 @@ function CosRealNew(PDFDoc: Pointer; IsIndirect: Boolean; Value: Double): Pointe
 procedure CosRealSetValue(CosObject: Pointer; Value: Double); register; external;
 function CosRealGetValue(CosObject: Pointer): Double; register; external;
 
-function CosStringNew(PDFDoc: Pointer; IsIndirect: Boolean; CosString: PChar; Length: Integer): Pointer; register; external;
-function CosStringGetValue(CosObject: Pointer; Length: PCardinal): PChar; register; external;
-procedure CosStringSetValue(CosObject: Pointer; StringVal: PChar; Length: Integer); register; external;
+function CosStringNew(PDFDoc: Pointer; IsIndirect: Boolean; CosString: PAnsiChar; Length: Integer): Pointer; register; external;
+function CosStringGetValue(CosObject: Pointer; Length: PCardinal): PAnsiChar; register; external;
+procedure CosStringSetValue(CosObject: Pointer; StringVal: PAnsiChar; Length: Integer); register; external;
 
 function CosNameNew(PDFDoc: Pointer; IsIndirect: Boolean; Value: Longword): Pointer; register; external;
 procedure CosNameSetValue(CosObject: Pointer; Value: Cardinal); register; external;
@@ -246,19 +246,19 @@ function PDFDocGetVersion ( Doc: PDFDocHandle):Integer;register; external;
 procedure PDFDocSetVersion ( Doc: PDFDocHandle; Version:Integer);register; external;
 
 function PDFDocCreate ( Lib: PDFLibHandle ): PDFDocHandle; register; external;
-procedure PDFDocSaveToFile(Doc: PDFDocHandle; FileName: PChar); register; external;
+procedure PDFDocSaveToFile(Doc: PDFDocHandle; FileName: PAnsiChar); register; external;
 procedure PDFDocClose(Doc: PDFDocHandle);  register; external;
-procedure PDFDestinationNamedNewM(Doc: PDFDocHandle; DestName: PChar; Len:Integer; Dest:PPDFExplicitDest); register; external;
+procedure PDFDestinationNamedNewM(Doc: PDFDocHandle; DestName: PAnsiChar; Len:Integer; Dest:PPDFExplicitDest); register; external;
 
-function PDFDocLoadFromFile(Lib: PDFLibHandle; FileName: PChar): PDFDocHandle;  register; external;
+function PDFDocLoadFromFile(Lib: PDFLibHandle; FileName: PAnsiChar): PDFDocHandle;  register; external;
 function PDFDocLoadFromBuffer ( Lib: PDFLibHandle; Buffer: Pointer; Size: Integer ): PDFDocHandle; register; external;
 function PDFDocLoadFromStream( Lib: PDFLibHandle; Stream: PDFStreamHandle ):PDFDocHandle; register; external;
 function PDFDocIsCrypted( Doc: PDFDocHandle  ): Boolean; register; external;
-function PDFDocCheckPassword( Doc: PDFDocHandle;  Password: PChar ):Integer; register; external;
+function PDFDocCheckPassword( Doc: PDFDocHandle;  Password: PAnsiChar ):Integer; register; external;
 function PDFDocGetPermission( Doc:PDFDocHandle):Integer; register; external;
 
 procedure PDFDocSetSecurity( Doc:PDFDocHandle; Permission: Integer;
-                           KeyLength: Integer;UserPassword,OwnerPassword: PChar );register; external;
+                           KeyLength: Integer;UserPassword,OwnerPassword: PAnsiChar );register; external;
 procedure PDFDocRemoveSecurity ( Doc: PDFDocHandle ); register; external;
 procedure PDFDocSetEncryptMetaData ( Doc: PDFDocHandle;CryptMetadata:Boolean);register; external;
 
@@ -267,7 +267,7 @@ function PDFDocAppendPage2( Doc:PDFDocHandle; Size: Integer; Orientation: Intege
 function PDFDocGetPageCount( Doc:PDFDocHandle ):Integer;register; external;
 procedure PDFDocSaveToStream( Doc:PDFDocHandle; Stream: PDFStreamHandle ); register; external;
 function PDFDocGetInfo( Doc:PDFDocHandle; Info: Integer; StrLen: PCardinal ): Pointer;  register; external;
-procedure PDFDocSetInfo( Doc:PDFDocHandle; Info: Integer; Str: PChar; StrLen: Cardinal );  register; external;
+procedure PDFDocSetInfo( Doc:PDFDocHandle; Info: Integer; Str: PAnsiChar; StrLen: Cardinal );  register; external;
 procedure PDFDocSetPacked( Doc:PDFDocHandle; ispacked: Boolean ); register; external;
 procedure PDFDocSetLinearized( Doc:PDFDocHandle; Linearized: Boolean ); register; external;
 procedure PDFDocSetRemoveUnUsed( Doc:PDFDocHandle; Remove: Boolean );  register; external;
@@ -278,10 +278,10 @@ procedure PDFDocSetEMFColorImagesAsJpeg ( Doc:PDFDocHandle; EmfAsJpeg: Boolean )
 procedure PDFDocSetEMFBWImagesAsJBIG2 ( Doc:PDFDocHandle; AsJBIG2: Boolean ); register; external;
 
 function PDFFontStandardAppend(Doc: PDFDocHandle; Font: Integer; Encode: Integer ):Cardinal; register; external;
-function PDFFontTrueTypeAppend(Doc: PDFDocHandle; FontName: PChar; Bold: Boolean;Italic:Boolean ):Cardinal; register; external;
-function PDFFontTrueTypeAppendFromFile(Doc: PDFDocHandle;fontfilename : PChar):Cardinal; register; external;
+function PDFFontTrueTypeAppend(Doc: PDFDocHandle; FontName: PAnsiChar; Bold: Boolean;Italic:Boolean ):Cardinal; register; external;
+function PDFFontTrueTypeAppendFromFile(Doc: PDFDocHandle;fontfilename : PAnsiChar):Cardinal; register; external;
 function PDFFontTrueTypeAppendFromStream(Doc: PDFDocHandle; Strm: PDFStreamHandle ):Cardinal; register; external;
-function PDFFontType1AppendFromFile ( Doc: PDFDocHandle;fontfilename : PChar):Cardinal; register; external;
+function PDFFontType1AppendFromFile ( Doc: PDFDocHandle;fontfilename : PAnsiChar):Cardinal; register; external;
 function PDFFontType1AppendFromStream(Doc: PDFDocHandle; Strm: PDFStreamHandle ):Cardinal; register; external;
 
 
@@ -301,7 +301,7 @@ procedure PBXEoFillAndStroke(PaintBox: Pointer); register; external;
 procedure PBXFill(PaintBox: Pointer); register; external;
 procedure PBXFillAndStroke(PaintBox: Pointer); register; external;
 function PBXGetHeight(PaintBox: Pointer): Double; register; external;
-function PBXGetTextWidth(PaintBox: Pointer; Text: PChar): Double; register; external;
+function PBXGetTextWidth(PaintBox: Pointer; Text: PAnsiChar): Double; register; external;
 function PBXGetUnicodeWidth(PaintBox: Pointer; Text: PWord; Len: Integer): Double; register; external;
 function PBXGetWidth(PaintBox: Pointer): Double; register; external;
 procedure PBXLineTo(PaintBox: Pointer; X, Y: Double); register; external;
@@ -318,7 +318,7 @@ procedure PBXSetActiveFont(PaintBox: Pointer; Index: Integer; FontSize: Double; 
 procedure PBXSetActiveFontWithCharset(PaintBox: Pointer; Index: Integer; FontSize: Double; Charset: Byte; UnderLine, StrikeOut: Boolean); register; external;
 procedure PBXSetCharacterSpacing(PaintBox: Pointer; Spacing: Double); register; external;
 procedure PBXSetColorM(PaintBox: Pointer; Color: PPDFColor); register; external;
-procedure PBXSetDash(PaintBox: Pointer; Dash: PChar); register; external;
+procedure PBXSetDash(PaintBox: Pointer; Dash: PAnsiChar); register; external;
 procedure PBXSetFillColorM(PaintBox: Pointer; Color: PPDFColor); register; external;
 procedure PBXSetFlatness(PaintBox: Pointer; Flatness: Integer); register; external;
 procedure PBXSetGState(PaintBox: Pointer; Index: Integer); register; external;
@@ -334,9 +334,9 @@ procedure PBXShowImage(PaintBox: Pointer; Index: Integer; X, Y, Width, Height, A
 procedure PBXStateRestore(PaintBox: Pointer); register; external;
 procedure PBXStateStore(PaintBox: Pointer); register; external;
 procedure PBXStroke(PaintBox: Pointer); register; external;
-procedure PBXTextOut(PaintBox: Pointer; X, Y, Orientation: Double; TextStr: PChar); register; external;
+procedure PBXTextOut(PaintBox: Pointer; X, Y, Orientation: Double; TextStr: PAnsiChar); register; external;
 procedure PBXUnicodeTextOut(PaintBox: Pointer; X, Y, Orientation: Double; Text: PWord; Len: Integer); register; external;
-procedure PBXAppendLine(PaintBox: Pointer; LineCode: PChar); register; external;
+procedure PBXAppendLine(PaintBox: Pointer; LineCode: PAnsiChar); register; external;
 function PBXGetStreamHandle( PaintBox:Pointer ): PDFStreamHandle;register; external;
 
 //Thread functions
@@ -345,8 +345,8 @@ function PDFDocGetThread( Doc: PDFDocHandle; Index: Integer ): PDFThreadHandle;r
 function PDFThreadNew( Doc: PDFDocHandle ):PDFThreadHandle;register; external;
 procedure PDFThreadDelete( Thread: PDFThreadHandle );register; external;
 function PDFThreadGetFirstBead( Thread: PDFThreadHandle ):PDFBeadHandle; register; external;
-function PDFThreadGetInfo( Thread: PDFThreadHandle; Info: Integer; StrLen: PCardinal  ):PChar; register; external;
-procedure PDFThreadSetInfo( Thread: PDFThreadHandle; Info: Integer; Value: PChar; Len: Cardinal ); register; external;
+function PDFThreadGetInfo( Thread: PDFThreadHandle; Info: Integer; StrLen: PCardinal  ):PAnsiChar; register; external;
+procedure PDFThreadSetInfo( Thread: PDFThreadHandle; Info: Integer; Value: PAnsiChar; Len: Cardinal ); register; external;
 function PDFThreadAppendBeadM( Thread: PDFThreadHandle; Page: Cardinal; Rect: PPDFRect ):PDFBeadHandle; register; external;
 function PDFBeadGetNext( Bead: PDFBeadHandle):PDFBeadHandle; register; external;
 function PDFBeadGetPrev( Bead: PDFBeadHandle ):PDFBeadHandle; register; external;
@@ -360,13 +360,13 @@ procedure PDFBeadSetRectM( Bead: PDFBeadHandle; Rect: PPDFRect );register; exter
 function PDFAcroGetCount( Doc: PDFDocHandle  ):Cardinal; register; external;
 
 function PDFAcroGetNameByIndex( Doc: PDFDocHandle; Index:Cardinal; IsUnicode:PByte; Length: PCardinal):Pointer;register; external;
-function PDFAcroGetValueByIndex( Doc: PDFDocHandle; Index:Cardinal; Length: PCardinal):PChar;register; external;
+function PDFAcroGetValueByIndex( Doc: PDFDocHandle; Index:Cardinal; Length: PCardinal):PAnsiChar;register; external;
 function PDFAcroGetTypeByIndex( Doc: PDFDocHandle; Index:Cardinal):TPDFAcroType;register; external;
 function PDFAcroGetFlagsByIndex( Doc: PDFDocHandle; Index:Cardinal):Integer;register; external;
-function PDFAcroGetIndexByName( Doc: PDFDocHandle; FieldName:PChar; CheckUnicodeNames:Boolean):Integer;register; external;
-procedure PDFAcroSetValueByIndex( Doc: PDFDocHandle; Index: Cardinal; NewValue:PChar);register; external;
+function PDFAcroGetIndexByName( Doc: PDFDocHandle; FieldName:PAnsiChar; CheckUnicodeNames:Boolean):Integer;register; external;
+procedure PDFAcroSetValueByIndex( Doc: PDFDocHandle; Index: Cardinal; NewValue:PAnsiChar);register; external;
 function PDFAcroGetOptionCountByIndex( Doc: PDFDocHandle; FIndex: Cardinal):Integer;register; external;
-function PDFAcroGetOptionValueByIndex( Doc: PDFDocHandle; Index, OptionIndex:Cardinal; Length: PCardinal):PChar;register; external;
+function PDFAcroGetOptionValueByIndex( Doc: PDFDocHandle; Index, OptionIndex:Cardinal; Length: PCardinal):PAnsiChar;register; external;
 function PDFAcroGetObjByIndex( Doc:PDFDocHandle; Ingex:Cardinal): PDFCosHandle;register; external;
 
 // Pages functions
@@ -401,30 +401,30 @@ procedure PDFAcroObjectSetFontM ( Doc: PDFDocHandle; AcroIndex: Cardinal; FontIn
 procedure PDFAcroObjectSetFlag ( Doc: PDFDocHandle; AcroIndex: Cardinal; Flag: Cardinal ); register; external;
 procedure PDFAcroObjectSetAnnotationFlag ( Doc: PDFDocHandle; AcroIndex: Cardinal; Flag: Word ); register; external;
 
-procedure PDFAcroObjectSetCaption ( Doc: PDFDocHandle; AcroIndex: Cardinal; Caption: PChar ); register; external;
-procedure PDFAcroObjectAppendItem ( Doc: PDFDocHandle; AcroIndex: Cardinal; Item: PChar ); register; external;
-function PDFPageAppendEditBoxM (Doc: PDFDocHandle;  Page: Cardinal; R: PPDFRect; Name: PChar ):Cardinal; register; external;
+procedure PDFAcroObjectSetCaption ( Doc: PDFDocHandle; AcroIndex: Cardinal; Caption: PAnsiChar ); register; external;
+procedure PDFAcroObjectAppendItem ( Doc: PDFDocHandle; AcroIndex: Cardinal; Item: PAnsiChar ); register; external;
+function PDFPageAppendEditBoxM (Doc: PDFDocHandle;  Page: Cardinal; R: PPDFRect; Name: PAnsiChar ):Cardinal; register; external;
 procedure PDFAcroEditBoxSetMaxLen ( Doc: PDFDocHandle; AcroIndex: Cardinal; MaxLen: Cardinal ); register; external;
 procedure PDFAcroEditBoxSetAlign ( Doc: PDFDocHandle; AcroIndex: Cardinal; Align: Integer ); register; external;
-function PDFPageAppendComboBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PChar):Cardinal; register; external;
-function PDFPageAppendListBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PChar):Cardinal; register; external;
-function PDFPageAppendSignatureBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PChar):Cardinal; register; external;
+function PDFPageAppendComboBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PAnsiChar):Cardinal; register; external;
+function PDFPageAppendListBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PAnsiChar):Cardinal; register; external;
+function PDFPageAppendSignatureBoxM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PAnsiChar):Cardinal; register; external;
 procedure PDFAcroObjectSetStyle ( Doc: PDFDocHandle; AcroIndex: Cardinal; Sign: Integer; Style: Integer ); register; external;
 procedure PDFAcroPushButtonSetMiter ( Doc: PDFDocHandle; AcroIndex: Cardinal; Miter: ppReal ); register; external;
-function PDFPageAppendPushButtonM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PChar  ):Cardinal; register; external;
-function PDFPageAppendCheckBoxM ( Doc: PDFDocHandle; Page: Cardinal; R:PPDFRect; Name: PChar; InitialState: Boolean  ):Cardinal; register; external;
-function PDFPageAppendRadioButtonM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PChar;
-    Group: PChar; InitialState: Boolean ):Cardinal; register; external;
+function PDFPageAppendPushButtonM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PAnsiChar  ):Cardinal; register; external;
+function PDFPageAppendCheckBoxM ( Doc: PDFDocHandle; Page: Cardinal; R:PPDFRect; Name: PAnsiChar; InitialState: Boolean  ):Cardinal; register; external;
+function PDFPageAppendRadioButtonM ( Doc: PDFDocHandle; Page: Cardinal; R: PPDFRect; Name: PAnsiChar;
+    Group: PAnsiChar; InitialState: Boolean ):Cardinal; register; external;
 procedure PDFAcroObjectAddAction( Doc: PDFDocHandle; AcroIndex: Cardinal; Action: PDFActionHandle; EventType:Integer ); register; external;
 
 
 
-procedure PDFDocAppendSignatureFromBuffer ( Doc: PDFDocHandle; Buffer: Pointer; Size: Cardinal; Name: PChar;
-											  Reason: PChar; PKCS7: Boolean; Password: PChar ); register; external;
-procedure PDFDocAppendSignatureFromFile ( Doc: PDFDocHandle; FileName: PChar; Name: PChar;
-											  Reason: PChar; PKCS7: Boolean; Password: PChar ); register; external;
-procedure PDFDocAppendSignatureFromStream ( Doc: PDFDocHandle; Stream: PDFStreamHandle; Name: PChar;
-											  Reason: PChar; PKCS7: Boolean; Password: PChar ); register; external;
+procedure PDFDocAppendSignatureFromBuffer ( Doc: PDFDocHandle; Buffer: Pointer; Size: Cardinal; Name: PAnsiChar;
+											  Reason: PAnsiChar; PKCS7: Boolean; Password: PAnsiChar ); register; external;
+procedure PDFDocAppendSignatureFromFile ( Doc: PDFDocHandle; FileName: PAnsiChar; Name: PAnsiChar;
+											  Reason: PAnsiChar; PKCS7: Boolean; Password: PAnsiChar ); register; external;
+procedure PDFDocAppendSignatureFromStream ( Doc: PDFDocHandle; Stream: PDFStreamHandle; Name: PAnsiChar;
+											  Reason: PAnsiChar; PKCS7: Boolean; Password: PAnsiChar ); register; external;
 
 function PDFPagePlaceSignatureM( Doc:PDFDocHandle; PageIndex:Integer;R: PPDFRect;Resolution:Integer):PBXHandle;register; external;
 
@@ -452,54 +452,54 @@ procedure PDFExtGraphicStateSetStrokeAdjustment(Doc: PDFDocHandle; GState: Cardi
 procedure PDFExtGraphicStateSetCTM(Doc: PDFDocHandle; GState: Cardinal; a,b,c,d,e,f: ppReal );register; external;
 
 // Destination functions
-function PDFDestinationFromString( Doc: PDFDocHandle; Str: PChar; Len: Integer; IsIndirect: Boolean ): PDFDestinationHandle ;register; external;
+function PDFDestinationFromString( Doc: PDFDocHandle; Str: PAnsiChar; Len: Integer; IsIndirect: Boolean ): PDFDestinationHandle ;register; external;
 function PDFDestinationFromExplitM( Doc: PDFDocHandle; Dest: PPDFExplicitDest; OtherDocument, IsIndirect: Boolean ):PDFDestinationHandle ;register; external;
 
 //Annotation functions
 procedure PDFAnnotationSetFlag( Annotation: PDFAnnotationHandle; AnnotationFlag:Word ); register; external;
 procedure PDFAnnotationSetAlphaBlending( Annotation: PDFAnnotationHandle; AlphaBlending: ppReal );register; external;
-procedure PDFAnnotationSetTitle ( Annotation: PDFAnnotationHandle; Title: PChar; TitleLength:Cardinal );register; external;
-procedure PDFAnnotationSetName ( Annotation: PDFAnnotationHandle; Name: PChar; NameLength: Cardinal  );register; external;
+procedure PDFAnnotationSetTitle ( Annotation: PDFAnnotationHandle; Title: PAnsiChar; TitleLength:Cardinal );register; external;
+procedure PDFAnnotationSetName ( Annotation: PDFAnnotationHandle; Name: PAnsiChar; NameLength: Cardinal  );register; external;
 procedure PDFAnnotationSetBorderStyle ( Annotation: PDFAnnotationHandle; Width: ppReal;Style: Integer; Dash: PDFCosHandle );register; external;
 procedure PDFAnnotationSetColorM ( Annotation: PDFAnnotationHandle ; Color: PPDFColor  );register; external;
 procedure PDFAnnotationSetAction ( Annotation: PDFAnnotationHandle; Action: PDFActionHandle );register; external;
-function PDFPageAppendAnnotationTextM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PChar;
+function PDFPageAppendAnnotationTextM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PAnsiChar;
 	ContentLength: Cardinal; IsOpened: Boolean; Name: Integer ):PDFAnnotationHandle;register; external;
 function PDFPageAppendAnnotationLinkWithDestM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect ;
 	Destination: PDFDestinationHandle; Mode:Integer; Visible: Boolean ): PDFAnnotationHandle;register; external;
 function PDFPageAppendAnnotationLinkWithActionM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect ;
 	Action: PDFActionHandle; Mode:Integer; Visible: Boolean ): PDFAnnotationHandle;register; external;
-function PDFPageAppendAnnotationStampM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PChar;
+function PDFPageAppendAnnotationStampM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PAnsiChar;
 	ContentLength: Cardinal; Name: Integer ): PDFAnnotationHandle;register; external;
-function PDFPageAppendAnnotationStampWithDrawBoxM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PChar;
+function PDFPageAppendAnnotationStampWithDrawBoxM ( Doc: PDFDocHandle; Page: Cardinal; Rect: PPDFRect; Content: PAnsiChar;
 	ContentLength: Cardinal; Name: Integer; Resolution:Cardinal; PBX: PPointer ): PDFAnnotationHandle;register; external;
 
 
 // Action functions
 procedure PDFActionSetNext( Action: PDFActionHandle ; Next: PDFActionHandle );register; external;
 function PDFActionNewGoToDestination(Doc: PDFDocHandle; Destination: PDFDestinationHandle ):PDFActionHandle;register; external;
-function PDFActionNewGoToRemote(Doc: PDFDocHandle; FileName: PChar;
+function PDFActionNewGoToRemote(Doc: PDFDocHandle; FileName: PAnsiChar;
         FileNameLength: Integer; Destination: PDFDestinationHandle ; InNewWindow: Boolean ):PDFActionHandle;register; external;
 function PDFActionNewLaunch(Doc: PDFDocHandle; FileName, DefaultDir,
-    Operation, Params: PChar; InNewWindow: Boolean):PDFActionHandle;register; external;
-function PDFActionNewURI(Doc: PDFDocHandle; URI: PChar; Len: Integer; IsMap: Boolean):PDFActionHandle;register; external;
+    Operation, Params: PAnsiChar; InNewWindow: Boolean):PDFActionHandle;register; external;
+function PDFActionNewURI(Doc: PDFDocHandle; URI: PAnsiChar; Len: Integer; IsMap: Boolean):PDFActionHandle;register; external;
 function PDFActionNewHide(Doc: PDFDocHandle; IsHide: Boolean ):PDFActionHandle;register; external;
 procedure PDFActionHideAddAnnotation(Action:PDFActionHandle; Annotation: PDFAnnotationHandle );register; external;
-procedure PDFActionHideAddAnnotationName(Action: PDFActionHandle; AnnotationName: PChar; Len:Integer );register; external;
+procedure PDFActionHideAddAnnotationName(Action: PDFActionHandle; AnnotationName: PAnsiChar; Len:Integer );register; external;
 function PDFActionNewNamed(Doc: PDFDocHandle; NamedType:Integer ):PDFActionHandle;register; external;
-function PDFActionNewSubmitForm(Doc: PDFDocHandle; URI: PChar; Len: Integer;
+function PDFActionNewSubmitForm(Doc: PDFDocHandle; URI: PAnsiChar; Len: Integer;
         Flags: Integer ):PDFActionHandle;register; external;
 procedure PDFActionSubmitFormAddAnnotation(Action: PDFActionHandle ;
         Annotation: PDFAnnotationHandle );register; external;
 procedure PDFActionSubmitFormAddAnnotationName(Action: PDFActionHandle ;
-        AnnotationName: PChar; Len: Integer);register; external;
+        AnnotationName: PAnsiChar; Len: Integer);register; external;
 function PDFActionNewResetForm(Doc: PDFDocHandle; Exclude: Boolean):PDFActionHandle;register; external;
 procedure PDFActionResetFormAddAnnotation(Action: PDFActionHandle ;
         Annotation: PDFAnnotationHandle );register; external;
 procedure PDFActionResetFormAddAnnotationName(Action: PDFActionHandle ;
-        AnnotationName: PChar; Len: Integer );register; external;
-function PDFActionNewImportData(Doc: PDFDocHandle; FileName: PChar; Len:Integer ):PDFActionHandle; register; external;
-function PDFActionNewJavaScript(Doc: PDFDocHandle; JavaScript: PChar; Length: Integer):PDFActionHandle; register; external;
+        AnnotationName: PAnsiChar; Len: Integer );register; external;
+function PDFActionNewImportData(Doc: PDFDocHandle; FileName: PAnsiChar; Len:Integer ):PDFActionHandle; register; external;
+function PDFActionNewJavaScript(Doc: PDFDocHandle; JavaScript: PAnsiChar; Length: Integer):PDFActionHandle; register; external;
 function PDFActionNewJavaScriptStream(Doc: PDFDocHandle; JavaScript: PDFCosHandle):PDFActionHandle;register; external;
 
 
@@ -539,54 +539,102 @@ procedure PDFDocSavePackedUnLinearized( Doc:Pointer; Strm:Pointer);cdecl;externa
 procedure PDFDocSaveUnPackedUnLinearized( Doc:Pointer; Strm:Pointer);cdecl;external;
 
 
+{$ifndef WIN64}
+{$l ..\obj\x32\VSSaveL.obj}
+{$l ..\obj\x32\VSSaveUL.obj}
+{$l ..\obj\x32\VSOutlineA.obj}
+{$l ..\obj\x32\VSPages.obj}
 
-{$l obj\VSSaveL.obj}
-{$l obj\VSSaveUL.obj}
-{$l obj\VSOutlineA.obj}
-{$l obj\VSPages.obj}
+{$l ..\obj\x32\VSDocA.obj}
+{$l ..\obj\x32\VSThreadA.obj}
+{$l ..\obj\x32\VSAcroFormA.obj}
+{$l ..\obj\x32\VSAcroObjects.obj}
+{$l ..\obj\x32\VSAcroInfoA.obj}
+{$l ..\obj\x32\VSAcroDraw.obj}
+{$l ..\obj\x32\VSAnnotA.obj}
+{$l ..\obj\x32\VSActionA.obj}
+{$l ..\obj\x32\VSNameTree.obj}
+{$l ..\obj\x32\VSGStateA.obj}
+{$l ..\obj\x32\VSPageA.obj}
+{$l ..\obj\x32\VSSignA.obj}
+{$l ..\obj\x32\VSkPKCS12.obj}
+{$l ..\obj\x32\VSkPKCS7.obj}
+{$l ..\obj\x32\VSkX509.obj}
+{$l ..\obj\x32\VSkRSA.obj}
+{$l ..\obj\x32\VSkASN.obj}
+{$l ..\obj\x32\VSEmf.obj}
+{$l ..\obj\x32\VSCanvasA.obj}
+{$l ..\obj\x32\VSFontA.obj}
+{$l ..\obj\x32\VSTtf.obj}
+{$l ..\obj\x32\VSImageA.obj}
+{$l ..\obj\x32\VSJbig2.obj}
+{$l ..\obj\x32\VSCCITT.obj}
+{$l ..\obj\x32\VSBMP.obj}
+//{$l ..\obj\x32\sources\VStiff.obj}
 
-{$l obj\VSDocA.obj}
-{$l obj\VSThreadA.obj}
-{$l obj\VSAcroFormA.obj}
-{$l obj\VSAcroObjects.obj}
-{$l obj\VSAcroInfoA.obj}
-{$l obj\VSAcroDraw.obj}
-{$l obj\VSAnnotA.obj}
-{$l obj\VSActionA.obj}
-{$l obj\VSNameTree.obj}
-{$l obj\VSGStateA.obj}
-{$l obj\VSPageA.obj}
-{$l obj\VSSignA.obj}
-{$l obj\VSkPKCS12.obj}
-{$l obj\VSkPKCS7.obj}
-{$l obj\VSkX509.obj}
-{$l obj\VSkRSA.obj}
-{$l obj\VSkASN.obj}
-{$l obj\VSEmf.obj}
-{$l obj\VSCanvasA.obj}
-{$l obj\VSFontA.obj}
-{$l obj\VSTtf.obj}
-{$l obj\VSImageA.obj}
-{$l obj\VSJbig2.obj}
-{$l obj\VSCCITT.obj}
-{$l obj\VSBMP.obj}
-//{$l obj\sources\VStiff.obj}
+{$l ..\obj\x32\VSXRef.obj}
+{$l ..\obj\x32\VSParse.obj}
+{$l ..\obj\x32\VSCosA.obj}
+{$l ..\obj\x32\VSCosDocA.obj}
+{$l ..\obj\x32\VSFilter.obj}
 
-{$l obj\VSXRef.obj}
-{$l obj\VSParse.obj}
-{$l obj\VSCosA.obj}
-{$l obj\VSCosDocA.obj}
-{$l obj\VSFilter.obj}
+{$l ..\obj\x32\VSBaseA.obj}
+{$l ..\obj\x32\VSMisc.obj}
+{$l ..\obj\x32\VSCrypt.obj}
+{$l ..\obj\x32\VSPattern.obj}
 
-{$l obj\VSBaseA.obj}
-{$l obj\VSMisc.obj}
-{$l obj\VSCrypt.obj}
-{$l obj\VSPattern.obj}
+{$l ..\obj\x32\VSExcept.obj}
+{$l ..\obj\x32\VSLibA.obj}
+{$l ..\obj\x32\VSAes.obj}
+{$else}
+{$l ..\obj\x64\VSSaveL.obj}
+{$l ..\obj\x64\VSSaveUL.obj}
+{$l ..\obj\x64\VSOutlineA.obj}
+{$l ..\obj\x64\VSPages.obj}
 
-{$l obj\VSExcept.obj}
-{$l obj\VSLibA.obj}
-{$l obj\VSAes.obj}
+{$l ..\obj\x64\VSDocA.obj}
+{$l ..\obj\x64\VSThreadA.obj}
+{$l ..\obj\x64\VSAcroFormA.obj}
+{$l ..\obj\x64\VSAcroObjects.obj}
+{$l ..\obj\x64\VSAcroInfoA.obj}
+{$l ..\obj\x64\VSAcroDraw.obj}
+{$l ..\obj\x64\VSAnnotA.obj}
+{$l ..\obj\x64\VSActionA.obj}
+{$l ..\obj\x64\VSNameTree.obj}
+{$l ..\obj\x64\VSGStateA.obj}
+{$l ..\obj\x64\VSPageA.obj}
+{$l ..\obj\x64\VSSignA.obj}
+{$l ..\obj\x64\VSkPKCS12.obj}
+{$l ..\obj\x64\VSkPKCS7.obj}
+{$l ..\obj\x64\VSkX509.obj}
+{$l ..\obj\x64\VSkRSA.obj}
+{$l ..\obj\x64\VSkASN.obj}
+{$l ..\obj\x64\VSEmf.obj}
+{$l ..\obj\x64\VSCanvasA.obj}
+{$l ..\obj\x64\VSFontA.obj}
+{$l ..\obj\x64\VSTtf.obj}
+{$l ..\obj\x64\VSImageA.obj}
+{$l ..\obj\x64\VSJbig2.obj}
+{$l ..\obj\x64\VSCCITT.obj}
+{$l ..\obj\x64\VSBMP.obj}
+//{$l ..\obj\x64\sources\VStiff.obj}
 
+{$l ..\obj\x64\VSXRef.obj}
+{$l ..\obj\x64\VSParse.obj}
+{$l ..\obj\x64\VSCosA.obj}
+{$l ..\obj\x64\VSCosDocA.obj}
+{$l ..\obj\x64\VSFilter.obj}
+
+{$l ..\obj\x64\VSBaseA.obj}
+{$l ..\obj\x64\VSMisc.obj}
+{$l ..\obj\x64\VSCrypt.obj}
+{$l ..\obj\x64\VSPattern.obj}
+
+{$l ..\obj\x64\VSExcept.obj}
+{$l ..\obj\x64\VSLibA.obj}
+{$l ..\obj\x64\VSAes.obj}
+
+{$endif}
 
 
 

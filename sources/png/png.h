@@ -343,6 +343,7 @@ extern "C" {
  */
 
 #ifndef PNG_NO_TYPECAST_NULL
+#define abs(p)  (p < 0 ? -p : p)
 #define int_p_NULL                (int *)NULL
 #define png_bytep_NULL            (png_bytep)NULL
 #define png_bytepp_NULL           (png_bytepp)NULL

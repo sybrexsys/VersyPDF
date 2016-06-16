@@ -196,9 +196,11 @@ type
 
 	{  Protection Key-Length Type of Crypted PDF Document }
     TPDFProtectionType = (
+        vptIsNone = 0,
         vptIs40BitProtection                           , {  40 Bit protection key length }
         vptIs128BitProtection                          , { 128 Bit protection key length }
-        vptIs128BitAESProtection                         { 128 Bit AES protection key length }
+        vptIs128BitAESProtection                       ,  { 128 Bit AES protection key length }
+        vptIs256BitAESProtection                         { 256 Bit AES protection key length }
     ) ;
 
 	{   Type of supported PDF Document Versions }

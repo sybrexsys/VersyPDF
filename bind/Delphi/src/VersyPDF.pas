@@ -2,7 +2,16 @@ unit VersyPDF;
 {$i vspas.Inc}
 interface
 uses
-    Windows, SysUtils, Classes, VersyPDFTypes, versyPDFInt, Graphics;
+{$ifdef USENAMESPACE}
+  WinAPI.Windows,System.SysUtils, System.Classes, Vcl.Graphics
+{$else}
+  Windows, SysUtils, Classes,Graphics
+{$endif}, 
+VersyPDFTypes, versyPDFInt;
+
+{$ifdef WIN64}
+Sorry but at currnt time x64 version is not available becaus I cannot debug x64 object files in delphi ide
+{$endif}
 
 type
 {
@@ -40,7 +49,7 @@ Note:
 		LicenseName: [in] License Name for check license information.
 		LicenseKey:  [in] License key for check license information.
 }
-        constructor Create(LicenseName : String; LicenseKey : String);
+        constructor Create(LicenseName : AnsiString; LicenseKey : AnsiString);
         destructor Destroy;override;
 {
 	Description
@@ -50,7 +59,7 @@ Note:
 	Returns
 		Atom Key. Name Index in PDF Library
 }
-        function StringToAtom (Str : String) : ppAtom;
+        function StringToAtom (Str : AnsiString) : ppAtom;
 {
 	Description
 		Gets Text String Name by Atom Key in PDF Library.
@@ -59,7 +68,7 @@ Note:
 	Returns
 		Text String Name in PDF Library
 }
-        function AtomToString (Atom : ppAtom) : String;
+        function AtomToString (Atom : ppAtom) : AnsiString;
 {
 	Description
 		Tests if atom exists in PDF Library for searching text string.
@@ -68,7 +77,7 @@ Note:
 	Returns
 		Boolean : true - exists, false - name not found.
 }
-        function ExistsAtomForString ( Str : String) : Boolean;
+        function ExistsAtomForString ( Str : AnsiString) : Boolean;
     end;
 
 {
@@ -176,7 +185,7 @@ Note:
 		FileName            - [ in ] Filename of the file where stored image
 		Index               - [ in ] Index of the image in file ( Used only for Tiff files )
 }
-        constructor CreateFromFile(ALibrary : TPDFLibrary; FileName : String; Index : Cardinal);
+        constructor CreateFromFile(ALibrary : TPDFLibrary; FileName : AnsiString; Index : Cardinal);
 
         {
 	Description:
@@ -198,7 +207,7 @@ Note:
 	Returns:
 		Count of the images.
 }
-        class function GetTIFFImagesCount (ALibrary : TPDFLibrary; FileName : String) : Cardinal;overload;
+        class function GetTIFFImagesCount (ALibrary : TPDFLibrary; FileName : AnsiString) : Cardinal;overload;
 {
 	Description:
 		Gets count of the images in the tiff file opened with PDF Stream.
@@ -290,7 +299,7 @@ Note:
 	Returns:
 		None.
 }
-        procedure SetTitle (Title : string;Charset:TFontCharset = 0 );overload;
+        procedure SetTitle (Title : AnsiString;Charset:TFontCharset = 0 );overload;
 {
 	Description:
 		Sets title of outline.
@@ -503,7 +512,7 @@ Note:
 		ALibrary :       [in] PDF Library object.
 		FileName :  [in] Name of input file.
 }
-        procedure LoadFromFile(FileName : String);
+        procedure LoadFromFile(FileName : AnsiString);
 {
 	Description
 		Save PDF Document in file.
@@ -512,7 +521,7 @@ Note:
 	Returns
 		None.
 }
-        procedure SaveToFile (FileName : String);overload;
+        procedure SaveToFile (FileName : AnsiString);overload;
 {
 	Description
 		Save PDF Document in memory stream or file stream.
@@ -534,7 +543,7 @@ Note:
 	Returns
 		None.
 }
-        procedure SetDocumentInformation (Info : TPDFInformation; Value : string; CharSet: TFontCharset = 0); overload;
+        procedure SetDocumentInformation (Info : TPDFInformation; Value : AnsiString; CharSet: TFontCharset = 0); overload;
 {
 	Description
 		Save information in Document description.
@@ -612,7 +621,7 @@ Note:
 	Returns
 		Font index in PDF document.                
 }
-        function FontAppendTrueType (FontName : string; Bold : Boolean; Italic : Boolean) : Cardinal;overload;
+        function FontAppendTrueType (FontName : AnsiString; Bold : Boolean; Italic : Boolean) : Cardinal;overload;
 { 
 	Description
 		Append true type font to document from file.
@@ -621,7 +630,7 @@ Note:
 	Returns
 		Font index in PDF document.                  
 }
-        function FontAppendTrueType (FontFileName : String) : Cardinal;overload;
+        function FontAppendTrueType (FontFileName : AnsiString) : Cardinal;overload;
 { 
 	Description
 		Append Type1 font to document from stream.
@@ -639,7 +648,7 @@ Note:
 	Returns
 		Font index in PDF document.
 }
-        function FontAppendType1 (FontFileName : String) : Cardinal;overload;
+        function FontAppendType1 (FontFileName : AnsiString) : Cardinal;overload;
 
 
 {
@@ -650,7 +659,7 @@ Note:
 	Returns :
 		Password Validity Type. If Invalid then Password is invalid.
 }
-        function CheckPassword (Password : String) : TKeyValidType;
+        function CheckPassword (Password : AnsiString) : TKeyValidType;
 
 
 {
@@ -667,7 +676,7 @@ Note:
 		None.
 }
         procedure SetSecurity ( Permission : TPDFDocumentRestrictions;
-            KeyLength : TPDFProtectionType; UserPassword : String; OwnerPassword : String);
+            KeyLength : TPDFProtectionType; UserPassword : AnsiString; OwnerPassword : AnsiString);
         procedure RemoveSecurity;
         procedure SetEncryptMetaData ( IsEncrypt: Boolean );
 
@@ -714,7 +723,7 @@ Note:
 	Returns:
 		Index of the image in PDF document.
 }
-        function ImageAppend (FileName : String; Index : Cardinal; Compression : TPDFImageCompressionType) : Cardinal;overload;
+        function ImageAppend (FileName : AnsiString; Index : Cardinal; Compression : TPDFImageCompressionType) : Cardinal;overload;
 {
 	Description:
 		Appends b/w image to document with specified compression as transparent mask.
@@ -748,7 +757,7 @@ Note:
     Returns
          None.
 }
-        procedure AppendNamedDestination ( Destination : TPDFExplicitDestination; Name : string; Charset: TFontCharset );overload;
+        procedure AppendNamedDestination ( Destination : TPDFExplicitDestination; Name : AnsiString; Charset: TFontCharset );overload;
 {
 	Description
        Creates new destination name in name table and assigns to it
@@ -778,7 +787,7 @@ Note:
 		None.
 }
 
-        function CreateDestination( IsIndirect : Boolean; Str : string; Charset: TFontCharset= 0):TPDFDestination; overload;
+        function CreateDestination( IsIndirect : Boolean; Str : AnsiString; Charset: TFontCharset= 0):TPDFDestination; overload;
         function CreateDestination( IsIndirect : Boolean; Str : WideString ):TPDFDestination; overload;
         function CreateDestination(IsIndirect: Boolean; Destination:
             TPDFExplicitDestination; IsOtherDocument: Boolean): TPDFDestination; overload;
@@ -798,8 +807,8 @@ Note:
 		None.
 }
 
-        procedure AppendSignature (Buffer : Pointer; Size : Integer; Name : String; Reason : String;
-            PKCS7 : Boolean; Password : String);overload;
+        procedure AppendSignature (Buffer : Pointer; Size : Integer; Name : AnsiString; Reason : AnsiString;
+            PKCS7 : Boolean; Password : AnsiString);overload;
 {
 	Description
 		Appends digital signature to PDF document stored in file.
@@ -814,8 +823,8 @@ Note:
 	Returns
 		None.
 }
-        procedure AppendSignature (FileName : String; Name : String; Reason : String;
-            PKCS7 : Boolean; Password : String);overload;
+        procedure AppendSignature (FileName : AnsiString; Name : AnsiString; Reason : AnsiString;
+            PKCS7 : Boolean; Password : AnsiString);overload;
 {
 	Description
 		Appends digital signature to PDF document stored in PDF stream.
@@ -830,8 +839,8 @@ Note:
 	Returns
 		None.
 }
-        procedure AppendSignature (AStream: TStream; Name : String; Reason : String;
-            PKCS7 : Boolean; Password : String);overload;
+        procedure AppendSignature (AStream: TStream; Name : AnsiString; Reason : AnsiString;
+            PKCS7 : Boolean; Password : AnsiString);overload;
 
 {
     Description:
@@ -1179,7 +1188,7 @@ Note:
 		IsIndirect :  [in] If true, creates the name object as an indirect object.
 		Value :       [in] The value the new name will have.
 }
-        constructor Create(Document : TPDFDocument; IsIndirect : Boolean; Value : String); overload;
+        constructor Create(Document : TPDFDocument; IsIndirect : Boolean; Value : AnsiString); overload;
 {
 	Description: 
 		Gets the value of the specified name object.
@@ -1204,7 +1213,7 @@ Note:
 		IsIndirect :  [in] If true, creates the string object as an indirect object.
 		Value :      [in] The value that the new string will have. 
 }
-        constructor Create(Document : TPDFDocument; IsIndirect : Boolean; Value : string; Charset: TFontCharset = 0 );overload;
+        constructor Create(Document : TPDFDocument; IsIndirect : Boolean; Value : AnsiString; Charset: TFontCharset = 0 );overload;
 { 
 	Description
 		Creates a new string object and sets the specified value.
@@ -1239,7 +1248,7 @@ Note:
 	Returns
 		None.
 }
-        procedure SetValueString (Value : string; Charset: TFontCharset );overload;
+        procedure SetValueString (Value : AnsiString; Charset: TFontCharset );overload;
 { 
 	Description
 		Sets the new value for string Cos object.
@@ -1452,7 +1461,7 @@ Note:
         procedure SetColor (Value : TPDFRGB);
         procedure SetFlags (Value : TPDFAnnotationFlags);
         procedure SetAlphaBlending (Value : Double);
-        procedure SetName (Value : String);
+        procedure SetName (Value : AnsiString);
     public
 {
 	Description:
@@ -1462,7 +1471,7 @@ Note:
 	Returns:
 		None.
 }
-        procedure SetTitle (Value : string; Charset: TFontCharset = 0);overload;
+        procedure SetTitle (Value : AnsiString; Charset: TFontCharset = 0);overload;
 {
 	Description:
 		Sets Title for PDF Annotation.
@@ -1527,7 +1536,7 @@ Note:
 	Returns:
 		None.
 }
-        property Name : String write SetName;
+        property Name : AnsiString write SetName;
     end;
 {            
     A TPDFAnnotationText represents a “sticky note” attached to a point in the PDF document.
@@ -1545,7 +1554,7 @@ Note:
 		Name					- [ in ] The name of an icon to be used in displaying the annotation.
 }
         constructor Create(Page : TPDFPage; Box : TPDFRect; IsOpened : Boolean;
-            Name : TPDFAnnotationTextName; Content: string; Charset: TFontCharset = 0);overload;
+            Name : TPDFAnnotationTextName; Content: AnsiString; Charset: TFontCharset = 0);overload;
 {
 	Description:
 		Create new text annotation.
@@ -1611,7 +1620,7 @@ if they were stamped on the page with a rubber stamp.
 		Content				- [ in ] Text to be displayed for the annotation
 		Name					- [ in ] The name of an icon to be used in displaying the annotation.
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Content : string; Charset: TFontCharset = 0);overload;
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Content : AnsiString; Charset: TFontCharset = 0);overload;
 {
 	Description:
 		Create new stamp annotaion.
@@ -1633,7 +1642,7 @@ if they were stamped on the page with a rubber stamp.
 		Name					- [ in ] The name of an icon to be used in displaying the annotation.
 
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Resolution:Cardinal; var PaintBox: TPDFPaintBox; Content : string; Charset: TFontCharset = 0);overload;
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Resolution:Cardinal; var PaintBox: TPDFPaintBox; Content : AnsiString; Charset: TFontCharset = 0);overload;
 {
 	Description:
 		Create new stamp annotaion.
@@ -1739,7 +1748,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns
 		None.
 }
-        procedure SetInfo (Info : TPDFInformation; Value : string; Charset: TFontCharset = 0 );overload;
+        procedure SetInfo (Info : TPDFInformation; Value : AnsiString; Charset: TFontCharset = 0 );overload;
 {
 	Description
 		Sets information to Thread according to property name.
@@ -1804,7 +1813,7 @@ if they were stamped on the page with a rubber stamp.
         You can receive destination handle with TPDFDocument.CreateDestination
 }
 
-        constructor Create(Document : TPDFDocument; AFileName : String; Destination : TPDFDestination;
+        constructor Create(Document : TPDFDocument; AFileName : AnsiString; Destination : TPDFDestination;
             AInNewWindow : Boolean);
     end;
 
@@ -1828,8 +1837,8 @@ if they were stamped on the page with a rubber stamp.
 							in a new window. If this flag is false, the destination document will
 							replace the current document in the same window.
 }
-        constructor Create(Document : TPDFDocument; FileName : String; DefaultDir : String;
-            Operation : String; Params : String;
+        constructor Create(Document : TPDFDocument; FileName : AnsiString; DefaultDir : AnsiString;
+            Operation : AnsiString; Params : AnsiString;
             InNewWindow : Boolean);
     end;
 
@@ -1847,7 +1856,7 @@ if they were stamped on the page with a rubber stamp.
 		IsMap       - [in]  A flag specifying whether to track the mouse 
 							position when the URI is resolved.
 }
-        constructor Create(Document : TPDFDocument; AURL : string; AIsMap : Boolean);
+        constructor Create(Document : TPDFDocument; AURL : AnsiString; AIsMap : Boolean);
     end;
 
 {
@@ -1888,7 +1897,7 @@ if they were stamped on the page with a rubber stamp.
 		Operation will be performed for all annotations in the PDF
 		document if any annotation for this action is not selected.         
 }
-        procedure Append (AnnotationName : String);overload;
+        procedure Append (AnnotationName : AnsiString);overload;
     end;
 
 {
@@ -1920,7 +1929,7 @@ if they were stamped on the page with a rubber stamp.
 							at the Web server that will process the submission.
 		AFlags       - [in]  A set of flags specifying various characteristics	of the action.
 }
-        constructor Create(Document : TPDFDocument; AURL : String; AFlags : TPDFSubmitFormFlags);
+        constructor Create(Document : TPDFDocument; AURL : AnsiString; AFlags : TPDFSubmitFormFlags);
 { 
 	Description
 		Appends annotation to list in the submitform action.
@@ -1947,7 +1956,7 @@ if they were stamped on the page with a rubber stamp.
 		PDF document (flag PDF_SUBMIT_FORM_FLAG_EXCLUDE not used ) if
 		its not selected any annotation for this action.                    
 }
-        procedure Append (AnnotationName : String);overload;
+        procedure Append (AnnotationName : AnsiString);overload;
     end;
 
 {
@@ -1991,7 +2000,7 @@ if they were stamped on the page with a rubber stamp.
 		Reset action will be performed for all annotations in the PDF
 		document if its not selected any annotation for this action.        
 }
-        procedure Append (AnnotationName : String);overload;
+        procedure Append (AnnotationName : AnsiString);overload;
     end;
 
 {
@@ -2008,7 +2017,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns: 
 		The return value is a handle to a PDF action.
 }
-        constructor Create(Document : TPDFDocument; AFileName : String);
+        constructor Create(Document : TPDFDocument; AFileName : AnsiString);
     end;
 
 {
@@ -2023,7 +2032,7 @@ if they were stamped on the page with a rubber stamp.
 		Document :         [in] PDF Document object
 		AJavaScriptString :  [in] JavaScript string which will be executed
 }
-        constructor Create(Document : TPDFDocument; AJavaScriptString : String);overload;
+        constructor Create(Document : TPDFDocument; AJavaScriptString : AnsiString);overload;
 {
 	Description
 		Creates new "JavaScript" action from CosStream where this javascript is stored.
@@ -2301,7 +2310,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns
 			None.
 }
-        procedure AppendLine (LineCode : String);
+        procedure AppendLine (LineCode : AnsiString);
 {
 	Description
 		This function sets stroking color to the specified values.
@@ -2425,7 +2434,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns: 
 		None.
 }
-        procedure SetDash (Dash : String);
+        procedure SetDash (Dash : AnsiString);
 {
 	Description:
 		This function resets the dash pattern back to none, i.e., solid line.
@@ -2452,7 +2461,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns: 
 		None.
 }
-        procedure TextShow (X : Double; Y : Double; Orientation : Double; Str : String);overload;
+        procedure TextShow (X : Double; Y : Double; Orientation : Double; Str : AnsiString);overload;
 {
 	Description:
 		Writes a character string at the specified location using the currently selected font.
@@ -2513,7 +2522,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns: 
 		Width of the text.
 }
-        function GetTextWidth (Str : String) : Double;overload;
+        function GetTextWidth (Str : AnsiString) : Double;overload;
 {
 	Description:
 		Returns the width of a text string as it would be displayed in the current font.
@@ -3089,7 +3098,7 @@ if they were stamped on the page with a rubber stamp.
 	Returns
 		Index of the acroform object.
 }
-  function GetIndexByName( FieldName:string; CheckUnicodeNames:Boolean): Cardinal;
+  function GetIndexByName( FieldName:AnsiString; CheckUnicodeNames:Boolean): Cardinal;
 
 {
 	Description
@@ -3104,7 +3113,7 @@ if they were stamped on the page with a rubber stamp.
 		Any other value turn on checkbox field.
 		For radiobutton group you must use only values received with GetOptionValueByIndex function
 }
-  procedure SetValueByIndex ( Index: Cardinal; NewValue: string);
+  procedure SetValueByIndex ( Index: Cardinal; NewValue: AnsiString);
 
 
 {
@@ -3158,7 +3167,7 @@ if they were stamped on the page with a rubber stamp.
     TPDFAcroObject = class
     private
         constructor Create ( Page: TPDFPage );
-        procedure SetCaption (Value : String);
+        procedure SetCaption (Value : AnsiString);
         procedure SetFlag (Value : TPDFAcroObjectFlags);
     procedure SetAnnotationFlag(const Value: Word);
     protected
@@ -3207,7 +3216,7 @@ Description
 	Returns
 		None.
 }
-        property Caption : String write SetCaption;
+        property Caption : AnsiString write SetCaption;
 {
 	Description
 		Sets flags specifying various characteristics of the acroform object.
@@ -3246,7 +3255,7 @@ Description
 		Name					- [ in ] Name of Acroform object, Name of Acroform field is used to export when the PDF document is
 										submitted	
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString);
 {	
 	Description
 		Sets maximum length of the edit box text.
@@ -3282,7 +3291,7 @@ Description
 		Name					- [ in ] Name of Acroform object, Name of Acroform field is used to export when the PDF document is
 										submitted	
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString);
     end;
 {
     TPDFAcroButton creates a button in a PDF document.
@@ -3301,7 +3310,7 @@ Description
 		Name					- [ in ] Name of Acroform object, Name of Acroform field is used to export when the PDF document is
 									submitted	
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString);
 {	
 	Description
 		Sets miter of the pushbutton.
@@ -3330,7 +3339,7 @@ Description
 		GroupName				- [ in ] Name of Radio Buttons Group to which RadioButton will be linked.
 		InitialState			- [ in ] Value of the check box.
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String; GroupName : string; InitaialState : Boolean);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString; GroupName : AnsiString; InitaialState : Boolean);
 {	
 	Description
 		Sets display style for radiobutton and checkbox.
@@ -3359,7 +3368,7 @@ Description
 										submitted
 		InitialState		- [ in ] Value of the check box.
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : string; InitaialState : Boolean);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString; InitaialState : Boolean);
 {	
 	Description
 		Sets display style for radiobutton and checkbox.
@@ -3387,7 +3396,7 @@ Description
 		Name					- [ in ] Name of Acroform object, Name of Acroform field is used to export when the PDF document is
 									submitted
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString);
 {
 	Description
 		Appends items to ListBox or to ComboBox.
@@ -3396,7 +3405,7 @@ Description
 	Returns
 		None.
 }
-        procedure AppendItem (Item : String);
+        procedure AppendItem (Item : AnsiString);
     end;
 
 {
@@ -3414,7 +3423,7 @@ Description
 		Name					- [ in ] Name of Acroform object, Name of Acroform field is used to export when the PDF document is
 									submitted
 }
-        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : String);
+        constructor Create(Page : TPDFPage; Box : TPDFRect; Name : AnsiString);
 {
 	Description
 		Appends items to ListBox or to ComboBox.
@@ -3423,7 +3432,7 @@ Description
 	Returns
 		None.
 }
-        procedure AppendItem (Item : String);
+        procedure AppendItem (Item : AnsiString);
     end;
 
 
@@ -3457,7 +3466,7 @@ Description
     Note.
         Before call this function need check PDF string is Unicode or not with PDFStringIsUnicode function.
 }
-    function PDFStringToString ( A: PDFString ): string;
+    function PDFStringToString ( A: PDFString ): AnsiString;
 {
     Description:
         Creates a TPDFColor structure which will invisible for acroform objects.
@@ -3807,7 +3816,7 @@ begin
     Result.CompThree :=B;
 end;
 
-function PCharToPDFString( C:PChar; Len: Integer ):PDFString;
+function PCharToPDFString( C:PAnsiChar; Len: Integer ):PDFString;
 var
     ps:PDFString;
 begin
@@ -3855,9 +3864,9 @@ begin
     Result := Tmp;
 end;
 
-function PDFStringToString ( A: PDFString ): string;
+function PDFStringToString ( A: PDFString ): AnsiString;
 var
-    Str:string;
+    Str:AnsiString;
     I:Integer;
 begin
     I:= Length ( A );
@@ -3901,7 +3910,7 @@ begin
   end;
 end;
 
-function StringToPDFString( Str: string; Charset: TFontCharset): PDFString;
+function StringToPDFString( Str: AnsiString; Charset: TFontCharset): PDFString;
 var
   A: PDFString;
   CodePage : Integer;
@@ -3912,13 +3921,13 @@ var
 begin
     CodePage := CharSetToCodePage( Charset );
     Len := Length ( Str );
-    i := MultiByteToWideChar ( CodePage, 0, PChar ( Str ), Len , nil, 0 );
+    i := MultiByteToWideChar ( CodePage, 0, PAnsiChar ( Str ), Len , nil, 0 );
     if i = 0 then
         raise EPDFException.Create('Cannot convert to unicode');
     SetLength ( A, (i + 1)  shl 1 );
     SetLength ( B, I );
     W := @B[0];
-    if MultiByteToWideChar ( CodePage, 0, PChar ( Str ), Len , W, i ) = 0 then
+    if MultiByteToWideChar ( CodePage, 0, PAnsiChar ( Str ), Len , W, i ) = 0 then
         raise EPDFException.Create('Cannot convert to unicode');
     move ( B[0], A[2], I shl 1 );
     A[0] := $FF;
@@ -3941,13 +3950,29 @@ end;
 
 procedure ErrorCall( Lib: PDFLibHandle; ErrCode: ppInt32; Opaque: Pointer ); cdecl;
 var
-  S:string;
+  S:AnsiString;
   i: Integer;
 begin
   SetLength ( S, 200);
-  i:= VSGetErrorStr( ErrCode, PChar ( S ) );
+  i:= VSGetErrorStr( ErrCode, PAnsiChar ( S ) );
   SetLength ( S, i );
-  raise EPDFException.Create( S );
+  raise EPDFException.Create( String(S) );
+end;
+
+
+function malloc ( Count: Cardinal ):Pointer; cdecl;
+begin
+  Result := AllocMem(Count);
+end;
+
+function realloc ( Dest:Pointer; Count: Cardinal ):Pointer;cdecl;
+begin
+  ReallocMem(Dest,Count);
+  Result := Dest;
+end;
+procedure freem ( Dest: Pointer );cdecl;
+begin
+  FreeMem(Dest);
 end;
 
 
@@ -3955,17 +3980,17 @@ end;
 
 { TPDFLibrary }
 
-function TPDFLibrary.AtomToString(Atom: ppAtom): String;
+function TPDFLibrary.AtomToString(Atom: ppAtom): AnsiString;
 var
- S:PChar;
+ S:PAnsiChar;
 begin
     S := ULAtomToString( FLib, Atom );
     Result := S;
 end;
 
-constructor TPDFLibrary.Create(LicenseName, LicenseKey: String);
+constructor TPDFLibrary.Create(LicenseName, LicenseKey: AnsiString);
 begin
-  FLib := InitPDFLibraryWithParams ( PChar ( LicenseName ), PChar ( LicenseKey ),
+  FLib := InitPDFLibraryWithParams ( PAnsiChar ( LicenseName ), PAnsiChar ( LicenseKey ),
     nil, nil, nil, ErrorCall, nil );
   if FLib = nil then
     raise EPDFException.Create( 'Cannot start PDF Engine.' );
@@ -3977,14 +4002,14 @@ begin
     inherited;
 end;
 
-function TPDFLibrary.ExistsAtomForString(Str: String): Boolean;
+function TPDFLibrary.ExistsAtomForString(Str: AnsiString): Boolean;
 begin
-  Result := ULExistsAtomForString( FLib, PChar ( Str ) );
+  Result := ULExistsAtomForString( FLib, PAnsiChar ( Str ) );
 end;
 
-function TPDFLibrary.StringToAtom(Str: String): ppAtom;
+function TPDFLibrary.StringToAtom(Str: AnsiString): ppAtom;
 begin
-    Result := ULStringToAtom ( FLib, PChar ( Str ) );
+    Result := ULStringToAtom ( FLib, PAnsiChar ( Str ) );
 end;
 
 { TPDFDocument }
@@ -4002,10 +4027,10 @@ begin
     FThreadCount := -1;
 end;
 
-procedure TPDFDocument.LoadFromFile( FileName: String);
+procedure TPDFDocument.LoadFromFile( FileName: AnsiString);
 begin
     ClearAll;
-    FDoc := PDFDocLoadFromFile( FLibrary.Handle, PChar( FileName ) );
+    FDoc := PDFDocLoadFromFile( FLibrary.Handle, PAnsiChar( FileName ) );
     FAcroInfo := nil;
     FOutlineRoot := nil;
     FPageCount := -1;
@@ -4016,7 +4041,7 @@ end;
 
 
 
-procedure TPDFDocument.AppendNamedDestination(Destination: TPDFExplicitDestination; Name: string; Charset: TFontCharset);
+procedure TPDFDocument.AppendNamedDestination(Destination: TPDFExplicitDestination; Name: AnsiString; Charset: TFontCharset);
 var
     ps: PDFString;
     Dest: TPDFExplicitDest;
@@ -4026,11 +4051,11 @@ begin
     Dest.ExType := Integer ( Destination.ExType );
     if (Name = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-      PDFDestinationNamedNewM ( FDoc, PChar ( Name), Length ( Name ), @Dest );
+      PDFDestinationNamedNewM ( FDoc, PAnsiChar ( Name), Length ( Name ), @Dest );
     end else
     begin
         ps := StringToPDFString( Name, Charset );
-        PDFDestinationNamedNewM ( FDoc, PChar ( @ps[0]), Length ( ps ), @Dest );
+        PDFDestinationNamedNewM ( FDoc, PAnsiChar ( @ps[0]), Length ( ps ), @Dest );
     end;
 end;
 
@@ -4052,15 +4077,15 @@ begin
 end;
 
 
-procedure TPDFDocument.AppendSignature(FileName, Name, Reason: String;
-  PKCS7: Boolean; Password: String);
+procedure TPDFDocument.AppendSignature(FileName, Name, Reason: AnsiString;
+  PKCS7: Boolean; Password: AnsiString);
 begin
-    PDFDocAppendSignatureFromFile ( FDoc, PChar ( FileName ), PChar ( Name ), PChar ( Reason ), PKCS7, PChar ( Password ) );
+    PDFDocAppendSignatureFromFile ( FDoc, PAnsiChar ( FileName ), PAnsiChar ( Name ), PAnsiChar ( Reason ), PKCS7, PAnsiChar ( Password ) );
 end;
 
-function TPDFDocument.CheckPassword(Password: String): TKeyValidType;
+function TPDFDocument.CheckPassword(Password: AnsiString): TKeyValidType;
 begin
-    Result:= TKeyValidType ( PDFDocCheckPassword( FDoc, PChar ( Password ) ) );
+    Result:= TKeyValidType ( PDFDocCheckPassword( FDoc, PAnsiChar ( Password ) ) );
 end;
 
 procedure TPDFDocument.LoadFromStream(AStream: TStream);
@@ -4140,15 +4165,15 @@ begin
     Result := PDFFontStandardAppend( FDoc, Integer( Font ), Integer( Encode ) );
 end;
 
-function TPDFDocument.FontAppendTrueType(FontName: string; Bold,
+function TPDFDocument.FontAppendTrueType(FontName: AnsiString; Bold,
   Italic: Boolean): Cardinal;
 begin
-    Result := PDFFontTrueTypeAppend ( FDoc, PChar ( FontName ), Bold, Italic );
+    Result := PDFFontTrueTypeAppend ( FDoc, PAnsiChar ( FontName ), Bold, Italic );
 end;
 
-function TPDFDocument.FontAppendTrueType(FontFileName: String): Cardinal;
+function TPDFDocument.FontAppendTrueType(FontFileName: AnsiString): Cardinal;
 begin
-    Result := PDFFontTrueTypeAppendFromFile( FDoc, PChar ( FontFileName ) );
+    Result := PDFFontTrueTypeAppendFromFile( FDoc, PAnsiChar ( FontFileName ) );
 end;
 
 function TPDFDocument.FontAppendTrueType(AStream: TStream): Cardinal;
@@ -4178,7 +4203,7 @@ end;
 function TPDFDocument.GetDocumentInformation(
   Info: TPDFInformation): PDFString;
 var
-    C:PChar;
+    C:PAnsiChar;
     Len: Cardinal;
 begin
     C := PDFDocGetInfo( FDoc, Integer(Info), @Len );
@@ -4289,10 +4314,10 @@ begin
 
 end;
 
-function TPDFDocument.ImageAppend(FileName: String; Index: Cardinal;
+function TPDFDocument.ImageAppend(FileName: AnsiString; Index: Cardinal;
   Compression: TPDFImageCompressionType): Cardinal;
 begin
-    Result := PDFImageAppendToDocFromFile( FDoc, PChar ( FileName ), Index, Integer ( Compression ) );
+    Result := PDFImageAppendToDocFromFile( FDoc, PAnsiChar ( FileName ), Index, Integer ( Compression ) );
 end;
 
 function TPDFDocument.ImageAppend(Image: TPDFImage;
@@ -4327,10 +4352,10 @@ begin
     end;
 end;
 
-procedure TPDFDocument.SaveToFile(FileName: String);
+procedure TPDFDocument.SaveToFile(FileName: AnsiString);
 begin
     BeforeSave;
-    PDFDocSaveToFile( FDoc, PChar ( FileName ) );
+    PDFDocSaveToFile( FDoc, PAnsiChar ( FileName ) );
 end;
 
 procedure TPDFDocument.SetAutoLaunch(AAutoLaunch: Boolean);
@@ -4369,7 +4394,7 @@ begin
 end;
 
 procedure TPDFDocument.SetSecurity( Permission: TPDFDocumentRestrictions; KeyLength: TPDFProtectionType;
-  UserPassword, OwnerPassword: String);
+  UserPassword, OwnerPassword: AnsiString);
 var
     I: Integer;
 begin
@@ -4382,7 +4407,7 @@ begin
     if vdrExtractTextAndImage in Permission then I := I or drExtractTextAndImage;
     if vdrAssembleDocument in Permission then I := I or drAssembleDocument;
     if vdrPrintHiResolution in Permission then I := I or drPrintHiResolution;
-    PDFDocSetSecurity( FDoc, I, Integer ( KeyLength ), PChar ( UserPassword ), PChar ( OwnerPassword ) );
+    PDFDocSetSecurity( FDoc, I, Integer ( KeyLength ), PAnsiChar ( UserPassword ), PAnsiChar ( OwnerPassword ) );
 end;
 
 procedure TPDFDocument.RemoveSecurity;
@@ -4401,18 +4426,18 @@ begin
 end;
 
 procedure TPDFDocument.SetDocumentInformation(Info: TPDFInformation;
-  Value: string; CharSet: TFontCharset);
+  Value: AnsiString; CharSet: TFontCharset);
 var
     ps: PDFString;
 begin
     ps :=nil;
     if (Value = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-      PDFDocSetInfo( FDoc, Integer ( Info ), PChar ( Value ), Length ( Value ) );
+      PDFDocSetInfo( FDoc, Integer ( Info ), PAnsiChar ( Value ), Length ( Value ) );
     end else
     begin
         ps := StringToPDFString( Value, Charset );
-        PDFDocSetInfo( FDoc, Integer ( Info ), PChar ( @ps[0] ), Length ( ps ) );
+        PDFDocSetInfo( FDoc, Integer ( Info ), PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -4421,24 +4446,24 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Value );
-    PDFDocSetInfo( FDoc, Integer ( Info ), PChar ( @ps[0] ), Length ( ps ) );
+    PDFDocSetInfo( FDoc, Integer ( Info ), PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 procedure TPDFDocument.AppendSignature(Buffer: Pointer; Size: Integer;
-  Name, Reason: String; PKCS7: Boolean; Password: String);
+  Name, Reason: AnsiString; PKCS7: Boolean; Password: AnsiString);
 begin
-    PDFDocAppendSignatureFromBuffer ( FDoc, Buffer, Size, PChar ( Name ), PChar ( Reason ), PKCS7, PChar ( Password ) );
+    PDFDocAppendSignatureFromBuffer ( FDoc, Buffer, Size, PAnsiChar ( Name ), PAnsiChar ( Reason ), PKCS7, PAnsiChar ( Password ) );
 end;
 
 procedure TPDFDocument.AppendSignature(AStream: TStream; Name,
-  Reason: String; PKCS7: Boolean; Password: String);
+  Reason: AnsiString; PKCS7: Boolean; Password: AnsiString);
 var
     S: PDFStreamHandle;
 begin
     S := ULStreamCustomNew ( FLibrary.Handle, @ReadBuffer, @WriteBuffer, @GetPosition,
             @SetPosition,@GetSize, @GetChar, @LookChar, AStream );
     try
-        PDFDocAppendSignatureFromStream ( FDoc, S, PChar ( Name ), PChar ( Reason ), PKCS7, PChar ( Password ) );
+        PDFDocAppendSignatureFromStream ( FDoc, S, PAnsiChar ( Name ), PAnsiChar ( Reason ), PKCS7, PAnsiChar ( Password ) );
     finally
         ULStreamClose ( S );
     end;
@@ -4456,7 +4481,7 @@ begin
     Move( Destination, Dest, SizeOf ( Dest ) );
     Dest.ExType := Integer ( Destination.ExType );
     ps := WideStringToPDFString( Name );
-    PDFDestinationNamedNewM ( FDoc, PChar ( @ps[0]), Length ( ps ), @Dest );
+    PDFDestinationNamedNewM ( FDoc, PAnsiChar ( @ps[0]), Length ( ps ), @Dest );
 end;
 
 function TPDFDocument.FontAppendType1(AStream: TStream): Cardinal;
@@ -4472,9 +4497,9 @@ begin
     end;
 end;
 
-function TPDFDocument.FontAppendType1(FontFileName: String): Cardinal;
+function TPDFDocument.FontAppendType1(FontFileName: AnsiString): Cardinal;
 begin
-    Result := PDFFontType1AppendFromFile( FDoc, PChar ( FontFileName ) );
+    Result := PDFFontType1AppendFromFile( FDoc, PAnsiChar ( FontFileName ) );
 end;
 
 function TPDFDocument.GetPages(Index: Cardinal): TPDFPage;
@@ -4549,7 +4574,7 @@ begin
     Result := FThreads[FThreadCount - 1 ];
 end;
 
-function TPDFDocument.CreateDestination(IsIndirect: Boolean; Str: string;
+function TPDFDocument.CreateDestination(IsIndirect: Boolean; Str: AnsiString;
   Charset: TFontCharset): TPDFDestination;
 var
     ps: PDFString;
@@ -4557,11 +4582,11 @@ begin
     ps :=nil;
     if ( Str = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        Result :=  TPDFDestination ( PDFDestinationFromString(  FDoc, PChar ( Str ), Length ( Str ), IsIndirect ) );
+        Result :=  TPDFDestination ( PDFDestinationFromString(  FDoc, PAnsiChar ( Str ), Length ( Str ), IsIndirect ) );
     end else
     begin
         ps := StringToPDFString( Str, Charset );
-        Result := TPDFDestination ( PDFDestinationFromString(  FDoc, PChar ( @ps[0] ), Length ( ps ), IsIndirect ) );
+        Result := TPDFDestination ( PDFDestinationFromString(  FDoc, PAnsiChar ( @ps[0] ), Length ( ps ), IsIndirect ) );
     end;
 end;
 
@@ -4571,7 +4596,7 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Str );
-    Result := TPDFDestination ( PDFDestinationFromString(  FDoc, PChar ( @ps[0] ), Length ( ps ), IsIndirect ) );
+    Result := TPDFDestination ( PDFDestinationFromString(  FDoc, PAnsiChar ( @ps[0] ), Length ( ps ), IsIndirect ) );
 end;
 
 function TPDFDocument.CreateDestination(IsIndirect: Boolean; Destination:
@@ -4727,9 +4752,9 @@ begin
 end;
 
 class function TPDFImage.GetTIFFImagesCount(ALibrary: TPDFLibrary;
-  FileName: String): Cardinal;
+  FileName: AnsiString): Cardinal;
 begin
-    Result := PDFImageGetTIFFCountFromFile( ALibrary.Handle, PChar ( FileName ) );
+    Result := PDFImageGetTIFFCountFromFile( ALibrary.Handle, PAnsiChar ( FileName ) );
 end;
 
 class function TPDFImage.GetTIFFImagesCount(ALibrary: TPDFLibrary;
@@ -4793,9 +4818,9 @@ begin
     FImage := PDFImageCreate ( ALibrary.Handle, Width, Height, cd,cs );
 end;
 
-constructor TPDFImage.CreateFromFile(ALibrary: TPDFLibrary; FileName: string; Index: Cardinal);
+constructor TPDFImage.CreateFromFile(ALibrary: TPDFLibrary; FileName: AnsiString; Index: Cardinal);
 begin
-    FImage := PDFImageLoadFromFile( Alibrary.Handle, PChar ( FileName ), Index );
+    FImage := PDFImageLoadFromFile( Alibrary.Handle, PAnsiChar ( FileName ), Index );
 end;
 
 destructor TPDFImage.Destroy;
@@ -4995,18 +5020,18 @@ begin
     PDFOutlineSetFlags( FOutline, Value);
 end;
 
-procedure TPDFOutline.SetTitle(Title: String;Charset:TFontCharset = 0 );
+procedure TPDFOutline.SetTitle(Title: AnsiString;Charset:TFontCharset = 0 );
 var
     ps: PDFString;
 begin
     ps :=nil;
     if (Title = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-      PDFOutlineSetTitle( FOutline, PChar ( Title ), Length ( Title ) );
+      PDFOutlineSetTitle( FOutline, PAnsiChar ( Title ), Length ( Title ) );
     end else
     begin
         ps := StringToPDFString( Title, Charset );
-        PDFOutlineSetTitle( FOutline, PChar ( @ps[0] ), Length ( ps ) );
+        PDFOutlineSetTitle( FOutline, PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -5015,7 +5040,7 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Title );
-    PDFOutlineSetTitle( FOutline, PChar ( @ps[0] ), Length ( ps ) );
+    PDFOutlineSetTitle( FOutline, PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 { TPDFAction }
@@ -5074,7 +5099,7 @@ end;
 
 function TPDFAcroInformation.GetValueByIndex (Index: Cardinal): PDFString;
 var
-    C:PChar;
+    C:PAnsiChar;
     Len:Cardinal;
 begin
     C := PDFAcroGetValueByIndex( FDocument.Handle, Index, @Len );
@@ -5091,14 +5116,14 @@ begin
   Result := PDFAcroGetFlagsByIndex( FDocument.Handle, Index);
 end;
 
-function TPDFAcroInformation.GetIndexByName( FieldName:string; CheckUnicodeNames:Boolean): Cardinal;
+function TPDFAcroInformation.GetIndexByName( FieldName:AnsiString; CheckUnicodeNames:Boolean): Cardinal;
 begin
-  Result := PDFAcroGetIndexByName(FDocument.Handle, PChar(FieldName), CheckUnicodeNames);
+  Result := PDFAcroGetIndexByName(FDocument.Handle, PAnsiChar(FieldName), CheckUnicodeNames);
 end;
 
-procedure TPDFAcroInformation.SetValueByIndex ( Index: Cardinal; NewValue: string);
+procedure TPDFAcroInformation.SetValueByIndex ( Index: Cardinal; NewValue: AnsiString);
 begin
-  PDFAcroSetValueByIndex(FDocument.Handle, Index, PChar(NewValue));
+  PDFAcroSetValueByIndex(FDocument.Handle, Index, PAnsiChar(NewValue));
 end;
 
 function TPDFAcroInformation.GetOptionCountByIndex ( Index :Cardinal): Cardinal;
@@ -5108,7 +5133,7 @@ end;
 
 function TPDFAcroInformation.GetOptionValueByIndex ( Index, OptionIndex: Cardinal): PDFString;
 var
-    C:PChar;
+    C:PAnsiChar;
     Len:Cardinal;
 begin
     C := PDFAcroGetOptionValueByIndex( FDocument.Handle, Index, OptionIndex, @Len );
@@ -5251,7 +5276,7 @@ end;
 
 function TPDFThread.GetInfo(Info: TPDFInformation): PDFString;
 var
- C:PChar;
+ C:PAnsiChar;
  Len:ppUns32;
 begin
     C := PDFThreadGetInfo( FThread, Integer ( Info ), @Len );
@@ -5259,7 +5284,7 @@ begin
 end;
 
 
-procedure TPDFThread.SetInfo(Info: TPDFInformation; Value: string;
+procedure TPDFThread.SetInfo(Info: TPDFInformation; Value: AnsiString;
   Charset: TFontCharset);
 var
     ps: PDFString;
@@ -5267,11 +5292,11 @@ begin
     ps :=nil;
     if ( Value = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-      PDFThreadSetInfo ( FThread, Integer ( Info ), PChar ( Value ), Length ( Value ) );
+      PDFThreadSetInfo ( FThread, Integer ( Info ), PAnsiChar ( Value ), Length ( Value ) );
     end else
     begin
         ps := StringToPDFString( Value, Charset );
-        PDFThreadSetInfo( FThread, Integer ( Info ), PChar ( @ps[0] ), Length ( ps ) );
+        PDFThreadSetInfo( FThread, Integer ( Info ), PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -5280,7 +5305,7 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Value );
-    PDFThreadSetInfo( FThread, Integer ( Info ), PChar ( @ps[0] ), Length ( ps ) );
+    PDFThreadSetInfo( FThread, Integer ( Info ), PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 
@@ -5408,9 +5433,9 @@ begin
     Result := PBXGetHeight( PB );
 end;
 
-function TPDFPaintBox.GetTextWidth(Str: String): Double;
+function TPDFPaintBox.GetTextWidth(Str: AnsiString): Double;
 begin
-    Result := PBXGetTextWidth ( PB, PChar ( Str ) );
+    Result := PBXGetTextWidth ( PB, PAnsiChar ( Str ) );
 end;
 
 function TPDFPaintBox.GetTextWidth(Str: WideString): Double;
@@ -5502,9 +5527,9 @@ begin
     PBXSetColorM( PB, @C );
 end;
 
-procedure TPDFPaintBox.SetDash(Dash: String);
+procedure TPDFPaintBox.SetDash(Dash: AnsiString);
 begin
-    PBXSetDash( PB, PChar ( Dash ) );
+    PBXSetDash( PB, PAnsiChar ( Dash ) );
 end;
 
 procedure TPDFPaintBox.SetFillColor(Color: TPDFColor);
@@ -5599,9 +5624,9 @@ begin
     PBXStroke ( PB );
 end;
 
-procedure TPDFPaintBox.TextShow(X, Y, Orientation: Double; Str: String);
+procedure TPDFPaintBox.TextShow(X, Y, Orientation: Double; Str: AnsiString);
 begin
-    PBXTextOut( PB, X, Y, Orientation, PChar ( Str ) );
+    PBXTextOut( PB, X, Y, Orientation, PAnsiChar ( Str ) );
 end;
 
 procedure TPDFPaintBox.TextShow(X, Y, Orientation: Double;
@@ -5610,9 +5635,9 @@ begin
     PBXUnicodeTextOut ( PB, X, Y, Orientation, PWord ( @Str[1] ), Length ( Str ) );
 end;
 
-procedure TPDFPaintBox.AppendLine(LineCode: String);
+procedure TPDFPaintBox.AppendLine(LineCode: AnsiString);
 begin
-    PBXAppendLine( PB, PChar ( LineCode ) );
+    PBXAppendLine( PB, PAnsiChar ( LineCode ) );
 end;
 
 { TPDFPage }
@@ -5822,9 +5847,9 @@ begin
     PDFAcroObjectSetBorderM( FDocument, AcroIndex, @C1, @C2, BorderWidth );
 end;
 
-procedure TPDFAcroObject.SetCaption(Value: String);
+procedure TPDFAcroObject.SetCaption(Value: AnsiString);
 begin
-    PDFAcroObjectSetCaption( FDocument, AcroIndex, PChar ( Value ) );
+    PDFAcroObjectSetCaption( FDocument, AcroIndex, PAnsiChar ( Value ) );
 end;
 
 procedure TPDFAcroObject.SetFlag(Value: TPDFAcroObjectFlags);
@@ -5861,10 +5886,10 @@ end;
 { TPDFAcroEditBox }
 
 constructor TPDFAcroEditBox.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: String);
+  Name: AnsiString);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendEditBoxM ( FDocument, Page.Idx, @Box, PChar ( Name ) );
+    AcroIndex := PDFPageAppendEditBoxM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ) );
 end;
 
 procedure TPDFAcroEditBox.SetAlign(Value: TPDFAcroQuadding);
@@ -5880,19 +5905,19 @@ end;
 { TPDFAcroSignatureBox }
 
 constructor TPDFAcroSignatureBox.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: String);
+  Name: AnsiString);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendSignatureBoxM ( FDocument, Page.Idx, @Box, PChar ( Name ) );
+    AcroIndex := PDFPageAppendSignatureBoxM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ) );
 end;
 
 { TPDFAcroPushButton }
 
 constructor TPDFAcroPushButton.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: String);
+  Name: AnsiString);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendPushButtonM ( FDocument, Page.Idx, @Box, PChar ( Name ) );
+    AcroIndex := PDFPageAppendPushButtonM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ) );
 end;
 
 procedure TPDFAcroPushButton.SetMiter(Value: Double);
@@ -5905,10 +5930,10 @@ end;
 { TPDFAcroRadioButton }
 
 constructor TPDFAcroRadioButton.Create(Page: TPDFPage; Box: TPDFRect; Name,
-  GroupName: string; InitaialState: Boolean);
+  GroupName: AnsiString; InitaialState: Boolean);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendRadioButtonM( FDocument, Page.Idx, @Box, PChar ( Name ), PChar ( GroupName ), InitaialState );
+    AcroIndex := PDFPageAppendRadioButtonM( FDocument, Page.Idx, @Box, PAnsiChar ( Name ), PAnsiChar ( GroupName ), InitaialState );
 end;
 
 procedure TPDFAcroRadioButton.SetStyle(Sign: TPDFCheckBoxSign; Style: TPDFCheckBoxStyle);
@@ -5938,10 +5963,10 @@ end;
 { TPDFAcroCheckBox }
 
 constructor TPDFAcroCheckBox.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: string; InitaialState: Boolean);
+  Name: AnsiString; InitaialState: Boolean);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendCheckBoxM ( FDocument, Page.Idx, @Box, PChar ( Name ), InitaialState );
+    AcroIndex := PDFPageAppendCheckBoxM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ), InitaialState );
 end;
 
 procedure TPDFAcroCheckBox.SetStyle(Sign: TPDFCheckBoxSign; Style: TPDFCheckBoxStyle);
@@ -5971,30 +5996,30 @@ end;
 { TPDFAcroListBox }
 
 constructor TPDFAcroListBox.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: String);
+  Name: AnsiString);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendListBoxM ( FDocument, Page.Idx, @Box, PChar ( Name ));
+    AcroIndex := PDFPageAppendListBoxM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ));
 end;
 
-procedure TPDFAcroListBox.AppendItem(Item: String);
+procedure TPDFAcroListBox.AppendItem(Item: AnsiString);
 begin
-    PDFAcroObjectAppendItem( FDocument, AcroIndex, PChar ( Item ) );
+    PDFAcroObjectAppendItem( FDocument, AcroIndex, PAnsiChar ( Item ) );
 end;
 
 
 { TPDFAcroComboBox }
 
 constructor TPDFAcroComboBox.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: String);
+  Name: AnsiString);
 begin
     FDocument := Page.Parent;
-    AcroIndex := PDFPageAppendComboBoxM ( FDocument, Page.Idx, @Box, PChar ( Name ) );
+    AcroIndex := PDFPageAppendComboBoxM ( FDocument, Page.Idx, @Box, PAnsiChar ( Name ) );
 end;
 
-procedure TPDFAcroComboBox.AppendItem(Item: String);
+procedure TPDFAcroComboBox.AppendItem(Item: AnsiString);
 begin
-    PDFAcroObjectAppendItem( FDocument, AcroIndex, PChar ( Item ) );
+    PDFAcroObjectAppendItem( FDocument, AcroIndex, PAnsiChar ( Item ) );
 end;
 
 
@@ -6121,7 +6146,7 @@ begin
 end;
 
 constructor TPDFCosName.Create(Document: TPDFDocument; IsIndirect: Boolean;
-  Value: String);
+  Value: AnsiString);
 begin
     Obj := CosNameNew ( Document.Handle, IsIndirect, Document.Owner.StringToAtom( Value ) );
 end;
@@ -6145,18 +6170,18 @@ end;
 { TPDFCosString }
 
 constructor TPDFCosString.Create(Document: TPDFDocument;
-  IsIndirect: Boolean; Value: string; Charset: TFontCharset);
+  IsIndirect: Boolean; Value: AnsiString; Charset: TFontCharset);
 var
     ps: PDFString;
 begin
     ps :=nil;
     if ( Value = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-      Obj := CosStringNew ( Document.Handle, IsIndirect, PChar ( Value ), Length ( Value ) );
+      Obj := CosStringNew ( Document.Handle, IsIndirect, PAnsiChar ( Value ), Length ( Value ) );
     end else
     begin
         ps := StringToPDFString( Value, Charset );
-        Obj := CosStringNew ( Document.Handle, IsIndirect, PChar ( @ps[0] ), Length ( ps ) );
+        Obj := CosStringNew ( Document.Handle, IsIndirect, PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -6166,13 +6191,13 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Value );
-    Obj := CosStringNew ( Document.Handle, IsIndirect, PChar ( @ps[0] ), Length ( ps ) );
+    Obj := CosStringNew ( Document.Handle, IsIndirect, PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 constructor TPDFCosString.Create(Document: TPDFDocument;
   IsIndirect: Boolean; Buffer: Pointer; Len: Cardinal);
 begin
-    Obj := CosStringNew ( Document.Handle, IsIndirect, PChar ( Buffer ), Len );
+    Obj := CosStringNew ( Document.Handle, IsIndirect, PAnsiChar ( Buffer ), Len );
 end;
 
 constructor TPDFCosString.Create(AHandle: PDFCosHandle);
@@ -6182,7 +6207,7 @@ end;
 
 function TPDFCosString.GetValueString: PDFString;
 var
-    C:PChar;
+    C:PAnsiChar;
     Len:Cardinal;
 begin
     C := CosStringGetValue( Obj, @Len );
@@ -6191,10 +6216,10 @@ end;
 
 procedure TPDFCosString.SetValue(Value: Pointer; Len: Cardinal);
 begin
-    CosStringSetValue ( Obj, PChar ( Value ), Len );
+    CosStringSetValue ( Obj, PAnsiChar ( Value ), Len );
 end;
 
-procedure TPDFCosString.SetValueString(Value: string;
+procedure TPDFCosString.SetValueString(Value: AnsiString;
   Charset: TFontCharset);
 var
     ps: PDFString;
@@ -6202,11 +6227,11 @@ begin
     ps :=nil;
     if ( Value = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        CosStringSetValue ( Obj, PChar ( Value ), Length ( Value ) );
+        CosStringSetValue ( Obj, PAnsiChar ( Value ), Length ( Value ) );
     end else
     begin
         ps := StringToPDFString( Value, Charset );
-        CosStringSetValue ( Obj, PChar ( @ps[0] ), Length ( ps ) );
+        CosStringSetValue ( Obj, PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -6215,7 +6240,7 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Value );
-    CosStringSetValue ( Obj, PChar ( @ps[0] ), Length ( ps ) );
+    CosStringSetValue ( Obj, PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 { TPDFCosArray }
@@ -6469,23 +6494,23 @@ begin
     PDFAnnotationSetFlag( FAnnot, FL );
 end;
 
-procedure TPDFAnnotation.SetName(Value: String);
+procedure TPDFAnnotation.SetName(Value: AnsiString);
 begin
-    PDFAnnotationSetName( FAnnot, PChar ( Value ), Length ( Value ) );
+    PDFAnnotationSetName( FAnnot, PAnsiChar ( Value ), Length ( Value ) );
 end;
 
-procedure TPDFAnnotation.SetTitle(Value: string; Charset: TFontCharset);
+procedure TPDFAnnotation.SetTitle(Value: AnsiString; Charset: TFontCharset);
 var
     ps: PDFString;
 begin
     ps :=nil;
     if ( Value = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        PDFAnnotationSetTitle ( FAnnot, PChar ( Value ), Length ( Value ) );
+        PDFAnnotationSetTitle ( FAnnot, PAnsiChar ( Value ), Length ( Value ) );
     end else
     begin
         ps := StringToPDFString( Value, Charset );
-        PDFAnnotationSetTitle ( FAnnot, PChar ( @ps[0] ), Length ( ps ) );
+        PDFAnnotationSetTitle ( FAnnot, PAnsiChar ( @ps[0] ), Length ( ps ) );
     end;
 end;
 
@@ -6494,25 +6519,25 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Value );
-    PDFAnnotationSetTitle ( FAnnot, PChar ( @ps[0] ), Length ( ps ) );
+    PDFAnnotationSetTitle ( FAnnot, PAnsiChar ( @ps[0] ), Length ( ps ) );
 end;
 
 { TPDFAnnotationText }
 
 constructor TPDFAnnotationText.Create(Page: TPDFPage; Box: TPDFRect;
-  IsOpened: Boolean; Name: TPDFAnnotationTextName; Content: string; Charset: TFontCharset);
+  IsOpened: Boolean; Name: TPDFAnnotationTextName; Content: AnsiString; Charset: TFontCharset);
 var
     ps: PDFString;
 begin
     ps :=nil;
     if ( Content = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PChar ( Content), Length ( Content ),
+        FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PAnsiChar ( Content), Length ( Content ),
             IsOpened, Integer ( Name ) );
     end else
     begin
         ps := StringToPDFString( Content, Charset );
-        FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ),
+        FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ),
             IsOpened, Integer ( Name ) );
     end;
 end;
@@ -6523,7 +6548,7 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Content );
-    FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ),
+    FAnnot := PDFPageAppendAnnotationTextM( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ),
             IsOpened, Integer ( Name ) );
 end;
 
@@ -6545,18 +6570,18 @@ end;
 
 
 constructor TPDFAnnotationStamp.Create(Page: TPDFPage; Box: TPDFRect;
-  Name: TPDFAnnotationStampName; Content: String; Charset: TFontCharset);
+  Name: TPDFAnnotationStampName; Content: AnsiString; Charset: TFontCharset);
 var
     ps: PDFString;
 begin
     ps :=nil;
     if ( Content = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        FAnnot := PDFPageAppendAnnotationStampM( Page.Parent, Page.Idx, @Box, PChar ( Content), Length ( Content ), Integer ( Name ) );
+        FAnnot := PDFPageAppendAnnotationStampM( Page.Parent, Page.Idx, @Box, PAnsiChar ( Content), Length ( Content ), Integer ( Name ) );
     end else
     begin
         ps := StringToPDFString( Content, Charset );
-        FAnnot := PDFPageAppendAnnotationStampM ( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ), Integer ( Name ) );
+        FAnnot := PDFPageAppendAnnotationStampM ( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ), Integer ( Name ) );
     end;
 end;
 
@@ -6566,11 +6591,11 @@ var
     ps: PDFString;
 begin
     ps := WideStringToPDFString( Content );
-    FAnnot := PDFPageAppendAnnotationStampM( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ), Integer ( Name ) );
+    FAnnot := PDFPageAppendAnnotationStampM( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ), Integer ( Name ) );
 
 end;
 
-constructor TPDFAnnotationStamp.Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Resolution:Cardinal; var PaintBox: TPDFPaintBox; Content : string; Charset: TFontCharset = 0);
+constructor TPDFAnnotationStamp.Create(Page : TPDFPage; Box : TPDFRect; Name : TPDFAnnotationStampName; Resolution:Cardinal; var PaintBox: TPDFPaintBox; Content : AnsiString; Charset: TFontCharset = 0);
 var
     ps: PDFString;
     PB:Pointer;
@@ -6578,11 +6603,11 @@ begin
     ps :=nil;
     if ( Content = '') or (Charset = 0 ) or ( ( Charset = DEFAULT_CHARSET ) and ( GetDefFontCharSet = 0 ) ) then
     begin
-        FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM( Page.Parent, Page.Idx, @Box, PChar ( Content), Length ( Content ), Integer ( Name ), Resolution, @PB );
+        FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM( Page.Parent, Page.Idx, @Box, PAnsiChar ( Content), Length ( Content ), Integer ( Name ), Resolution, @PB );
     end else
     begin
         ps := StringToPDFString( Content, Charset );
-        FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM ( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ), Integer ( Name ), Resolution, @PB );
+        FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM ( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ), Integer ( Name ), Resolution, @PB );
     end;
    PaintBox := TPDFPaintBox.Create(nil, PB);
 end;
@@ -6592,7 +6617,7 @@ var
   PB:Pointer;
 begin
     ps := WideStringToPDFString( Content );
-    FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM( Page.Parent, Page.Idx, @Box, PChar ( @ps[0] ), Length ( ps ), Integer ( Name ), Resolution, @PB );
+    FAnnot := PDFPageAppendAnnotationStampWithDrawBoxM( Page.Parent, Page.Idx, @Box, PAnsiChar ( @ps[0] ), Length ( ps ), Integer ( Name ), Resolution, @PB );
     PaintBox := TPDFPaintBox.Create(nil, PB);
 end;
 
@@ -6608,34 +6633,34 @@ end;
 { TPDFActionGoToRemote }
 
 constructor TPDFActionGoToRemote.Create(Document: TPDFDocument;
-  AFileName: String; Destination: TPDFDestination; AInNewWindow: Boolean);
+  AFileName: AnsiString; Destination: TPDFDestination; AInNewWindow: Boolean);
 begin
-    FAction := PDFActionNewGoToRemote( Document.Handle, PChar (AFileName), Length ( AFileName ),
+    FAction := PDFActionNewGoToRemote( Document.Handle, PAnsiChar (AFileName), Length ( AFileName ),
         Pointer ( Destination ), AInNewWindow)
 end;
 
 { TPDFActionLaunch }
 
 constructor TPDFActionLaunch.Create(Document: TPDFDocument; FileName,
-  DefaultDir, Operation, Params: String; InNewWindow: Boolean);
+  DefaultDir, Operation, Params: AnsiString; InNewWindow: Boolean);
 begin
-    FAction := PDFActionNewLaunch( Document.Handle, PChar ( FileName ), PChar ( DefaultDir ), PChar ( Operation ),
-        PChar ( Params ), InNewWindow );
+    FAction := PDFActionNewLaunch( Document.Handle, PAnsiChar ( FileName ), PAnsiChar ( DefaultDir ), PAnsiChar ( Operation ),
+        PAnsiChar ( Params ), InNewWindow );
 end;
 
 { TPDFActionURL }
 
-constructor TPDFActionURL.Create(Document: TPDFDocument; AURL: string;
+constructor TPDFActionURL.Create(Document: TPDFDocument; AURL: AnsiString;
   AIsMap: Boolean);
 begin
-    FAction := PDFActionNewURI( Document.Handle, PChar ( AURL ), Length (AURL ), AIsMap );
+    FAction := PDFActionNewURI( Document.Handle, PAnsiChar ( AURL ), Length (AURL ), AIsMap );
 end;
 
 { TPDFActionHide }
 
-procedure TPDFActionHide.Append(AnnotationName: String);
+procedure TPDFActionHide.Append(AnnotationName: AnsiString);
 begin
-    PDFActionHideAddAnnotationName( FAction, PChar ( AnnotationName), Length ( AnnotationName ) );
+    PDFActionHideAddAnnotationName( FAction, PAnsiChar ( AnnotationName), Length ( AnnotationName ) );
 end;
 
 procedure TPDFActionHide.Append(Annotation: TPDFAnnotation);
@@ -6659,9 +6684,9 @@ end;
 
 { TPDFActionSubmitForm }
 
-procedure TPDFActionSubmitForm.Append(AnnotationName: String);
+procedure TPDFActionSubmitForm.Append(AnnotationName: AnsiString);
 begin
-    PDFActionSubmitFormAddAnnotationName( FAction, PChar ( AnnotationName), Length ( AnnotationName ) );
+    PDFActionSubmitFormAddAnnotationName( FAction, PAnsiChar ( AnnotationName), Length ( AnnotationName ) );
 end;
 
 procedure TPDFActionSubmitForm.Append(Annotation: TPDFAnnotation);
@@ -6670,7 +6695,7 @@ begin
 end;
 
 constructor TPDFActionSubmitForm.Create(Document: TPDFDocument;
-  AURL: String; AFlags: TPDFSubmitFormFlags);
+  AURL: AnsiString; AFlags: TPDFSubmitFormFlags);
 var
     I: Integer;
 begin
@@ -6683,14 +6708,14 @@ begin
     if vsffXML in AFlags then  I := I or sffXML;
     if vsffIncludeAnnotations in AFlags then  I := I or sffIncludeAnnotations;
     if vsffSubmitPDF in AFlags then  I := I or sffSubmitPDF;
-    FAction := PDFActionNewSubmitForm( Document.Handle, PChar (AURL), Length ( AURL ), I );
+    FAction := PDFActionNewSubmitForm( Document.Handle, PAnsiChar (AURL), Length ( AURL ), I );
 end;
 
 { TPDFActionResetForm }
 
-procedure TPDFActionResetForm.Append(AnnotationName: String);
+procedure TPDFActionResetForm.Append(AnnotationName: AnsiString);
 begin
-    PDFActionResetFormAddAnnotationName( FAction, PChar ( AnnotationName), Length ( AnnotationName ) );
+    PDFActionResetFormAddAnnotationName( FAction, PAnsiChar ( AnnotationName), Length ( AnnotationName ) );
 end;
 
 procedure TPDFActionResetForm.Append(Annotation: TPDFAnnotation);
@@ -6707,17 +6732,17 @@ end;
 { TPDFActionImportData }
 
 constructor TPDFActionImportData.Create(Document: TPDFDocument;
-  AFileName: String);
+  AFileName: AnsiString);
 begin
-    FAction := PDFActionNewImportData( Document.Handle, PChar ( AFileName ), Length ( AFileName ) );
+    FAction := PDFActionNewImportData( Document.Handle, PAnsiChar ( AFileName ), Length ( AFileName ) );
 end;
 
 { TPDFActionJavaScript }
 
 constructor TPDFActionJavaScript.Create(Document: TPDFDocument;
-  AJavaScriptString: String);
+  AJavaScriptString: AnsiString);
 begin
-    FAction := PDFActionNewJavaScript( Document.Handle, PChar ( AJavaScriptString ), Length ( AJavaScriptString ) );
+    FAction := PDFActionNewJavaScript( Document.Handle, PAnsiChar ( AJavaScriptString ), Length ( AJavaScriptString ) );
 end;
 
 constructor TPDFActionJavaScript.Create(Document: TPDFDocument;

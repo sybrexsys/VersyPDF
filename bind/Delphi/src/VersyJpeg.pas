@@ -35,64 +35,114 @@ function VersyPDF_jpeg_alloc_huff_table( cinfo: Pointer ):Pointer;register; exte
 
 implementation
 
-uses VersyCommon, VersyZLib, Versypdfint, windows;
+uses VersyCommon, VersyZLib, Versypdfint, {$ifdef USENAMESPACE}WinAPI.Windows{$else}Windows{$endif};
 
 //procedure VersyPDF_jpeg_destroy_compress( P:Pointer );cdecl; external;
 //procedure VersyPDF_jpeg_destroy_decompress( P:Pointer );cdecl; external;
 
 
 
-
-{$l obj\jdapimin.obj}
-{$l obj\jmemmgr.obj}
-{$l obj\jdinput.obj}
-{$l obj\jdatasrc.obj}
-{$l obj\jdapistd.obj}
-{$l obj\jdmaster.obj}
-{$l obj\jdphuff.obj}
-{$l obj\jdhuff.obj}
-{$l obj\jdmerge.obj}
-{$l obj\jdcolor.obj}
-{$l obj\jquant1.obj}
-{$l obj\jquant2.obj}
-{$l obj\jdmainct.obj}
-{$l obj\jdcoefct.obj}
-{$l obj\jdpostct.obj}
-{$l obj\jddctmgr.obj}
-{$l obj\jdsample.obj}
-{$l obj\jidctflt.obj}
-{$l obj\jidctfst.obj}
-{$l obj\jidctint.obj}
-{$l obj\jidctred.obj}
-{$l obj\jdmarker.obj}
-{$l obj\jutils.obj}
-{$l obj\jcomapi.obj}
-{$l obj\jdatadst.obj}
-{$l obj\jcparam.obj}
-{$l obj\jcapistd.obj}
-{$l obj\jcapimin.obj}
-{$l obj\jcinit.obj}
-{$l obj\jcmarker.obj}
-{$l obj\jcmaster.obj}
-{$l obj\jcmainct.obj}
-{$l obj\jcprepct.obj}
-{$l obj\jccoefct.obj}
-{$l obj\jccolor.obj}
-{$l obj\jcsample.obj}
-{$l obj\jcdctmgr.obj}
-{$l obj\jcphuff.obj}
-{$l obj\jfdctint.obj}
-{$l obj\jfdctfst.obj}
-{$l obj\jfdctflt.obj}
-{$l obj\jerror.obj}
-{$l obj\jchuff.obj}
-{$l obj\VSJpeg.obj}
-{$l obj\VSExcept.obj}
-{$l obj\VSBaseA.obj}
-{$l obj\VSMisc.obj}
-{$l obj\VSBaseA.obj}
-{$l obj\VSLibA.obj}
-
+{$ifndef WIN64}
+{$l ..\obj\x32\jdapimin.obj}
+{$l ..\obj\x32\jmemmgr.obj}
+{$l ..\obj\x32\jdinput.obj}
+{$l ..\obj\x32\jdatasrc.obj}
+{$l ..\obj\x32\jdapistd.obj}
+{$l ..\obj\x32\jdmaster.obj}
+{$l ..\obj\x32\jdphuff.obj}
+{$l ..\obj\x32\jdhuff.obj}
+{$l ..\obj\x32\jdmerge.obj}
+{$l ..\obj\x32\jdcolor.obj}
+{$l ..\obj\x32\jquant1.obj}
+{$l ..\obj\x32\jquant2.obj}
+{$l ..\obj\x32\jdmainct.obj}
+{$l ..\obj\x32\jdcoefct.obj}
+{$l ..\obj\x32\jdpostct.obj}
+{$l ..\obj\x32\jddctmgr.obj}
+{$l ..\obj\x32\jdsample.obj}
+{$l ..\obj\x32\jidctflt.obj}
+{$l ..\obj\x32\jidctfst.obj}
+{$l ..\obj\x32\jidctint.obj}
+{$l ..\obj\x32\jidctred.obj}
+{$l ..\obj\x32\jdmarker.obj}
+{$l ..\obj\x32\jutils.obj}
+{$l ..\obj\x32\jcomapi.obj}
+{$l ..\obj\x32\jdatadst.obj}
+{$l ..\obj\x32\jcparam.obj}
+{$l ..\obj\x32\jcapistd.obj}
+{$l ..\obj\x32\jcapimin.obj}
+{$l ..\obj\x32\jcinit.obj}
+{$l ..\obj\x32\jcmarker.obj}
+{$l ..\obj\x32\jcmaster.obj}
+{$l ..\obj\x32\jcmainct.obj}
+{$l ..\obj\x32\jcprepct.obj}
+{$l ..\obj\x32\jccoefct.obj}
+{$l ..\obj\x32\jccolor.obj}
+{$l ..\obj\x32\jcsample.obj}
+{$l ..\obj\x32\jcdctmgr.obj}
+{$l ..\obj\x32\jcphuff.obj}
+{$l ..\obj\x32\jfdctint.obj}
+{$l ..\obj\x32\jfdctfst.obj}
+{$l ..\obj\x32\jfdctflt.obj}
+{$l ..\obj\x32\jerror.obj}
+{$l ..\obj\x32\jchuff.obj}
+{$l ..\obj\x32\VSJpeg.obj}
+{$l ..\obj\x32\VSExcept.obj}
+{$l ..\obj\x32\VSBaseA.obj}
+{$l ..\obj\x32\VSMisc.obj}
+{$l ..\obj\x32\VSBaseA.obj}
+{$l ..\obj\x32\VSLibA.obj}
+{$else}
+{$l ..\obj\x64\jdapimin.obj}
+{$l ..\obj\x64\jmemmgr.obj}
+{$l ..\obj\x64\jdinput.obj}
+{$l ..\obj\x64\jdatasrc.obj}
+{$l ..\obj\x64\jdapistd.obj}
+{$l ..\obj\x64\jdmaster.obj}
+{$l ..\obj\x64\jdphuff.obj}
+{$l ..\obj\x64\jdhuff.obj}
+{$l ..\obj\x64\jdmerge.obj}
+{$l ..\obj\x64\jdcolor.obj}
+{$l ..\obj\x64\jquant1.obj}
+{$l ..\obj\x64\jquant2.obj}
+{$l ..\obj\x64\jdmainct.obj}
+{$l ..\obj\x64\jdcoefct.obj}
+{$l ..\obj\x64\jdpostct.obj}
+{$l ..\obj\x64\jddctmgr.obj}
+{$l ..\obj\x64\jdsample.obj}
+{$l ..\obj\x64\jidctflt.obj}
+{$l ..\obj\x64\jidctfst.obj}
+{$l ..\obj\x64\jidctint.obj}
+{$l ..\obj\x64\jidctred.obj}
+{$l ..\obj\x64\jdmarker.obj}
+{$l ..\obj\x64\jutils.obj}
+{$l ..\obj\x64\jcomapi.obj}
+{$l ..\obj\x64\jdatadst.obj}
+{$l ..\obj\x64\jcparam.obj}
+{$l ..\obj\x64\jcapistd.obj}
+{$l ..\obj\x64\jcapimin.obj}
+{$l ..\obj\x64\jcinit.obj}
+{$l ..\obj\x64\jcmarker.obj}
+{$l ..\obj\x64\jcmaster.obj}
+{$l ..\obj\x64\jcmainct.obj}
+{$l ..\obj\x64\jcprepct.obj}
+{$l ..\obj\x64\jccoefct.obj}
+{$l ..\obj\x64\jccolor.obj}
+{$l ..\obj\x64\jcsample.obj}
+{$l ..\obj\x64\jcdctmgr.obj}
+{$l ..\obj\x64\jcphuff.obj}
+{$l ..\obj\x64\jfdctint.obj}
+{$l ..\obj\x64\jfdctfst.obj}
+{$l ..\obj\x64\jfdctflt.obj}
+{$l ..\obj\x64\jerror.obj}
+{$l ..\obj\x64\jchuff.obj}
+{$l ..\obj\x64\VSJpeg.obj}
+{$l ..\obj\x64\VSExcept.obj}
+{$l ..\obj\x64\VSBaseA.obj}
+{$l ..\obj\x64\VSMisc.obj}
+{$l ..\obj\x64\VSBaseA.obj}
+{$l ..\obj\x64\VSLibA.obj}
+{$endif}
 
 
 end.
