@@ -82,10 +82,6 @@ typedef FAST_FLOAT FLOAT_MULT_TYPE; /* preferred floating type */
 #define RANGE_MASK  (MAXJSAMPLE * 4 + 3) /* 2 bits wider than legal samples */
 
 
-/* Short forms of external names for systems with brain-damaged linkers. */
-
-
-
 
 /* Extern declarations for the forward and inverse DCT routines. */
 

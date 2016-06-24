@@ -1336,7 +1336,7 @@ OJPEGPreDecode(register TIFF *tif,tsample_t s)
             marker and flag the "JPEGTables" TIFF record as "present".
          */
             sp->jpegtables_length = p - (unsigned char*)sp->jpegtables + 2;
-            p = sp->jpegtables;
+            p = (unsigned char *)sp->jpegtables;
             if (!(sp->jpegtables = _TIFFmalloc(sp->jpegtables_length)))
               {
                 TIFFError(module,no_jtable_space);
@@ -1587,7 +1587,7 @@ OJPEGVSetField(register TIFF *tif,ttag_t tag,va_list ap)
           if (   (v32 = (*sp->vsetparent)(tif,tag,ap))
               && td->td_photometric == PHOTOMETRIC_YCBCR
              )
-            if ((td->td_refblackwhite = _TIFFmalloc(6*sizeof(float))) != 0 )
+            if ((td->td_refblackwhite = (float *)_TIFFmalloc(6*sizeof(float))) != 0 )
               { register long top = 1 << td->td_bitspersample;
 
                 td->td_refblackwhite[0] = 0;
@@ -1836,7 +1836,7 @@ OJPEGVGetField(register TIFF *tif,ttag_t tag,va_list ap)
           if (sp->jpegtables_length) /* we have "new"-style JPEG tables */
             {
               *va_arg(ap,uint32 *) = sp->jpegtables_length;
-              *va_arg(ap,char **) = sp->jpegtables;
+               *va_arg(ap,char **) = (char *) sp->jpegtables;
               return 1;
             };
 
@@ -1952,7 +1952,7 @@ TIFFInitOJPEG(register TIFF *tif,int scheme)
         client application tries to process a file so big that we can't buffer
         it entirely, then tough shit: we'll give up and exit!
      */
-        if (!(tif->tif_base = _TIFFmalloc(tif->tif_size=TIFFGetFileSize(tif))))
+        if (!(tif->tif_base = (tidata_t)_TIFFmalloc(tif->tif_size=TIFFGetFileSize(tif))))
           {
             TIFFError(tif->tif_name,"Cannot allocate file buffer");
             return 0;

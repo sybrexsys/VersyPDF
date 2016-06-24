@@ -115,8 +115,5 @@
     (FT_Module_Requester)  0
   };
 
-void VersyNotEmptyfunction(int a){
-
-}
 
 /* END */

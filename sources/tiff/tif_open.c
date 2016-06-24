@@ -148,7 +148,7 @@ TIFFClientOpen(
         tmp.lib = lib;
         tmp.tif_mallocproc = mallocproc;
         t = &tmp;
-        tif = TIFFMalloc ( t, sizeof (TIFF) + strlen(name) + 1 );
+        tif = (TIFF *)TIFFMalloc ( t, sizeof (TIFF) + strlen(name) + 1 );
     } else {
         tif = (TIFF *)_TIFFmallocA(sizeof (TIFF) + strlen(name) + 1);
     }

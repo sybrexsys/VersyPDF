@@ -2,3 +2,5 @@
 /bind/Delphi/obj/*.obj
 
 *.dcu
+BuildLog.htm
+*.idb

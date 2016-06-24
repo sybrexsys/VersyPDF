@@ -326,7 +326,7 @@
     ft_outline_glyph_init,
     ft_outline_glyph_done,
     ft_outline_glyph_copy,
-    ft_outline_glyph_transform,
+    (FT_Glyph_TransformFunc)ft_outline_glyph_transform,
     ft_outline_glyph_bbox,
     ft_outline_glyph_prepare
   };
