@@ -1,102 +1,289 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
-	Name="VersyPDFSrc"
+	Version="8,00"
+	Name="VersyPDF"
 	ProjectGUID="{B011466B-C5DD-4C38-B2CE-65F375697C7F}"
 	RootNamespace="flate"
-	Keyword="MakeFileProj">
+	Keyword="MakeFileProj"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\LIBS_OUTPUT_Compiled\x32_dotnet110\debug"
-			IntermediateDirectory="..\LIBS_OUTPUT_Compiled\x32_dotnet110\debug"
+			OutputDirectory="..\LIBS_OUTPUT_Compiled\x32_dotnet200\debug"
+			IntermediateDirectory="..\LIBS_OUTPUT_Compiled\x32_dotnet200\debug"
 			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			CharacterSet="2"
-			ManagedExtensions="TRUE">
+			ManagedExtensions="4"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\sources\versypdf;..\..\..\sources\versypdf\sources;..\..\..\sources\flate;..\..\..\sources\jpeg;..\..\..\sources\png;..\..\..\sources\tiff;..\..\..\sources\freetype"
-				PreprocessorDefinitions="WIN32;_DEBUG1;VERSYDBG1;VERSYPDFDOTNET;DOTNET;VERSYPDF_LICENSED1;VERSYPRO"
-				RuntimeLibrary="1"
+				PreprocessorDefinitions="WIN32;NDEBUG;VERSYPDFDOTNET;DOTNET;VERSYPDF_LICENSED1;VERSYPRO"
+				RuntimeLibrary="3"
 				DebugInformationFormat="3"
-				CompileAs="2"/>
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				ExcludedFromBuild="false"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
 				OutputFile="$(OutDir)/$(ProjectName).lib"
-				IgnoreAllDefaultLibraries="TRUE"/>
+				IgnoreAllDefaultLibraries="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				ExcludedFromBuild="FALSE"/>
+				ExcludedFromBuild="false"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="..\LIBS_OUTPUT_Compiled\x64_dotnet200\Debug"
+			IntermediateDirectory="..\LIBS_OUTPUT_Compiled\x64_dotnet200\Debug"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			ManagedExtensions="4"
+			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				ExcludedFromBuild="FALSE"/>
+				ExcludedFromBuild="false"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\sources\versypdf;..\..\..\sources\versypdf\sources;..\..\..\sources\flate;..\..\..\sources\jpeg;..\..\..\sources\png;..\..\..\sources\tiff;..\..\..\sources\freetype"
+				PreprocessorDefinitions="NDEBUG;VERSYPDFDOTNET;DOTNET;VERSYPDF_LICENSED1;VERSYPRO"
+				RuntimeLibrary="3"
+				DebugInformationFormat="3"
+				CompileAs="2"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				ExcludedFromBuild="FALSE"/>
+				ExcludedFromBuild="false"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/$(ProjectName).lib"
+				IgnoreAllDefaultLibraries="true"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\tmp"
-			IntermediateDirectory="..\tmp"
+			OutputDirectory="..\tmp\"
+			IntermediateDirectory="..\tmp\"
 			ConfigurationType="4"
-			ManagedExtensions="FALSE"
-			WholeProgramOptimization="FALSE">
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			ManagedExtensions="4"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/clr /d1PrivateNativeTypes"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\sources\versypdf;..\..\..\sources\versypdf\sources;..\..\..\sources\flate;..\..\..\sources\jpeg;..\..\..\sources\png;..\..\..\sources\tiff;..\..\..\sources\freetype"
 				PreprocessorDefinitions="WIN32;NDEBUG;VERSYPDF_LICENSED1;VERSYPRO;VERSYPDFDOTNET;_MBCS;DOTNET"
-				RuntimeLibrary="0"
-				DisableLanguageExtensions="FALSE"
-				TreatWChar_tAsBuiltInType="FALSE"
+				RuntimeLibrary="2"
 				DebugInformationFormat="0"
-				CallingConvention="0"
-				CompileAs="2"/>
+				CompileAs="2"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				ExcludedFromBuild="false"
+			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile="$(OutDir)/VersyPDF.lib"
-				IgnoreAllDefaultLibraries="TRUE"/>
+				OutputFile="$(OutDir)/VersyPDFx32.lib"
+				IgnoreAllDefaultLibraries="true"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCPostBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="..\tmp\"
+			IntermediateDirectory="..\tmp\"
+			ConfigurationType="4"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			CharacterSet="2"
+			ManagedExtensions="4"
+			>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCPreBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCCustomBuildTool"
+			/>
 			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
+				Name="VCXMLDataGeneratorTool"
+			/>
 			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\sources\versypdf;..\..\..\sources\versypdf\sources;..\..\..\sources\flate;..\..\..\sources\jpeg;..\..\..\sources\png;..\..\..\sources\tiff;..\..\..\sources\freetype"
+				PreprocessorDefinitions="NDEBUG;VERSYPDFDOTNET;DOTNET;VERSYPDF_LICENSED1;VERSYPRO;WIN64;X64"
+				RuntimeLibrary="2"
+				DebugInformationFormat="0"
+				CompileAs="2"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				ExcludedFromBuild="false"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="$(OutDir)/VersyPDFx64.lib"
+				IgnoreAllDefaultLibraries="true"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				ExcludedFromBuild="false"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>

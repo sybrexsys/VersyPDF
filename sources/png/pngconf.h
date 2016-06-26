@@ -18,6 +18,7 @@
 
 #define PNG_NO_WRITE_SUPPORTED
 #define PNG_SETJMP_NOT_SUPPORTED
+#define PNG_USE_LOCAL_ARRAYS
 
 
 #define   png_check_sig   VersyPDF_png_check_sig
@@ -25,8 +26,8 @@
 #define   png_info_destroy   VersyPDF_png_info_destroy
 #define   png_init_mmx_flags   VersyPDF_png_init_mmx_flags
 #define   png_mmx_support   VersyPDF_png_mmx_support
-#define   png_libpng_ver   VersyPDF_png_libpng_ver
-#define   png_sig   VersyPDF_png_sig
+// #define   png_libpng_ver   VersyPDF_png_libpng_ver
+// #define   png_sig   VersyPDF_png_sig
 #define   png_IHDR   VersyPDF_png_IHDR
 #define   png_IDAT   VersyPDF_png_IDAT
 #define   png_IEND   VersyPDF_png_IEND

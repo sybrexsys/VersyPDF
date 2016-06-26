@@ -11,7 +11,6 @@ Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
-		Release (FULL) = Release (FULL)
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
@@ -20,14 +19,10 @@ Global
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Debug.Build.0 = Debug|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release.ActiveCfg = Release|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release.Build.0 = Release|Win32
-		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release (FULL).ActiveCfg = Release (FULL)|Win32
-		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release (FULL).Build.0 = Release (FULL)|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Debug.ActiveCfg = Debug|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Debug.Build.0 = Debug|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release.ActiveCfg = Release|Win32
 		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release.Build.0 = Release|Win32
-		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release (FULL).ActiveCfg = Release|Win32
-		{B011466B-C5DD-4C38-B2CE-65F375697C7F}.Release (FULL).Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

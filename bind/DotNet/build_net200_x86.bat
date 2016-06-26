@@ -5,22 +5,14 @@ set builder="%VS80COMNTOOLS%\..\..\VC\vcpackages\VCBuild.exe"
 
 call "%VS80COMNTOOLS%\..\..\VC\bin\vcvars32.bat"
 
+echo Cleaning
+
+%builder% "2.0\versypdfsrc.vcproj" /nologo /clean "Release|Win32"
+%builder% "2.0\versypdf.vcproj" /nologo /clean "Release|Win32"
+
+
 echo LIBs
+%builder% "2.0\versypdfsrc.vcproj" /nologo /rebuild "Release|Win32"
+%builder% "2.0\versypdf.vcproj" /nologo /rebuild "Release|Win32"
 
-%builder% "Libs\flate\flate_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-%builder% "Libs\freetype\freetype_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-%builder% "Libs\jpeg\jpeg_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-%builder% "Libs\png\png_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-%builder% "Libs\tiff\Tiff_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-%builder% "Libs\versypdf\versypdf_vs2005.vcproj" /nologo /rebuild "Release|Win32"
-
-echo Build PDF SDK VS2005 versions
-
-%builder% "BytescoutPDF_vs2005.vcproj" /nologo /rebuild "Release (DEMO)|Win32"
-%builder% "BytescoutPDF_vs2005.vcproj" /nologo /rebuild "Release (FULL)|Win32"
 

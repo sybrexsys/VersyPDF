@@ -36,6 +36,7 @@
  *      Copyright (C) 1990, 1995  Frank D. Cringle.
  */
 #include "tiff.h"
+#include "tiffconf.h"
 
 /*
  * To override the default routine used to image decoded
