@@ -37,14 +37,12 @@ VSPng.c
 
 #include "VSImageI.h"
 
-
+#ifndef NOT_USE_PNG
 
 #include "VSDocAI.h"
 #include "VSPlatform.h"
 #include "VSFilter.h"
 #include "VSExcept.h"
-
-#ifndef NOT_USE_PNG
 
 png_voidp PDFPNGmalloc_fn(png_structp png_ptr, png_size_t size){
     return mmalloc ( (PDFLibHandle) png_ptr->mem_ptr, size );

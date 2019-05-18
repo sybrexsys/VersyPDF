@@ -28,7 +28,7 @@
  * TIFF Library UNIX-specific Routines. These are should also work with the
  * Windows Common RunTime Library.
  */
-#include "tif_config.h"
+#include "tiffconf.h"
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
@@ -171,7 +171,7 @@ TIFFOpen(const char* name, const char* mode)
 	fd = open(name, m, 0666);
 #endif
 	if (fd < 0) {
-		TIFFErrorExt(0, module, "%s: Cannot open", name);
+		TIFFError(0, module, "%s: Cannot open", name);
 		return ((TIFF *)0);
 	}
 
@@ -181,74 +181,22 @@ TIFFOpen(const char* name, const char* mode)
 	return tif;
 }
 
-#ifdef __WIN32__
-#include <windows.h>
-/*
- * Open a TIFF file with a Unicode filename, for read/writing.
- */
-TIFF*
-TIFFOpenW(const wchar_t* name, const char* mode)
-{
-	static const char module[] = "TIFFOpenW";
-	int m, fd;
-	int mbsize;
-	char *mbname;
-	TIFF* tif;
 
-	m = _TIFFgetMode(mode, module);
-	if (m == -1)
-		return ((TIFF*)0);
-
-/* for cygwin and mingw */        
-#ifdef O_BINARY
-        m |= O_BINARY;
-#endif        
-        
-	fd = _wopen(name, m, 0666);
-	if (fd < 0) {
-		TIFFErrorExt(0, module, "%s: Cannot open", name);
-		return ((TIFF *)0);
-	}
-
-	mbname = NULL;
-	mbsize = WideCharToMultiByte(CP_ACP, 0, name, -1, NULL, 0, NULL, NULL);
-	if (mbsize > 0) {
-		mbname = _TIFFmalloc(mbsize);
-		if (!mbname) {
-			TIFFErrorExt(0, module,
-			"Can't allocate space for filename conversion buffer");
-			return ((TIFF*)0);
-		}
-
-		WideCharToMultiByte(CP_ACP, 0, name, -1, mbname, mbsize,
-				    NULL, NULL);
-	}
-
-	tif = TIFFFdOpen((int)fd, (mbname != NULL) ? mbname : "<unknown>",
-			 mode);
-	
-	_TIFFfree(mbname);
-	
-	if(!tif)
-		close(fd);
-	return tif;
-}
-#endif
 
 void*
-_TIFFmalloc(tsize_t s)
+TIFFmalloc(tsize_t s)
 {
 	return (malloc((size_t) s));
 }
 
 void
-_TIFFfree(tdata_t p)
+TIFFfree(tdata_t p)
 {
 	free(p);
 }
 
 void*
-_TIFFrealloc(tdata_t p, tsize_t s)
+TIFFrealloc(tdata_t p, tsize_t s)
 {
 	return (realloc(p, (size_t) s));
 }

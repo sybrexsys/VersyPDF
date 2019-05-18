@@ -28,6 +28,7 @@
  * TIFF Library Win32-specific Routines.  Adapted from tif_unix.c 4/5/95 by
  * Scott Wagner (wagner@itek.com), Itek Graphix, Rochester, NY USA
  */
+#ifdef WIN
 #include "tiffiop.h"
 
 static tsize_t
@@ -386,3 +387,4 @@ Win32ErrorHandler(const char* module, const char* fmt, va_list ap)
 TIFFErrorHandler _TIFFerrorHandler = Win32ErrorHandler;
 */
 /* vim: set ts=8 sts=8 sw=8 noet: */
+#endif

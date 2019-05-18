@@ -28,9 +28,9 @@
  * TIFF Library.
  */
 #include "tiffiop.h"
-/*
+
 TIFFErrorHandlerExt _TIFFwarningHandlerExt = NULL;
-*/
+
 TIFFErrorHandler
 TIFFSetWarningHandler(TIFFErrorHandler handler)
 {
@@ -38,7 +38,7 @@ TIFFSetWarningHandler(TIFFErrorHandler handler)
 	_TIFFwarningHandler = handler;
 	return (prev);
 }
-/*
+
 TIFFErrorHandlerExt
 TIFFSetWarningHandlerExt(TIFFErrorHandlerExt handler)
 {
@@ -46,7 +46,7 @@ TIFFSetWarningHandlerExt(TIFFErrorHandlerExt handler)
 	_TIFFwarningHandlerExt = handler;
 	return (prev);
 }
-*/
+
 void
 TIFFWarning(const char* module, const char* fmt, ...)
 {
@@ -54,8 +54,8 @@ TIFFWarning(const char* module, const char* fmt, ...)
 	va_start(ap, fmt);
 	if (_TIFFwarningHandler)
 		(*_TIFFwarningHandler)(module, fmt, ap);
-	/*if (_TIFFwarningHandlerExt)
-		(*_TIFFwarningHandlerExt)(0, module, fmt, ap);*/
+	if (_TIFFwarningHandlerExt)
+		(*_TIFFwarningHandlerExt)(0, module, fmt, ap);
 	va_end(ap);
 }
 
@@ -66,8 +66,8 @@ TIFFWarningExt(thandle_t fd, const char* module, const char* fmt, ...)
 	va_start(ap, fmt);
 	if (_TIFFwarningHandler)
 		(*_TIFFwarningHandler)(module, fmt, ap);
-	/*if (_TIFFwarningHandlerExt)
-		(*_TIFFwarningHandlerExt)(fd, module, fmt, ap);*/
+	if (_TIFFwarningHandlerExt)
+		(*_TIFFwarningHandlerExt)(fd, module, fmt, ap);
 	va_end(ap);
 }
 

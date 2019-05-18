@@ -32,6 +32,8 @@
  */
 #include "tiff.h"
 #include "tiffconf.h" 
+#include "tiffredeff.h" 
+
 /*
  * TIFF is defined as an incomplete type to hide the
  * library's internal data structures from clients.
@@ -364,6 +366,11 @@ extern	int uv_encode(double, double, int);
 extern	uint32 LogLuv24fromXYZ(float*, int);
 extern	uint32 LogLuv32fromXYZ(float*, int);
 #endif
+
+
+extern TIFFErrorHandler _TIFFwarningHandler;
+
+
 #endif /* LOGLUV_PUBLIC */
 #if defined(__cplusplus)
 }
