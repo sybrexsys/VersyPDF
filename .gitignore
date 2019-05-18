@@ -4,3 +4,7 @@
 *.dcu
 BuildLog.htm
 *.idb
+*.obj
+.vscode
+*.d
+*.o
