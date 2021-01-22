@@ -32,7 +32,7 @@
  */
 #include "tiff.h"
 #include "tiffconf.h" 
-#include "tiffredeff.h" 
+#include "tiffredef.h"
 
 /*
  * TIFF is defined as an incomplete type to hide the
