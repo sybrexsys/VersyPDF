@@ -46,10 +46,6 @@ These unique qualities are the reason VersyPDF, and the solutions and services b
   Sybrex Systems provides an Open Source suite of solutions for work with PDF format. The Sybrex Systems team firmly believes that our solutions and the organizations and users who benefit by them all derive value from active contributions from the community.<br />
   You can contribute to help shape and improve our products.  If you have ideas and suggestions on new features and improvements that you would like to see and help bring to Sybrex Systems, please fork the public available code on GitHub</a>.
 <h2>Authors:</strong></h2>
-  <strong>Sybrex Systems</strong></p>
-<ul>
-  <li><a href="http://www.sybrex.com/">http://www.sybrex.com/</a></li>
-</ul>
   <strong>Vadzim Shakun</strong></p>
 <ul>
   <li><a href="mailto:vadim.shakun@gmail.com">vadim.shakun@gmail.com</a></li>
@@ -57,7 +53,7 @@ These unique qualities are the reason VersyPDF, and the solutions and services b
 
 
 <h2>Copyright and License:</strong></h2> 
-<p>© 2005-2016 Sybrex Systems, All Rights Reserved.</p>
+<p>© 2005-2021 Vadzim Shakun</p>
 <p>VersyPDF is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version, with the addition of the following permission added to Section 15 as permitted in Section 7(a):
 FOR ANY PART OF THE COVERED WORK IN WHICH THE COPYRIGHT IS OWNED BY SYBREX SYSTEMS. SYBREX SYSTEMS DISCLAIMS THE WARRANTY OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.</p>                    
 <p>VersyPDF is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.</p>                                                                   
